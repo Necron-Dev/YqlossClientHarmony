@@ -1,0 +1,11 @@
+bin/
+obj/
+/packages/
+riderModule.iml
+/_ReSharper.Caches/
+ADOFAIGame/A Dance of Fire and Ice/
+.idea/ 
+build/
+Disguise.json
+GameFolder.txt
+*.DotSettings.user
