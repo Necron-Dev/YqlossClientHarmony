@@ -18,7 +18,7 @@
 
 ## ⚙️ How To Build
 
-Install Unity Mod Manager.
+Install Unity Mod Manager in your ADOFAI.
 
 Create `GameFolder.txt` in the project folder and write the path to your game folder (used by the installation scripts).
 
@@ -34,8 +34,8 @@ The project folder structure would be like:
 
 ```text
 YqlossClientHarmony
-|   GameFolder.txt
-|   ADOFAIGame
+|-- GameFolder.txt
+|-- ADOFAIGame
 |   |-- A Dance of Fire and Ice
 |       |-- A Dance of Fire and Ice.exe
 |       |-- A Dance of Fire and Ice_Data
@@ -50,7 +50,8 @@ YqlossClientHarmony
 
 Build the project with **Release** build profile.
 
-Run Scripts/pack.ps1 with PowerShell if you want to make a Mod zip file. The zip file would be generated at `build/YCH.zip` in the project folder.
+Run Scripts/pack.ps1 with PowerShell if you want to make a Mod zip file. The zip file would be generated at
+`build/YCH.zip` in the project folder.
 
 Run Scripts/install.ps1 with PowerShell if you want to install the Mod directly into your game.
 
