@@ -15,11 +15,11 @@ public static class Injections
         {
             __state = __instance.hitbox;
 
+            if (!Settings.Instance.Enabled) return;
             if (!Adofai.Controller.gameworld) return;
             if (__instance.hitbox != HitboxType.Kill) return;
             if (RDC.auto) return;
             if (!ADOBase.controller.noFail) return;
-            if (!Main.Settings.EnableFixKillerDecorationsInNoFail) return;
 
             __instance.hitbox = HitboxType.None;
 

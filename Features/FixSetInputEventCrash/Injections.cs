@@ -5,7 +5,7 @@ using HarmonyLib;
 
 namespace YqlossClientHarmony.Features.FixSetInputEventCrash;
 
-public class Injections
+public static class Injections
 {
     [HarmonyPatch(typeof(LevelEvent), nameof(LevelEvent.GetString))]
     public static class Inject_LevelEvent_GetString
@@ -17,7 +17,7 @@ public class Injections
             string key
         )
         {
-            if (!Main.Settings.EnableFixSetInputEventCrash) return __exception;
+            if (!Settings.Instance.Enabled) return __exception;
             if (__exception is null) return null;
             if (__exception is not KeyNotFoundException) return __exception;
 

@@ -502,14 +502,21 @@
     <ItemGroup>
         <Compile Include="Adofai.cs"/>
         <Compile Include="Features\FixKillerDecorationsInNoFail\Injections.cs"/>
+        <Compile Include="Features\FixKillerDecorationsInNoFail\Settings.cs"/>
         <Compile Include="Features\FixSetInputEventCrash\Injections.cs"/>
+        <Compile Include="Features\FixSetInputEventCrash\Settings.cs"/>
+        <Compile Include="Features\ModifyLoadingLevel\EventType.cs"/>
+        <Compile Include="Features\ModifyLoadingLevel\Injections.cs"/>
+        <Compile Include="Features\ModifyLoadingLevel\LevelSettingType.cs"/>
+        <Compile Include="Features\ModifyLoadingLevel\Settings.cs"/>
         <Compile Include="Features\RevertCounterclockwiseUTurnPause\Injections.cs"/>
+        <Compile Include="Features\RevertCounterclockwiseUTurnPause\Settings.cs"/>
         <Compile Include="Properties\AssemblyInfo.cs"/>
         <Compile Include="Settings.cs"/>
         <Compile Include="Main.cs"/>
     </ItemGroup>
     <ItemGroup>
-      <Content Include="README.md" />
+        <Content Include="README.md"/>
     </ItemGroup>
     <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets"/>
     <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

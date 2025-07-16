@@ -7,7 +7,7 @@ using HarmonyLib;
 
 namespace YqlossClientHarmony.Features.RevertCounterclockwiseUTurnPause;
 
-public class Injections
+public static class Injections
 {
     public static bool IsInPlayMethod { get; set; }
 
@@ -16,7 +16,7 @@ public class Injections
     {
         public static void Prefix()
         {
-            if (!Main.Settings.EnableRevertCounterclockwiseUTurnPause) return;
+            if (!Settings.Instance.Enabled) return;
 
             IsInPlayMethod = true;
         }
@@ -53,7 +53,8 @@ public class Injections
             List<LevelEvent>[]? floorEvents
         )
         {
-            if (!Main.Settings.EnableRevertCounterclockwiseUTurnPause) return;
+            if (!Settings.Instance.Enabled) return;
+            if (!IsInPlayMethod) return;
 
             List<LevelEvent>[] notNullFloorEvents;
 
