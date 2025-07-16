@@ -14,6 +14,8 @@
 
 * Revert Changes To Pause Events On Counterclockwise U-Turns In 2.9.4
 
+* Modify Loading Level (Basically An Effect Remover)
+
 ## ⚙️ How To Build
 
 Install Unity Mod Manager.
