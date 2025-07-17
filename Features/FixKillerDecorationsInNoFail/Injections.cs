@@ -26,8 +26,8 @@ public static class Injections
             if (planet != null && planet.iFrames > 0) return;
             if (__instance.hitOnce) return;
 
-            Adofai.Controller.mistakesManager.AddHit(HitMargin.FailMiss);
-            Adofai.Controller.errorMeter.AddHit(float.PositiveInfinity);
+            Adofai.Controller.mistakesManager.AddHit(HitMargin.FailOverload);
+            Adofai.Controller.errorMeter.AddHit(float.NegativeInfinity);
             Adofai.Controller.chosenPlanet.MarkFail()?.BlinkForSeconds(3);
         }
 
