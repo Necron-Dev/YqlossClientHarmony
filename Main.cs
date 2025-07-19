@@ -27,7 +27,7 @@ public static class Main
                 return true;
             };
 
-            _mod.OnGUI += mod => Settings.Draw(mod);
+            _mod.OnGUI += mod => Settings.DrawGUI(mod);
 
             _mod.OnSaveGUI += mod => Settings.Save(mod);
         }

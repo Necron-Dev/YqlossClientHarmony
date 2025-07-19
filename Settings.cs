@@ -1,6 +1,7 @@
 using System;
 using JetBrains.Annotations;
 using UnityModManagerNet;
+using YqlossClientHarmony.Features.Replay;
 
 namespace YqlossClientHarmony;
 
@@ -16,10 +17,15 @@ public class Settings : UnityModManager.ModSettings, IDrawable
     [Draw("Revert Changes To Pause Events On Counterclockwise U-Turns In 2.9.4")]
     public bool EnableRevertCounterclockwiseUTurnPause = false;
 
-    [Draw("Modify Loading Level")] public bool ModifyLoadingLevelEvents = false;
+    [Draw("Modify Loading Level")] public bool EnableModifyLoadingLevel = false;
 
     [Draw("Modify Loading Level Settings", Collapsible = true)]
     public Features.ModifyLoadingLevel.Settings ModifyLoadingLevelSettings = new();
+
+    [Draw("Replay")] public bool EnableReplay = false;
+
+    [Draw("Replay Settings", Collapsible = true)]
+    public Features.Replay.Settings ReplaySettings = new();
 
     public void OnChange()
     {
@@ -29,6 +35,12 @@ public class Settings : UnityModManager.ModSettings, IDrawable
     public override void Save(UnityModManager.ModEntry modEntry)
     {
         Save(this, modEntry);
+    }
+
+    public void DrawGUI(UnityModManager.ModEntry modEntry)
+    {
+        ReplayGUI.Draw(modEntry);
+        this.Draw(modEntry);
     }
 
     public event Action? OnSettingChange;

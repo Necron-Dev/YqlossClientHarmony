@@ -26,9 +26,11 @@ public static class Injections
             if (planet != null && planet.iFrames > 0) return;
             if (__instance.hitOnce) return;
 
+            Interoperation.ReplayIgnoreJudgement = true;
             Adofai.Controller.mistakesManager.AddHit(HitMargin.FailOverload);
             Adofai.Controller.errorMeter.AddHit(float.NegativeInfinity);
             Adofai.Controller.chosenPlanet.MarkFail()?.BlinkForSeconds(3);
+            Interoperation.ReplayIgnoreJudgement = false;
         }
 
         public static void Postfix(

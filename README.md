@@ -14,7 +14,27 @@
 
 * Revert Changes To Pause Events On Counterclockwise U-Turns In 2.9.4
 
-* Modify Loading Level (Basically An Effect Remover)
+* Modify Loading Level (basically an effect remover)
+
+  > The level is modified when it's read from file, so the game doesn't even
+  > know what it looks like before modifications. Thus, you cannot save a
+  > modified level, or the file would be overwritten by the version after
+  > modifications (unless you intend to do that).
+  >
+  > This also makes loading full-effect maps as if you are loading no-effect.
+  > As fast and as low memory consumption.
+
+* Replay
+
+  > Things that are not supported: any input devices other than keyboards,
+  > DLC contents (partially supported), official levels
+  >
+  > Please use "Normal" hold tile behavior when recording and playing replays.
+  >
+  > I've tried my best to keep the judgements and accuracy consistent
+  > with the original play.
+  >
+  > (7BG what the f are you doing in your code??????)
 
 ## ⚙️ How To Build
 

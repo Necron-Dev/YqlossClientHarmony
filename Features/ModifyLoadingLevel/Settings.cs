@@ -9,7 +9,7 @@ public class Settings
 {
     public static Settings Instance => Main.Settings.ModifyLoadingLevelSettings;
 
-    public bool Enabled => Main.Enabled && Main.Settings.ModifyLoadingLevelEvents;
+    public bool Enabled => Main.Enabled && Main.Settings.EnableModifyLoadingLevel;
 
     [Header("Level Song Settings")] [Draw("Enable Hitsound Override")]
     public bool EnableHitsound = false;

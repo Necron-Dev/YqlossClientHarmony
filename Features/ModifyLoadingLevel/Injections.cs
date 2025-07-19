@@ -10,13 +10,13 @@ namespace YqlossClientHarmony.Features.ModifyLoadingLevel;
 
 public static class Injections
 {
-    public static bool IsInLoadLevelMethod { get; set; }
+    private static bool IsInLoadLevelMethod { get; set; }
 
-    public static bool IsLevelModified { get; set; }
+    private static bool IsLevelModified { get; set; }
 
-    public static bool ConfirmedSaving { get; set; }
+    private static bool ConfirmedSaving { get; set; }
 
-    public static bool ShowConfirmSavingDialog()
+    private static bool ShowConfirmSavingDialog()
     {
         return ConfirmedSaving = MessageBox.Show(
             "Are you sure you want to save this modified level?\n" +

@@ -9,7 +9,7 @@ namespace YqlossClientHarmony.Features.RevertCounterclockwiseUTurnPause;
 
 public static class Injections
 {
-    public static bool IsInPlayMethod { get; set; }
+    private static bool IsInPlayMethod { get; set; }
 
     [HarmonyPatch(typeof(scnEditor), nameof(scnEditor.Play))]
     public static class Inject_scnEditor_Play
