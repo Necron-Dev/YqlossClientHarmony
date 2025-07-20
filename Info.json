@@ -2,7 +2,7 @@
   "Id": "YCH",
   "DisplayName": "Yqloss Client Harmony",
   "Author": "Yqloss",
-  "Version": "0.3.2",
+  "Version": "0.3.3",
   "AssemblyName": "YCH.dll",
   "EntryMethod": "YqlossClientHarmony.Main.Load"
 }
