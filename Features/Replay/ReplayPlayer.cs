@@ -298,10 +298,12 @@ public static class ReplayPlayer
             Adofai.Controller.keyTimes.Clear();
 
             {
-                var nextFloor = Adofai.Controller.currFloor.nextfloor;
-
-                if (nextFloor != null && nextFloor.auto)
+                for (var nextFloor = Adofai.Controller.currFloor.nextfloor;
+                     nextFloor != null && nextFloor.auto;
+                     nextFloor = Adofai.Controller.currFloor.nextfloor
+                    )
                 {
+                    var floorId = Adofai.CurrentFloorId;
                     NextCheckFailMiss = false;
                     ConsumeSingleAngleCorrection = false;
                     CachedAngleCorrection = null;
@@ -309,31 +311,40 @@ public static class ReplayPlayer
                     UpdateKeyboardMainKeys = true;
                     Adofai.Controller.Simulated_PlayerControl_Update();
                     AllowGameToUpdateInput = false;
+                    if (Adofai.CurrentFloorId == floorId) break;
                 }
             }
 
-            var hitMargins = HitMargins;
-
-            if (hitMargins is not null && hitMargins.Count != 0)
             {
-                var floorId = Adofai.CurrentFloorId;
+                var lastHitMarginCount = -1;
 
-                var (hitMargin, eventFloorId) = hitMargins[0];
-
-                if (eventFloorId != floorId)
-                    Main.Mod.Logger.Warning($"[Floor {floorId}] late miss floor id mismatch {eventFloorId}");
-
-                if (hitMargin is HitMargin.FailMiss)
+                for (;;)
                 {
-                    NextCheckFailMiss = true;
-                    ConsumeSingleAngleCorrection = false;
-                    CachedAngleCorrection = null;
-                    AllowGameToUpdateInput = true;
-                    UpdateKeyboardMainKeys = true;
-                    Adofai.Controller.Simulated_PlayerControl_Update();
-                    NextCheckFailMiss = false;
-                    AllowGameToUpdateInput = false;
-                    return;
+                    var hitMargins = HitMargins;
+
+                    if (hitMargins is null || hitMargins.Count == 0) break;
+
+                    var floorId = Adofai.CurrentFloorId;
+
+                    var (hitMargin, eventFloorId) = hitMargins[0];
+
+                    if (eventFloorId != floorId)
+                        Main.Mod.Logger.Warning($"[Floor {floorId}] late miss floor id mismatch {eventFloorId}");
+
+                    if (hitMargin is HitMargin.FailMiss)
+                    {
+                        NextCheckFailMiss = true;
+                        ConsumeSingleAngleCorrection = false;
+                        CachedAngleCorrection = null;
+                        AllowGameToUpdateInput = true;
+                        UpdateKeyboardMainKeys = true;
+                        Adofai.Controller.Simulated_PlayerControl_Update();
+                        NextCheckFailMiss = false;
+                        AllowGameToUpdateInput = false;
+                    }
+
+                    if (hitMargins.Count == lastHitMarginCount) return;
+                    lastHitMarginCount = hitMargins.Count;
                 }
             }
 
@@ -368,8 +379,10 @@ public static class ReplayPlayer
                 var (key, keyFloor) = keyEvents[0];
                 var syncKeyCode = KeyCodeMapping.GetSyncKeyCode(key.KeyCode);
 
-                if (keyFloor > floorId) break;
                 if (key.SongSeconds > songSeconds) break;
+
+                if (keyFloor != floorId)
+                    Main.Mod.Logger.Warning($"[Floor {floorId}] key floor mismatch {keyFloor}");
 
                 if (Settings.Instance.Verbose)
                     Main.Mod.Logger.Log(
@@ -428,7 +441,6 @@ public static class ReplayPlayer
                         Adofai.Controller.Simulated_PlayerControl_Update(1);
                     }
                 }
-
 
                 Adofai.Controller.keyTimes.Clear();
                 AllowGameToUpdateInput = false;
