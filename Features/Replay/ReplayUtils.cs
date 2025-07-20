@@ -46,6 +46,7 @@ public static class ReplayUtils
                 HitMargin.LatePerfect => 0.75,
                 HitMargin.VeryLate => 0.4,
                 HitMargin.TooLate => 0.2,
+                HitMargin.Auto => 1.0,
                 _ => 0.0
             };
 
