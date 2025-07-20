@@ -297,6 +297,21 @@ public static class ReplayPlayer
             AnyKeyDown = false;
             Adofai.Controller.keyTimes.Clear();
 
+            {
+                var nextFloor = Adofai.Controller.currFloor.nextfloor;
+
+                if (nextFloor != null && nextFloor.auto)
+                {
+                    NextCheckFailMiss = false;
+                    ConsumeSingleAngleCorrection = false;
+                    CachedAngleCorrection = null;
+                    AllowGameToUpdateInput = true;
+                    UpdateKeyboardMainKeys = true;
+                    Adofai.Controller.Simulated_PlayerControl_Update();
+                    AllowGameToUpdateInput = false;
+                }
+            }
+
             var hitMargins = HitMargins;
 
             if (hitMargins is not null && hitMargins.Count != 0)
@@ -385,31 +400,39 @@ public static class ReplayPlayer
                     if (!state && last) isKeyUp[keyCode] = true;
                 }
 
-                AllowGameToUpdateInput = true;
-                UpdateKeyboardMainKeys = true;
                 Adofai.Controller.keyTimes.Clear();
-                var angleCorrections = AngleCorrections;
+                var nextFloor = Adofai.Controller.currFloor.nextfloor;
 
-                if (angleCorrections is null || angleCorrections.Count == 0)
+                if (nextFloor == null || !nextFloor.auto)
                 {
-                    if (angleCorrections?.Count == 0)
+                    AllowGameToUpdateInput = true;
+                    UpdateKeyboardMainKeys = true;
+                    var angleCorrections = AngleCorrections;
+
+                    if (angleCorrections is null || angleCorrections.Count == 0)
                     {
-                        Main.Mod.Logger.Warning($"[Floor {floorId}] angle corrections are drained");
-                        AngleCorrections = null;
+                        if (angleCorrections?.Count == 0)
+                        {
+                            Main.Mod.Logger.Warning($"[Floor {floorId}] angle corrections are drained");
+                            AngleCorrections = null;
+                        }
+
+                        ConsumeSingleAngleCorrection = false;
+                        CachedAngleCorrection = null;
+                        Adofai.Controller.Simulated_PlayerControl_Update();
                     }
-
-                    ConsumeSingleAngleCorrection = false;
-                    CachedAngleCorrection = null;
-                    Adofai.Controller.Simulated_PlayerControl_Update();
-                }
-                else
-                {
-                    ConsumeSingleAngleCorrection = true;
-                    CachedAngleCorrection = null;
-                    Adofai.Controller.Simulated_PlayerControl_Update(1);
+                    else
+                    {
+                        ConsumeSingleAngleCorrection = true;
+                        CachedAngleCorrection = null;
+                        Adofai.Controller.Simulated_PlayerControl_Update(1);
+                    }
                 }
 
+
+                Adofai.Controller.keyTimes.Clear();
                 AllowGameToUpdateInput = false;
+                ConsumeSingleAngleCorrection = false;
                 CachedAngleCorrection = null;
                 lastKeyStates = keyStates;
             }
