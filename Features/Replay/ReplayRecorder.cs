@@ -48,7 +48,7 @@ public static class ReplayRecorder
                 Adofai.Game.levelData.song,
                 Adofai.Game.levelData.author,
                 GCS.difficulty,
-                GCS.useNoFail,
+                Adofai.Controller.noFail,
                 Persistence.GetChosenAsynchronousInput(),
                 Persistence.holdBehavior,
                 Persistence.hitMarginLimit
