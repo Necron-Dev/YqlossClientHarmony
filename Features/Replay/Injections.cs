@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Reflection;
 using ADOFAI;
 using HarmonyLib;
+using MonsterLove.StateMachine;
 using SkyHook;
 using UnityEngine;
 using UnityEngine.EventSystems;
@@ -199,11 +200,28 @@ public static class Injections
     [HarmonyPatch(typeof(scrController), "UpdateInput")]
     public static class Inject_scrController_UpdateInput
     {
+        private static AccessTools.FieldRef<StateEngine, StateMapping> DestinationStateField { get; } =
+            AccessTools.FieldRefAccess<StateEngine, StateMapping>("destinationState");
+
         public static void Prefix()
         {
-            if (!Adofai.Controller.gameworld || ADOBase.isOfficialLevel || Adofai.Controller.paused) return;
-            if (!AsyncInputManager.isActive || !Persistence.GetChosenAsynchronousInput()) return;
-            if (!Application.isFocused) return;
+            if (
+                !Adofai.Controller.gameworld ||
+                ADOBase.isOfficialLevel ||
+                Adofai.Controller.paused ||
+                !AsyncInputManager.isActive ||
+                !Persistence.GetChosenAsynchronousInput() ||
+                !Application.isFocused ||
+                (Adofai.CurrentFloorId == 0 && (
+                    Adofai.Controller.state != States.PlayerControl ||
+                    (States)DestinationStateField(Adofai.Controller.stateMachine).state != States.PlayerControl ||
+                    !Adofai.Controller.responsive
+                ))
+            )
+            {
+                KeyQueue.Clear();
+                return;
+            }
 
             var sortedKeyQueue = new PriorityQueue<SkyHookEvent, long>();
 
@@ -222,8 +240,11 @@ public static class Injections
     [HarmonyPatch(typeof(scrController), "PlayerControl_Update")]
     public static class Inject_scrController_PlayerControl_Update
     {
-        private static AccessTools.FieldRef<object, KeyCode[]> MainKeysField { get; } =
-            AccessTools.FieldRefAccess<KeyCode[]>(typeof(RDInputType_Keyboard), "mainKeys");
+        private static AccessTools.FieldRef<KeyCode[]> MainKeysField { get; } =
+            AccessTools.StaticFieldRefAccess<KeyCode[]>(AccessTools.DeclaredField(
+                typeof(RDInputType_Keyboard),
+                "mainKeys")
+            );
 
         public static void Prefix()
         {
