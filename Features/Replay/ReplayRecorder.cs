@@ -1,4 +1,5 @@
 using System;
+using System.IO;
 
 namespace YqlossClientHarmony.Features.Replay;
 
@@ -35,6 +36,7 @@ public static class ReplayRecorder
             {
                 var fileName = ReplayUtils.ReplayFileName(replay);
                 Main.Mod.Logger.Log($"saving replay as {fileName}");
+                Directory.CreateDirectory(Settings.Instance.ReplayStorageLocation);
                 ReplayEncoder.LaunchCompressAndSaveAs(replay, fileName);
             }
         });

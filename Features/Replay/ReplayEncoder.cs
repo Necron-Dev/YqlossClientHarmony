@@ -139,7 +139,7 @@ public static class ReplayEncoder
         catch (Exception exception)
         {
             Main.Mod.Logger.Error($"failed to save replay as {path}");
-            Main.Mod.Logger.Error($"{exception.Message}");
+            Main.Mod.Logger.Error($"{exception}");
             Main.Mod.Logger.Error("replay binary data are as follow, in base64 format:");
             Main.Mod.Logger.Error($"{Convert.ToBase64String(data)}");
             MessageBox.Show(
@@ -148,7 +148,6 @@ public static class ReplayEncoder
                 "and ask for help! In most cases you can recover your replay with your game logs!",
                 "Failed to save replay"
             );
-            throw;
         }
     }
 
@@ -164,7 +163,7 @@ public static class ReplayEncoder
             catch (Exception exception)
             {
                 Main.Mod.Logger.Error($"failed to save replay as {path}");
-                Main.Mod.Logger.Error($"{exception.Message}");
+                Main.Mod.Logger.Error($"{exception}");
                 MessageBox.Show(
                     "Failed to encode replay!\n" +
                     "Please save your game logs (click \"Open detailed log\" in Unity Mod Manager's \"Logs\" page)\n" +
