@@ -369,7 +369,7 @@ public static class ReplayPlayer
 
             try
             {
-                if (ProcessAutoFloorAndFailMiss()) return;
+                var onlyAllowRelease = ProcessAutoFloorAndFailMiss();
 
                 var keyEvents = KeyEvents;
 
@@ -401,6 +401,8 @@ public static class ReplayPlayer
 
                     var (key, keyFloor) = keyEvents[0];
                     var syncKeyCode = KeyCodeMapping.GetSyncKeyCode(key.KeyCode);
+
+                    if (onlyAllowRelease && !key.IsKeyUp) break;
 
                     var nextFloor = Adofai.Controller.currFloor.nextfloor;
                     var autoFloor = nextFloor != null && nextFloor.auto;
@@ -498,7 +500,7 @@ public static class ReplayPlayer
                     CachedAngleCorrection = null;
                     lastKeyStates = keyStates;
 
-                    if (ProcessAutoFloorAndFailMiss()) return;
+                    if (ProcessAutoFloorAndFailMiss()) onlyAllowRelease = true;
                 }
             }
             finally
