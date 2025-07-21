@@ -39,13 +39,19 @@ public class Replay(Replay.MetadataType metadata)
         double songSeconds,
         int keyCode,
         bool isKeyUp,
-        int floorIdIncrement
+        int floorIdIncrement,
+        bool isAutoFloor,
+        bool isInputLocked,
+        bool version1 = false
     )
     {
         public readonly double SongSeconds = songSeconds;
         public readonly int KeyCode = keyCode;
         public readonly bool IsKeyUp = isKeyUp;
         public readonly int FloorIdIncrement = floorIdIncrement;
+        public readonly bool IsAutoFloor = isAutoFloor;
+        public readonly bool IsInputLocked = isInputLocked;
+        public readonly bool Version1 = version1;
     }
 
     public readonly struct JudgementType(

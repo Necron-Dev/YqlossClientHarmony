@@ -50,6 +50,10 @@ public static class ReplayEncoder
             writer.Write(keyEvent.IsKeyUp);
             // 13-14
             writer.Write((byte)keyEvent.FloorIdIncrement);
+            // 14-15
+            writer.Write(keyEvent.IsAutoFloor);
+            // 15-16
+            writer.Write(keyEvent.IsInputLocked);
         }
 
         writer.Close();

@@ -19,6 +19,10 @@ public static class ReplayRecorder
 
     public static int KeysWithoutAngleCorrection { get; set; }
 
+    public static int LastIterationFirstKeyIndex { get; set; }
+
+    public static int CurrentIterationFirstKeyIndex { get; set; }
+
     public static void SaveAndResetReplay()
     {
         WithReplay(replay =>
@@ -191,17 +195,24 @@ public static class ReplayRecorder
                     Main.Mod.Logger.Warning($"[Floor {floorId}] unidentified async key code {keyCode}");
             }
 
+            var nextFloor = Adofai.Controller.currFloor.nextfloor;
+            var autoFloor = nextFloor != null && nextFloor.auto;
+            var inputLocked = !Adofai.Controller.responsive;
+
             replay.KeyEvents.Add(new Replay.KeyEventType(
                 songSeconds,
                 keyCode,
                 isKeyUp,
-                floorId - lastFloorId
+                floorId - lastFloorId,
+                autoFloor,
+                inputLocked
             ));
 
             ++KeysWithoutAngleCorrection;
 
             if (Settings.Instance.Verbose)
-                Main.Mod.Logger.Log($"key: {keyCode} up: {isKeyUp} dseq: {floorId - lastFloorId} pos: {songSeconds}");
+                Main.Mod.Logger.Log(
+                    $"key: {keyCode} up: {isKeyUp} dseq: {floorId - lastFloorId} pos: {songSeconds} auto: {autoFloor} locked: {inputLocked}");
         });
     }
 
@@ -216,5 +227,52 @@ public static class ReplayRecorder
                 if (Settings.Instance.Verbose) Main.Mod.Logger.Log($"angle: {angle}");
             }
         });
+    }
+
+    public static void OnIterationStart(int stacked)
+    {
+        WithReplay(replay =>
+        {
+            LastIterationFirstKeyIndex = CurrentIterationFirstKeyIndex =
+                Math.Max(0, replay.KeyEvents.Count - stacked);
+        });
+    }
+
+    public static void OnKeysProcessed(int count)
+    {
+        WithReplay(replay =>
+        {
+            LastIterationFirstKeyIndex = CurrentIterationFirstKeyIndex;
+            CurrentIterationFirstKeyIndex = Math.Min(CurrentIterationFirstKeyIndex + count, replay.KeyEvents.Count);
+
+            if (Settings.Instance.Verbose)
+                Main.Mod.Logger.Log(
+                    $"iteration advance: +{count} {CurrentIterationFirstKeyIndex} total: {replay.KeyEvents.Count}");
+        });
+    }
+
+    public static void OnMarkKeyEvent(bool auto, bool responsive)
+    {
+        WithReplay(replay =>
+        {
+            var i = CurrentIterationFirstKeyIndex;
+            if (i >= replay.KeyEvents.Count) return;
+            replay.KeyEvents[i] = MarkKeyEvent(replay.KeyEvents[i], auto, !responsive);
+            if (Settings.Instance.Verbose)
+                Main.Mod.Logger.Log($"mark input locked: index: {i} {auto} {!responsive}");
+        });
+    }
+
+    private static Replay.KeyEventType MarkKeyEvent(Replay.KeyEventType keyEvent, bool auto, bool responsive)
+    {
+        return new Replay.KeyEventType(
+            keyEvent.SongSeconds,
+            keyEvent.KeyCode,
+            keyEvent.IsKeyUp,
+            keyEvent.FloorIdIncrement,
+            auto,
+            responsive,
+            keyEvent.Version1
+        );
     }
 }

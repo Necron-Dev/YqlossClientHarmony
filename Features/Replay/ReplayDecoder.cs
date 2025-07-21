@@ -27,11 +27,9 @@ public static class ReplayDecoder
         ref Replay.MetadataType? metadata
     )
     {
-        var version = CheckVersion(reader.ReadInt32(), ReplayConstants.MetadataFormatVersion);
-
-        // if (version < Replay.MetadataFormatVersion) ;
-
         if (metadata is not null) throw new InvalidDataException("multiple metadata blocks");
+
+        var version = CheckVersion(reader.ReadInt32(), ReplayConstants.MetadataFormatVersion);
 
         metadata = new Replay.MetadataType(
             reader.ReadInt32(),
@@ -49,15 +47,11 @@ public static class ReplayDecoder
         return false;
     }
 
-    private static bool ProcessKeyEvents(
+    private static bool ProcessKeyEvents1(
         BinaryReader reader,
         ref List<Replay.KeyEventType>? keyEvents
     )
     {
-        var version = CheckVersion(reader.ReadInt32(), ReplayConstants.KeyEventFormatVersion);
-
-        // if (version < Replay.KeyEventFormatVersion) ;
-
         if (keyEvents is not null) throw new InvalidDataException("multiple key event blocks");
 
         var count = reader.ReadInt32();
@@ -68,7 +62,42 @@ public static class ReplayDecoder
                 reader.ReadDouble(),
                 reader.ReadInt32(),
                 reader.ReadBoolean(),
-                reader.ReadByte()
+                reader.ReadByte(),
+                false,
+                false,
+                true
+            ));
+
+        return false;
+    }
+
+    private static bool ProcessKeyEvents(
+        BinaryReader reader,
+        ref List<Replay.KeyEventType>? keyEvents
+    )
+    {
+        if (keyEvents is not null) throw new InvalidDataException("multiple key event blocks");
+
+        var version = CheckVersion(reader.ReadInt32(), ReplayConstants.KeyEventFormatVersion);
+
+        if (version < ReplayConstants.KeyEventFormatVersion)
+            return version switch
+            {
+                1 => ProcessKeyEvents1(reader, ref keyEvents),
+                _ => throw new InvalidDataException($"illegal key event format version {version}")
+            };
+
+        var count = reader.ReadInt32();
+        keyEvents = [];
+
+        for (var i = 0; i < count; i++)
+            keyEvents.Add(new Replay.KeyEventType(
+                reader.ReadDouble(),
+                reader.ReadInt32(),
+                reader.ReadBoolean(),
+                reader.ReadByte(),
+                reader.ReadBoolean(),
+                reader.ReadBoolean()
             ));
 
         return false;
@@ -79,11 +108,9 @@ public static class ReplayDecoder
         ref List<Replay.JudgementType>? judgements
     )
     {
-        var version = CheckVersion(reader.ReadInt32(), ReplayConstants.JudgementFormatVersion);
-
-        // if (version < Replay.JudgementFormatVersion) ;
-
         if (judgements is not null) throw new InvalidDataException("multiple judgement blocks");
+
+        var version = CheckVersion(reader.ReadInt32(), ReplayConstants.JudgementFormatVersion);
 
         var count = reader.ReadInt32();
         judgements = [];
@@ -103,11 +130,9 @@ public static class ReplayDecoder
         ref List<double>? angleCorrections
     )
     {
-        var version = CheckVersion(reader.ReadInt32(), ReplayConstants.JudgementFormatVersion);
-
-        // if (version < Replay.JudgementFormatVersion) ;
-
         if (angleCorrections is not null) throw new InvalidDataException("multiple angle correction blocks");
+
+        var version = CheckVersion(reader.ReadInt32(), ReplayConstants.JudgementFormatVersion);
 
         var count = reader.ReadInt32();
         angleCorrections = [];
@@ -146,8 +171,6 @@ public static class ReplayDecoder
 
         CheckMagicNumber(reader.ReadUInt64());
         var version = CheckVersion(reader.ReadInt32(), ReplayConstants.FormatVersion);
-
-        // if (version < Replay.FormatVersion) ;
 
         var blockCount = reader.ReadUInt32();
         Replay.MetadataType? metadata = null;

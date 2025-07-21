@@ -223,6 +223,8 @@ public static class Injections
                 return;
             }
 
+            ReplayRecorder.OnIterationStart(Adofai.Controller.keyTimes.Count);
+
             var sortedKeyQueue = new PriorityQueue<SkyHookEvent, long>();
 
             while (KeyQueue.TryDequeue(out var key))
@@ -259,6 +261,8 @@ public static class Injections
             if (AsyncInputManager.isActive || Persistence.GetChosenAsynchronousInput()) return;
 
             KeyQueue.Clear();
+
+            ReplayRecorder.OnIterationStart(Adofai.Controller.keyTimes.Count);
 
             var mainKeys = MainKeysField()!;
 
@@ -503,7 +507,9 @@ public static class Injections
         {
             if (!ReplayPlayer.PlayingReplay) return true;
             if (!Adofai.Controller.gameworld || ADOBase.isOfficialLevel || Adofai.Controller.paused) return true;
-            return ReplayPlayer.NextCheckFailMiss;
+            var continueExecution = ReplayPlayer.NextCheckFailMiss;
+            ReplayPlayer.NextCheckFailMiss = false;
+            return continueExecution;
         }
     }
 
@@ -535,6 +541,58 @@ public static class Injections
                 if (ReplayRecorder.Replay is null) return;
                 KeyQueue.Enqueue(keyEvent);
             });
+        }
+    }
+
+    [HarmonyPatch(typeof(scrPlanet), nameof(scrPlanet.AutoShouldHitNow))]
+    public static class Inject_scrPlanet_AutoShouldHitNow
+    {
+        public static bool Prefix(
+            ref bool __result
+        )
+        {
+            if (!ReplayPlayer.PlayingReplay) return true;
+            if (!Adofai.Controller.gameworld || ADOBase.isOfficialLevel || Adofai.Controller.paused) return true;
+            var continueExecution = ReplayPlayer.AllowAuto && ReplayPlayer.NextCheckAuto;
+            ReplayPlayer.AllowAuto = false;
+            if (!continueExecution) __result = false;
+            return continueExecution;
+        }
+    }
+
+    [HarmonyPatch(typeof(scrController), "UpdateHoldKeys")]
+    public static class Inject_scrController_UpdateHoldKeys
+    {
+        private static readonly Func<scrController, bool> NextTileIsHoldGetter =
+            AccessTools.MethodDelegate<Func<scrController, bool>>(
+                AccessTools.DeclaredPropertyGetter(typeof(scrController), "_nextTileIsHold"));
+
+        private static readonly Func<scrController, double> HoldMarginGetter =
+            AccessTools.MethodDelegate<Func<scrController, double>>(
+                AccessTools.DeclaredPropertyGetter(typeof(scrController), "_holdMargin"));
+
+        public static void Prefix(
+            scrController __instance
+        )
+        {
+            if (!Adofai.Controller.gameworld || ADOBase.isOfficialLevel || Adofai.Controller.paused) return;
+
+            if (__instance.keyTimes.Count <= 0 ||
+                GCS.d_stationary ||
+                GCS.d_freeroam ||
+                (!((__instance.currFloor.holdLength > -1 && !__instance.strictHolds) ||
+                   NextTileIsHoldGetter(__instance)) &&
+                 __instance.currFloor.holdLength != -1 &&
+                 __instance.currFloor.holdCompletion >= HoldMarginGetter(__instance)) ||
+                (__instance.gameworld &&
+                 __instance.currFloor.seqID >= ADOBase.lm.listFloors.Count - 1)
+               ) return;
+
+            var nextFloor = Adofai.Controller.currFloor.nextfloor;
+            var autoFloor = nextFloor != null && nextFloor.auto;
+
+            ReplayRecorder.OnMarkKeyEvent(autoFloor, __instance.responsive);
+            ReplayRecorder.OnKeysProcessed(1);
         }
     }
 }
