@@ -536,10 +536,17 @@ public static class Injections
         {
             SkyHookManager.KeyUpdated.AddListener(keyEvent =>
             {
-                if (___MouseKeys.Contains(keyEvent.Label)) return;
-                if (!Adofai.Controller.gameworld || ADOBase.isOfficialLevel || Adofai.Controller.paused) return;
-                if (ReplayRecorder.Replay is null) return;
-                KeyQueue.Enqueue(keyEvent);
+                try
+                {
+                    if (___MouseKeys.Contains(keyEvent.Label)) return;
+                    if (!Adofai.Controller.gameworld || ADOBase.isOfficialLevel || Adofai.Controller.paused) return;
+                    if (ReplayRecorder.Replay is null) return;
+                    KeyQueue.Enqueue(keyEvent);
+                }
+                catch (Exception exception)
+                {
+                    Main.Mod.Logger.Log($"async exception: {exception}");
+                }
             });
         }
     }
