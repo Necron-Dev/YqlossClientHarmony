@@ -539,8 +539,6 @@ public static class Injections
                 try
                 {
                     if (___MouseKeys.Contains(keyEvent.Label)) return;
-                    if (!Adofai.Controller.gameworld || ADOBase.isOfficialLevel || Adofai.Controller.paused) return;
-                    if (ReplayRecorder.Replay is null) return;
                     KeyQueue.Enqueue(keyEvent);
                 }
                 catch (Exception exception)
