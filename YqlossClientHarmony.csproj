@@ -512,6 +512,7 @@
         <Compile Include="Features\ModifyLoadingLevel\Settings.cs"/>
         <Compile Include="Features\Replay\Injections.cs"/>
         <Compile Include="Features\Replay\KeyCodeMapping.cs"/>
+        <Compile Include="Features\Replay\MyQueue.cs"/>
         <Compile Include="Features\Replay\Replay.cs"/>
         <Compile Include="Features\Replay\ReplayConstants.cs"/>
         <Compile Include="Features\Replay\ReplayDecoder.cs"/>

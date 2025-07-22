@@ -8,8 +8,6 @@ public static class ReplayRecorder
     private const int KeyCodeEsc = 27;
     private const int KeyCodeEscAsync = 4123;
 
-    private static object RecorderLock { get; } = new();
-
     public static Replay? Replay { get; set; }
 
     private static double? ErrorMeterValue { get; set; }
@@ -45,28 +43,25 @@ public static class ReplayRecorder
 
     private static void NewReplay(int floorId)
     {
-        lock (RecorderLock)
-        {
-            Replay = new Replay(new Replay.MetadataType(
-                floorId,
-                Adofai.TotalFloorCount,
-                Adofai.Game.levelData.artist,
-                Adofai.Game.levelData.song,
-                Adofai.Game.levelData.author,
-                GCS.difficulty,
-                Adofai.Controller.noFail,
-                Persistence.GetChosenAsynchronousInput(),
-                Persistence.holdBehavior,
-                Persistence.hitMarginLimit
-            ));
+        Replay = new Replay(new Replay.MetadataType(
+            floorId,
+            Adofai.TotalFloorCount,
+            Adofai.Game.levelData.artist,
+            Adofai.Game.levelData.song,
+            Adofai.Game.levelData.author,
+            GCS.difficulty,
+            Adofai.Controller.noFail,
+            Persistence.GetChosenAsynchronousInput(),
+            Persistence.holdBehavior,
+            Persistence.hitMarginLimit
+        ));
 
-            ErrorMeterValue = null;
-            LastFloorIdJudgement = floorId;
-            LastFloorIdKeyEvent = floorId;
-            KeysWithoutAngleCorrection = 0;
+        ErrorMeterValue = null;
+        LastFloorIdJudgement = floorId;
+        LastFloorIdKeyEvent = floorId;
+        KeysWithoutAngleCorrection = 0;
 
-            Main.Mod.Logger.Log("starting to record replay");
-        }
+        Main.Mod.Logger.Log("starting to record replay");
     }
 
     public static void StartRecording(int floorId)
@@ -83,21 +78,18 @@ public static class ReplayRecorder
 
     private static void WithReplay(Action<Replay> receiver)
     {
-        lock (RecorderLock)
-        {
-            var replay = Replay;
+        var replay = Replay;
 
-            if (replay is null)
-            {
-                ErrorMeterValue = null;
-                LastFloorIdJudgement = null;
-                LastFloorIdKeyEvent = null;
-                KeysWithoutAngleCorrection = 0;
-            }
-            else
-            {
-                receiver(replay);
-            }
+        if (replay is null)
+        {
+            ErrorMeterValue = null;
+            LastFloorIdJudgement = null;
+            LastFloorIdKeyEvent = null;
+            KeysWithoutAngleCorrection = 0;
+        }
+        else
+        {
+            receiver(replay);
         }
     }
 

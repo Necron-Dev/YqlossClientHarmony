@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Text;
@@ -10,13 +11,14 @@ public static class ReplayUtils
 {
     private static readonly Regex RegexStyle = new("<.*?>");
 
+    private static readonly List<char> InvalidCharacters = Path.GetInvalidFileNameChars().ToList();
+
     public static string FilterInvalidCharacters(string path)
     {
         path = RegexStyle.Replace(path, "");
-        var invalidCharacters = Path.GetInvalidFileNameChars().ToList();
         var builder = new StringBuilder();
         foreach (var c in path)
-            if (!invalidCharacters.Contains(c))
+            if (!InvalidCharacters.Contains(c))
                 builder.Append(c);
         return builder.ToString().Trim();
     }

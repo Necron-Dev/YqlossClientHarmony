@@ -6,19 +6,17 @@ namespace YqlossClientHarmony.Features.Replay;
 
 public static class ReplayPlayer
 {
-    private static object PlayerLock { get; } = new();
-
     public static bool PlayingReplay { get; set; }
 
     public static Replay? Replay { get; set; }
 
-    private static List<(HitMargin, int)>? HitMargins { get; set; }
+    private static MyQueue<(HitMargin, int)>? HitMargins { get; set; }
 
-    private static List<(double, int)>? ErrorMeters { get; set; }
+    private static MyQueue<(double, int)>? ErrorMeters { get; set; }
 
-    private static List<(Replay.KeyEventType, int)>? KeyEvents { get; set; }
+    private static MyQueue<(Replay.KeyEventType, int)>? KeyEvents { get; set; }
 
-    private static List<(double, int)>? AngleCorrections { get; set; }
+    private static MyQueue<(double, int)>? AngleCorrections { get; set; }
 
     private static Dictionary<int, bool>? KeyStates { get; set; }
 
@@ -58,8 +56,8 @@ public static class ReplayPlayer
 
         {
             var accumulatedFloorId = replay.Metadata.StartingFloorId;
-            List<(Replay.KeyEventType, int)> keyEvents = [];
-            List<(double, int)> angleCorrections = [];
+            MyQueue<(Replay.KeyEventType, int)> keyEvents = new();
+            MyQueue<(double, int)> angleCorrections = new();
             KeyEvents = keyEvents;
             AngleCorrections = angleCorrections;
             var keyIndex = 0;
@@ -74,25 +72,25 @@ public static class ReplayPlayer
                     continue;
                 }
 
-                keyEvents.Add((keyEvent, accumulatedFloorId));
+                keyEvents.Enqueue((keyEvent, accumulatedFloorId));
                 if (keyIndex < replay.AngleCorrections.Count)
-                    angleCorrections.Add((replay.AngleCorrections[keyIndex], accumulatedFloorId));
+                    angleCorrections.Enqueue((replay.AngleCorrections[keyIndex], accumulatedFloorId));
                 ++keyIndex;
             }
         }
 
         {
             var accumulatedFloorId = replay.Metadata.StartingFloorId;
-            List<(HitMargin, int)> hitMargins = [];
-            List<(double, int)> errorMeters = [];
+            MyQueue<(HitMargin, int)> hitMargins = new();
+            MyQueue<(double, int)> errorMeters = new();
             HitMargins = hitMargins;
             ErrorMeters = errorMeters;
             foreach (var judgement in replay.Judgements)
             {
                 accumulatedFloorId += judgement.FloorIdIncrement;
                 if (accumulatedFloorId < floorId) continue;
-                hitMargins.Add((judgement.HitMargin, accumulatedFloorId));
-                errorMeters.Add((judgement.ErrorMeter, accumulatedFloorId));
+                hitMargins.Enqueue((judgement.HitMargin, accumulatedFloorId));
+                errorMeters.Enqueue((judgement.ErrorMeter, accumulatedFloorId));
             }
         }
 
@@ -113,35 +111,30 @@ public static class ReplayPlayer
 
     private static void WithReplay(Action<Replay> receiver)
     {
-        lock (PlayerLock)
-        {
-            var replay = Replay;
+        var replay = Replay;
 
-            if (replay is null || !PlayingReplay)
-            {
-                PlayingReplay = false;
-                HitMargins = null;
-                ErrorMeters = null;
-                KeyEvents = null;
-                KeyStates = null;
-                NextCheckFailMiss = false;
-                AllowAuto = false;
-            }
-            else
-            {
-                receiver(replay);
-            }
+        if (replay is null || !PlayingReplay)
+        {
+            PlayingReplay = false;
+            HitMargins = null;
+            ErrorMeters = null;
+            KeyEvents = null;
+            KeyStates = null;
+            NextCheckFailMiss = false;
+            AllowAuto = false;
+        }
+        else
+        {
+            receiver(replay);
         }
     }
 
-    private static bool WithReplay(Func<Replay, bool> receiver)
+    private static bool WithReplay<T>(ref T t, Func<Replay, T?> receiver) where T : struct
     {
-        lock (PlayerLock)
+        var replay = Replay;
+
+        if (replay is null || !PlayingReplay)
         {
-            var replay = Replay;
-
-            if (replay is not null && PlayingReplay) return receiver(replay);
-
             PlayingReplay = false;
             HitMargins = null;
             ErrorMeters = null;
@@ -151,30 +144,10 @@ public static class ReplayPlayer
             AllowAuto = false;
             return true;
         }
-    }
 
-    private static bool WithReplay<T>(ref T t, Func<Replay, T?> receiver) where T : struct
-    {
-        lock (PlayerLock)
-        {
-            var replay = Replay;
-
-            if (replay is null || !PlayingReplay)
-            {
-                PlayingReplay = false;
-                HitMargins = null;
-                ErrorMeters = null;
-                KeyEvents = null;
-                KeyStates = null;
-                NextCheckFailMiss = false;
-                AllowAuto = false;
-                return true;
-            }
-
-            var newT = receiver(replay);
-            if (newT is not null) t = newT.Value;
-            return newT is null;
-        }
+        var newT = receiver(replay);
+        if (newT is not null) t = newT.Value;
+        return newT is null;
     }
 
     public static void OnHitMargin(ref HitMargin result)
@@ -192,7 +165,7 @@ public static class ReplayPlayer
 
             if (hitMargins is null) return null;
 
-            var (hitMargin, eventFloorId) = hitMargins[0];
+            var (hitMargin, eventFloorId) = hitMargins.Dequeue();
 
             if (floorId != eventFloorId)
                 Main.Mod.Logger.Warning(
@@ -201,15 +174,13 @@ public static class ReplayPlayer
             if (Settings.Instance.Verbose)
                 Main.Mod.Logger.Log($"[Floor {floorId}] acc: {eventFloorId} margin: {hitMargin}");
 
-            hitMargins.RemoveAt(0);
-
             if (!Adofai.Controller.midspinInfiniteMargin) return hitMargin;
 
             var errorMeters = ErrorMeters;
 
             if (errorMeters is null || errorMeters.Count == 0) return hitMargin;
 
-            var (nextMeter, nextMeterFloor) = errorMeters[0];
+            var (nextMeter, nextMeterFloor) = errorMeters.Dequeue();
 
             if (Settings.Instance.Verbose)
                 Main.Mod.Logger.Log($"[Floor {floorId}] acc: {eventFloorId} midspin meter");
@@ -221,8 +192,6 @@ public static class ReplayPlayer
             if (!double.IsNaN(nextMeter))
                 Main.Mod.Logger.Warning(
                     $"[Floor {floorId}] midspin error meter has value {nextMeter}. judgements may be incorrect");
-
-            errorMeters.RemoveAt(0);
 
             return hitMargin;
         });
@@ -243,7 +212,7 @@ public static class ReplayPlayer
 
             if (errorMeters is null) return null;
 
-            var (errorMeter, eventFloorId) = errorMeters[0];
+            var (errorMeter, eventFloorId) = errorMeters.Dequeue();
 
             if (floorId != eventFloorId)
                 Main.Mod.Logger.Warning(
@@ -252,7 +221,6 @@ public static class ReplayPlayer
             if (Settings.Instance.Verbose)
                 Main.Mod.Logger.Log($"[Floor {floorId}] acc: {eventFloorId} meter: {errorMeter}");
 
-            errorMeters.RemoveAt(0);
             return errorMeter;
         });
     }
@@ -272,7 +240,7 @@ public static class ReplayPlayer
 
             if (hitMargins is null) return null;
 
-            var (hitMargin, eventFloorId) = hitMargins[0];
+            var (hitMargin, eventFloorId) = hitMargins.Peek();
 
             if (floorId != eventFloorId)
                 Main.Mod.Logger.Warning(
@@ -323,7 +291,7 @@ public static class ReplayPlayer
                 if (hitMargins is null || hitMargins.Count == 0) break;
 
                 var hitMarginCount = hitMargins.Count;
-                var (hitMargin, _) = hitMargins[0];
+                var (hitMargin, _) = hitMargins.Peek();
 
                 if (hitMargin is HitMargin.FailMiss)
                 {
@@ -399,7 +367,7 @@ public static class ReplayPlayer
                 {
                     var floorId = Adofai.CurrentFloorId;
 
-                    var (key, keyFloor) = keyEvents[0];
+                    var (key, keyFloor) = keyEvents.Peek();
                     var syncKeyCode = KeyCodeMapping.GetSyncKeyCode(key.KeyCode);
 
                     if (onlyAllowRelease && !key.IsKeyUp) break;
@@ -426,7 +394,7 @@ public static class ReplayPlayer
                         [syncKeyCode] = !key.IsKeyUp
                     };
 
-                    keyEvents.RemoveAt(0);
+                    keyEvents.Dequeue();
 
                     isKeyDown.Clear();
                     isKeyUp.Clear();
@@ -484,7 +452,7 @@ public static class ReplayPlayer
 
                         if (angleCorrections is not null && angleCorrections.Count != 0)
                         {
-                            angleCorrections.RemoveAt(0);
+                            angleCorrections.Dequeue();
                             if (Settings.Instance.Verbose) Main.Mod.Logger.Log("consume angle correction");
                         }
 
@@ -532,9 +500,7 @@ public static class ReplayPlayer
 
             if (angleCorrections is null) return null;
 
-            var (angleCorrection, eventFloorId) = angleCorrections[0];
-
-            angleCorrections.RemoveAt(0);
+            var (angleCorrection, eventFloorId) = angleCorrections.Dequeue();
 
             if (Settings.Instance.Verbose)
                 Main.Mod.Logger.Log($"[Floor {floorId}] acc: {eventFloorId} angle: {angleCorrection}");
@@ -572,22 +538,16 @@ public static class ReplayPlayer
 
         if (replay is null) return false;
 
-        lock (PlayerLock)
-        {
-            ReplayRecorder.SaveAndResetReplay();
+        ReplayRecorder.SaveAndResetReplay();
 
-            Replay = replay;
-        }
+        Replay = replay;
 
         return true;
     }
 
     public static void UnloadReplay()
     {
-        lock (PlayerLock)
-        {
-            Replay = null;
-            PlayingReplay = false;
-        }
+        Replay = null;
+        PlayingReplay = false;
     }
 }
