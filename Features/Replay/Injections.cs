@@ -205,14 +205,17 @@ public static class Injections
 
         public static void Prefix()
         {
+            var replayToRecord = ReplayRecorder.Replay;
+
             if (
+                replayToRecord == null ||
                 !Adofai.Controller.gameworld ||
                 ADOBase.isOfficialLevel ||
                 Adofai.Controller.paused ||
                 !AsyncInputManager.isActive ||
                 !Persistence.GetChosenAsynchronousInput() ||
                 !Application.isFocused ||
-                (Adofai.CurrentFloorId == 0 && (
+                (Adofai.CurrentFloorId <= replayToRecord.Metadata.StartingFloorId && (
                     Adofai.Controller.state != States.PlayerControl ||
                     (States)DestinationStateField(Adofai.Controller.stateMachine).state != States.PlayerControl ||
                     !Adofai.Controller.responsive
