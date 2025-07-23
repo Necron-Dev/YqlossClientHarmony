@@ -73,6 +73,12 @@ public static class Injections
         {
             if (!Settings.Instance.Enabled) return;
             if (ADOBase.isOfficialLevel) return;
+            if (RDC.auto)
+            {
+                Main.Mod.Logger.Log("skipping recording and playing replay: auto mode");
+                return;
+            }
+
             SyncKeyDownMap.Clear();
             TickToDspOffset = null;
             ReplayRecorder.StartRecording(seqID);
@@ -277,7 +283,7 @@ public static class Injections
                     Adofai.Controller.state != States.PlayerControl ||
                     (States)DestinationStateField(Adofai.Controller.stateMachine).state != States.PlayerControl ||
                     !Adofai.Controller.responsive
-                )) 
+                ))
             )
             {
                 SyncKeyDownMap.Clear();
