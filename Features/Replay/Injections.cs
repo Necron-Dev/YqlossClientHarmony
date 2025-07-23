@@ -245,6 +245,9 @@ public static class Injections
     [HarmonyPatch(typeof(scrController), "PlayerControl_Update")]
     public static class Inject_scrController_PlayerControl_Update
     {
+        private static AccessTools.FieldRef<StateEngine, StateMapping> DestinationStateField { get; } =
+            AccessTools.FieldRefAccess<StateEngine, StateMapping>("destinationState");
+
         private static AccessTools.FieldRef<KeyCode[]> MainKeysField { get; } =
             AccessTools.StaticFieldRefAccess<KeyCode[]>(AccessTools.DeclaredField(
                 typeof(RDInputType_Keyboard),
@@ -256,6 +259,7 @@ public static class Injections
             if (!Adofai.Controller.gameworld || ADOBase.isOfficialLevel || Adofai.Controller.paused)
             {
                 KeyQueue.Clear();
+                SyncKeyDownMap.Clear();
                 return;
             }
 
@@ -265,6 +269,21 @@ public static class Injections
 
             KeyQueue.Clear();
 
+            var replayToRecord = ReplayRecorder.Replay;
+
+            if (
+                replayToRecord == null ||
+                (Adofai.CurrentFloorId <= replayToRecord.Metadata.StartingFloorId && (
+                    Adofai.Controller.state != States.PlayerControl ||
+                    (States)DestinationStateField(Adofai.Controller.stateMachine).state != States.PlayerControl ||
+                    !Adofai.Controller.responsive
+                )) 
+            )
+            {
+                SyncKeyDownMap.Clear();
+                return;
+            }
+
             ReplayRecorder.OnIterationStart(Adofai.Controller.keyTimes.Count);
 
             var mainKeys = MainKeysField()!;
@@ -273,15 +292,11 @@ public static class Injections
             {
                 var wentDown = Input.GetKeyDown(mainKey);
                 var wentUp = Input.GetKeyUp(mainKey);
-                var isDown = Input.GetKey(mainKey);
-
-                var lastIsDown = SyncKeyDownMap.GetValueOrDefault(mainKey);
 
                 if (wentDown)
                     CallEvent(false);
                 else if (wentUp)
                     CallEvent(true);
-                else if (lastIsDown ^ isDown) CallEvent(!isDown);
 
                 continue;
 
