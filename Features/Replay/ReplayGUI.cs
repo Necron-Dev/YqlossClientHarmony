@@ -17,17 +17,25 @@ public static class ReplayGUI
         if (replayToPlay is null)
             return LastLoadingFailure switch
             {
-                0 => ["There is no replay loaded."],
-                1 => [$"Failed to load replay {LoadedReplayFileName}", "See logs for more information."],
-                2 => ["You must load in a level to load a replay!"],
-                3 => ["Official levels are not supported!"],
-                4 => ["You cannot load a replay mid-game!"],
-                5 => ["You cannot unload a replay mid-game!"],
-                6 => ["Ciallo～(∠・ω< )⌒★"],
-                _ => [$"Unknown Error {LastLoadingFailure}", "See logs for more information."]
+                0 => ["There is no replay loaded. 未加载回放。"],
+                1 =>
+                [
+                    $"Failed to load replay 加载回放失败 {LoadedReplayFileName}",
+                    "See logs for more information. 详细信息请查看日志。"
+                ],
+                2 => ["You must load in a level to load a replay! 必须加载关卡才能加载回放！"],
+                3 => ["Official levels are not supported! 不支持官方关卡！"],
+                4 => ["You cannot load a replay mid-game! 无法在游戏中加载回放！"],
+                5 => ["You cannot unload a replay mid-game! 无法在游戏中卸载回放！"],
+                6 => ["Ciallo～(∠・ω< )⌒★ 那我问你为什么会出现这个"],
+                _ =>
+                [
+                    $"Unknown Error 未知错误 {LastLoadingFailure}",
+                    "See logs for more information. 详细信息请查看日志。"
+                ]
             };
 
-        List<string> texts = [$"Replay File: {LoadedReplayFileName}"];
+        List<string> texts = [$"Replay File 回放文件: {LoadedReplayFileName}"];
 
         texts.AddRange(ReplayUtils.ReplayMetadataString(replayToPlay));
 
@@ -100,14 +108,14 @@ public static class ReplayGUI
         {
             GUILayout.BeginHorizontal();
             {
-                GUILayout.Label("Jump To Start");
+                GUILayout.Label("Jump To Start 跳转到起点");
 
-                if (GUILayout.Button("Jump"))
+                if (GUILayout.Button("Jump 跳转"))
                     TryJumpToFloor(ReplayPlayer.Replay.Metadata.StartingFloorId);
 
-                GUILayout.Label("Jump To End");
+                GUILayout.Label("Jump To End 跳转到终点");
 
-                if (GUILayout.Button("Jump"))
+                if (GUILayout.Button("Jump 跳转"))
                     TryJumpToFloor(ReplayUtils.GetEndingFloorId(ReplayPlayer.Replay) + 1);
             }
             GUILayout.EndHorizontal();
@@ -115,13 +123,13 @@ public static class ReplayGUI
 
         GUILayout.BeginHorizontal();
         {
-            GUILayout.Label("Load Replay File");
+            GUILayout.Label("Load Replay File 加载回放文件");
 
-            if (GUILayout.Button("Select")) LoadReplay();
+            if (GUILayout.Button("Select 选择")) LoadReplay();
 
-            GUILayout.Label("Unload Replay");
+            GUILayout.Label("Unload Replay 卸载回放文件");
 
-            if (GUILayout.Button("Unload")) UnloadReplay();
+            if (GUILayout.Button("Unload 卸载")) UnloadReplay();
         }
         GUILayout.EndHorizontal();
     }
