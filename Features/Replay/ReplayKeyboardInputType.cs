@@ -1,5 +1,4 @@
 using System.Collections.Generic;
-using System.Linq;
 using UnityEngine;
 
 namespace YqlossClientHarmony.Features.Replay;
@@ -58,6 +57,21 @@ public class ReplayKeyboardInputType : RDInputType
         KeyCode.KeypadEnter
     ];
 
+    private static readonly KeyCode[] MainKeys;
+
+    static ReplayKeyboardInputType()
+    {
+        List<KeyCode> keys = [];
+
+        for (var keyCode = 0; keyCode < 320; ++keyCode)
+        {
+            var key = (KeyCode)keyCode;
+            if (key != KeyCode.Escape) keys.Add(key);
+        }
+
+        MainKeys = keys.ToArray();
+    }
+
     private ReplayKeyboardInputType()
     {
         schemeIndex = 0;
@@ -72,31 +86,52 @@ public class ReplayKeyboardInputType : RDInputType
     {
         return state switch
         {
-            ButtonState.WentDown => Input.GetKeyDown(key),
-            ButtonState.WentUp => Input.GetKeyUp(key),
-            ButtonState.IsDown => Input.GetKey(key),
-            ButtonState.IsUp => !Input.GetKey(key),
+            ButtonState.WentDown => ReplayPlayer.GetKeyDownUnchecked(key),
+            ButtonState.WentUp => ReplayPlayer.GetKeyUpUnchecked(key),
+            ButtonState.IsDown => ReplayPlayer.GetKeyUnchecked(key),
+            ButtonState.IsUp => !ReplayPlayer.GetKeyUnchecked(key),
             _ => false
         };
     }
 
     private static bool CheckAnyKeyState(KeyCode[] keys, ButtonState state = ButtonState.WentDown)
     {
-        return keys.Any(key => CheckKeyState(key, state));
+        return state switch
+        {
+            ButtonState.WentDown => ReplayPlayer.GetAnyKeyDownUnchecked(keys),
+            ButtonState.WentUp => ReplayPlayer.GetAnyKeyUpUnchecked(keys),
+            ButtonState.IsDown => ReplayPlayer.GetAnyKeyUnchecked(keys),
+            ButtonState.IsUp => ReplayPlayer.GetAnyKeyReleasedUnchecked(keys),
+            _ => false
+        };
+    }
+
+    public void MarkUpdate()
+    {
+        dummyCount.lastFrameUpdated = 0xC1A110;
+        pressCount.lastFrameUpdated = 0xC1A110;
+        releaseCount.lastFrameUpdated = 0xC1A110;
+        heldCount.lastFrameUpdated = 0xC1A110;
+        isReleaseCount.lastFrameUpdated = 0xC1A110;
     }
 
     public override int Main(ButtonState state)
     {
         var stateCount = GetStateCount(state);
-        stateCount.lastFrameUpdated = Time.frameCount;
+
+        if (stateCount.lastFrameUpdated == 0x0721) return stateCount.keys.Count;
+        stateCount.lastFrameUpdated = 0x0721;
+
         stateCount.keys = [];
-        var keys = new List<KeyCode>();
 
-        for (var keyCode = 0; keyCode < 320; ++keyCode)
-            if (CheckKeyState((KeyCode)keyCode, state))
-                keys.Add((KeyCode)keyCode);
-
-        if (state == ButtonState.WentDown && Cancel()) keys.Remove(KeyCode.Escape);
+        var keys = state switch
+        {
+            ButtonState.WentDown => ReplayPlayer.GetKeysDownUnchecked(MainKeys),
+            ButtonState.WentUp => ReplayPlayer.GetKeysUpUnchecked(MainKeys),
+            ButtonState.IsDown => ReplayPlayer.GetKeysUnchecked(MainKeys),
+            ButtonState.IsUp => ReplayPlayer.GetKeysReleasedUnchecked(MainKeys),
+            _ => []
+        };
 
         foreach (var keyCode in keys)
             stateCount.keys.Add(new AnyKeyCode(keyCode));

@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 namespace YqlossClientHarmony.Features.Replay;
@@ -20,9 +21,9 @@ public static class ReplayPlayer
 
     private static Dictionary<int, bool>? KeyStates { get; set; }
 
-    private static Dictionary<int, bool> IsKeyDown { get; } = [];
+    private static HashSet<int> IsKeyDown { get; } = [];
 
-    private static Dictionary<int, bool> IsKeyUp { get; } = [];
+    private static HashSet<int> IsKeyUp { get; } = [];
 
     private static bool AnyKeyDown { get; set; }
 
@@ -32,13 +33,9 @@ public static class ReplayPlayer
 
     public static bool AllowGameToUpdateInput { get; set; }
 
-    public static bool UpdateKeyboardMainKeys { get; set; }
-
     public static bool NextCheckFailMiss { get; set; }
 
     public static bool AllowAuto { get; set; }
-
-    public static bool NextCheckAuto { get; set; }
 
     public static void StartPlaying(int floorId)
     {
@@ -50,9 +47,10 @@ public static class ReplayPlayer
         KeyStates = [];
         ConsumeSingleAngleCorrection = false;
         AllowGameToUpdateInput = false;
-        UpdateKeyboardMainKeys = true;
         NextCheckFailMiss = false;
         AllowAuto = false;
+
+        ReplayKeyboardInputType.Instance.MarkUpdate();
 
         {
             var accumulatedFloorId = replay.Metadata.StartingFloorId;
@@ -273,9 +271,8 @@ public static class ReplayPlayer
                 ConsumeSingleAngleCorrection = false;
                 CachedAngleCorrection = null;
                 AllowGameToUpdateInput = true;
-                UpdateKeyboardMainKeys = true;
                 AllowAuto = true;
-                NextCheckAuto = true;
+                ReplayKeyboardInputType.Instance.MarkUpdate();
                 Adofai.Controller.Simulated_PlayerControl_Update();
                 AllowGameToUpdateInput = false;
                 if (Adofai.CurrentFloorId == floorId) break;
@@ -299,8 +296,8 @@ public static class ReplayPlayer
                     ConsumeSingleAngleCorrection = false;
                     CachedAngleCorrection = null;
                     AllowGameToUpdateInput = true;
-                    UpdateKeyboardMainKeys = true;
                     AllowAuto = false;
+                    ReplayKeyboardInputType.Instance.MarkUpdate();
                     Adofai.Controller.Simulated_PlayerControl_Update();
                     NextCheckFailMiss = false;
                     AllowGameToUpdateInput = false;
@@ -353,9 +350,8 @@ public static class ReplayPlayer
                     ConsumeSingleAngleCorrection = false;
                     CachedAngleCorrection = null;
                     AllowGameToUpdateInput = true;
-                    UpdateKeyboardMainKeys = true;
                     AllowAuto = true;
-                    NextCheckAuto = true;
+                    ReplayKeyboardInputType.Instance.MarkUpdate();
                     Adofai.Controller.Simulated_PlayerControl_Update();
                     AllowGameToUpdateInput = false;
                     return;
@@ -406,11 +402,11 @@ public static class ReplayPlayer
 
                         if (state && !last)
                         {
-                            isKeyDown[keyCode] = true;
+                            isKeyDown.Add(keyCode);
                             AnyKeyDown = true;
                         }
 
-                        if (!state && last) isKeyUp[keyCode] = true;
+                        if (!state && last) isKeyUp.Add(keyCode);
                     }
 
                     Adofai.Controller.keyTimes.Clear();
@@ -422,7 +418,7 @@ public static class ReplayPlayer
                     if (key is { IsAutoFloor: false, IsInputLocked: false })
                     {
                         AllowGameToUpdateInput = true;
-                        UpdateKeyboardMainKeys = true;
+                        ReplayKeyboardInputType.Instance.MarkUpdate();
                         var angleCorrections = AngleCorrections;
 
                         if (angleCorrections is null || angleCorrections.Count == 0)
@@ -512,13 +508,13 @@ public static class ReplayPlayer
     public static bool OnGetKeyDown(KeyCode keyCode, ref bool result)
     {
         return keyCode == KeyCode.Escape ||
-               WithReplay(ref result, _ => IsKeyDown.GetValueOrDefault((int)keyCode, false));
+               WithReplay(ref result, _ => IsKeyDown.Contains((int)keyCode));
     }
 
     public static bool OnGetKeyUp(KeyCode keyCode, ref bool result)
     {
         return keyCode == KeyCode.Escape ||
-               WithReplay(ref result, _ => IsKeyUp.GetValueOrDefault((int)keyCode, false));
+               WithReplay(ref result, _ => IsKeyUp.Contains((int)keyCode));
     }
 
     public static bool OnGetKey(KeyCode keyCode, ref bool result)
@@ -530,6 +526,61 @@ public static class ReplayPlayer
     public static bool OnGetAnyKeyDown()
     {
         return AnyKeyDown;
+    }
+
+    public static bool GetKeyDownUnchecked(KeyCode keyCode)
+    {
+        return keyCode != KeyCode.Escape && IsKeyDown.Contains((int)keyCode);
+    }
+
+    public static bool GetKeyUpUnchecked(KeyCode keyCode)
+    {
+        return keyCode != KeyCode.Escape && IsKeyUp.Contains((int)keyCode);
+    }
+
+    public static bool GetKeyUnchecked(KeyCode keyCode)
+    {
+        return keyCode != KeyCode.Escape && KeyStates.GetValueOrDefault((int)keyCode, false);
+    }
+
+    public static bool GetAnyKeyDownUnchecked(KeyCode[] keyCodes)
+    {
+        return keyCodes.Any(GetKeyDownUnchecked);
+    }
+
+    public static bool GetAnyKeyUpUnchecked(KeyCode[] keyCodes)
+    {
+        return keyCodes.Any(GetKeyUpUnchecked);
+    }
+
+    public static bool GetAnyKeyUnchecked(KeyCode[] keyCodes)
+    {
+        return keyCodes.Any(GetKeyUnchecked);
+    }
+
+    public static bool GetAnyKeyReleasedUnchecked(KeyCode[] keyCodes)
+    {
+        return keyCodes.Any(it => !GetKeyUnchecked(it));
+    }
+
+    public static IEnumerable<KeyCode> GetKeysDownUnchecked(KeyCode[] keyCodes)
+    {
+        return keyCodes.Where(GetKeyDownUnchecked);
+    }
+
+    public static IEnumerable<KeyCode> GetKeysUpUnchecked(KeyCode[] keyCodes)
+    {
+        return keyCodes.Where(GetKeyUpUnchecked);
+    }
+
+    public static IEnumerable<KeyCode> GetKeysUnchecked(KeyCode[] keyCodes)
+    {
+        return keyCodes.Where(GetKeyUnchecked);
+    }
+
+    public static IEnumerable<KeyCode> GetKeysReleasedUnchecked(KeyCode[] keyCodes)
+    {
+        return keyCodes.Where(it => !GetKeyUnchecked(it));
     }
 
     public static bool LoadReplay(string fileName)

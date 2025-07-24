@@ -13,13 +13,13 @@ namespace YqlossClientHarmony.Features.Replay;
 
 public static class Injections
 {
+    private static Condition ConditionPlayingCustom { get; } = new(() =>
+        Adofai.Controller.gameworld && !ADOBase.isOfficialLevel && !Adofai.Controller.paused
+    );
+
     private static long? TickToDspOffset { get; set; }
 
-    private static Dictionary<KeyCode, bool> SyncKeyDownMap { get; } = [];
-
     private static bool IsInSwitchChosen { get; set; }
-
-    private static bool IsInMainIgnoreActiveAndPlayingReplay { get; set; }
 
     private static ConcurrentQueue<SkyHookEvent> KeyQueue { get; } = [];
 
@@ -55,14 +55,16 @@ public static class Injections
 
     public static double DspToSong(double dsp, double offset)
     {
-        return Adofai.Conductor.song.pitch * (
+        var conductor = Adofai.Conductor;
+
+        return conductor.song.pitch * (
                    dsp
-                   - Adofai.Conductor.dspTimeSongPosZero
+                   - conductor.dspTimeSongPosZero
                    - scrConductor.calibration_i
                    + offset
                )
-               - Adofai.Conductor.adjustedCountdownTicks * Adofai.Conductor.crotchetAtStart
-               + Adofai.Conductor.addoffset;
+               - conductor.adjustedCountdownTicks * conductor.crotchetAtStart
+               + conductor.addoffset;
     }
 
     [HarmonyPatch(typeof(scnGame), nameof(scnGame.Play))]
@@ -80,7 +82,6 @@ public static class Injections
                 return;
             }
 
-            SyncKeyDownMap.Clear();
             TickToDspOffset = null;
             ReplayRecorder.StartRecording(seqID);
             ReplayPlayer.StartPlaying(seqID);
@@ -158,7 +159,8 @@ public static class Injections
         )
         {
             if (Interoperation.ReplayIgnoreJudgement) return;
-            if (!Adofai.Controller.gameworld || ADOBase.isOfficialLevel) return;
+            if (!ConditionPlayingCustom) return;
+            using var _ = ConditionPlayingCustom;
             ReplayRecorder.OnHitMargin(hit);
             ReplayPlayer.OnHitMargin(ref hit);
         }
@@ -183,7 +185,8 @@ public static class Injections
             if (!IsInSwitchChosen) return;
             IsInSwitchChosen = false;
             if (Interoperation.ReplayIgnoreJudgement) return;
-            if (!Adofai.Controller.gameworld || ADOBase.isOfficialLevel) return;
+            if (!ConditionPlayingCustom) return;
+            using var _ = ConditionPlayingCustom;
             ReplayPlayer.OnGetHitMargin(ref __result);
         }
     }
@@ -196,7 +199,8 @@ public static class Injections
         )
         {
             if (Interoperation.ReplayIgnoreJudgement) return;
-            if (!Adofai.Controller.gameworld || ADOBase.isOfficialLevel) return;
+            if (!ConditionPlayingCustom) return;
+            using var _ = ConditionPlayingCustom;
             double result = angleDiff;
             ReplayRecorder.OnErrorMeter(result);
             ReplayPlayer.OnErrorMeter(ref result);
@@ -214,11 +218,11 @@ public static class Injections
         {
             var replayToRecord = ReplayRecorder.Replay;
 
+            if (replayToRecord == null) return;
+            if (!ConditionPlayingCustom) return;
+            using var _ = ConditionPlayingCustom;
+
             if (
-                replayToRecord == null ||
-                !Adofai.Controller.gameworld ||
-                ADOBase.isOfficialLevel ||
-                Adofai.Controller.paused ||
                 !AsyncInputManager.isActive ||
                 !Persistence.GetChosenAsynchronousInput() ||
                 !Application.isFocused ||
@@ -263,12 +267,13 @@ public static class Injections
 
         public static void Prefix()
         {
-            if (!Adofai.Controller.gameworld || ADOBase.isOfficialLevel || Adofai.Controller.paused)
+            if (!ConditionPlayingCustom)
             {
                 KeyQueue.Clear();
-                SyncKeyDownMap.Clear();
                 return;
             }
+
+            using var _ = ConditionPlayingCustom;
 
             ReplayPlayer.UpdateReplayKeyStates();
 
@@ -285,11 +290,7 @@ public static class Injections
                     (States)DestinationStateField(Adofai.Controller.stateMachine).state != States.PlayerControl ||
                     !Adofai.Controller.responsive
                 ))
-            )
-            {
-                SyncKeyDownMap.Clear();
-                return;
-            }
+            ) return;
 
             ReplayRecorder.OnIterationStart(Adofai.Controller.keyTimes.Count);
 
@@ -314,7 +315,6 @@ public static class Injections
                         isKeyUp,
                         DspToSong(Adofai.Conductor.dspTime, SettingsReplay.Instance.SyncRecordingOffset / 1000.0)
                     );
-                    SyncKeyDownMap[mainKey] = !isKeyUp;
                 }
             }
         }
@@ -334,7 +334,8 @@ public static class Injections
         )
         {
             if (!ReplayPlayer.PlayingReplay) return true;
-            if (!Adofai.Controller.gameworld || ADOBase.isOfficialLevel || Adofai.Controller.paused) return true;
+            if (!ConditionPlayingCustom) return true;
+            using var _ = ConditionPlayingCustom;
             return ReplayPlayer.OnGetKey(key, ref __result);
         }
     }
@@ -353,7 +354,8 @@ public static class Injections
         )
         {
             if (!ReplayPlayer.PlayingReplay) return true;
-            if (!Adofai.Controller.gameworld || ADOBase.isOfficialLevel || Adofai.Controller.paused) return true;
+            if (!ConditionPlayingCustom) return true;
+            using var _ = ConditionPlayingCustom;
             return ReplayPlayer.OnGetKeyDown(key, ref __result);
         }
     }
@@ -372,7 +374,8 @@ public static class Injections
         )
         {
             if (!ReplayPlayer.PlayingReplay) return true;
-            if (!Adofai.Controller.gameworld || ADOBase.isOfficialLevel || Adofai.Controller.paused) return true;
+            if (!ConditionPlayingCustom) return true;
+            using var _ = ConditionPlayingCustom;
             return ReplayPlayer.OnGetKeyUp(key, ref __result);
         }
     }
@@ -385,7 +388,8 @@ public static class Injections
         )
         {
             if (!ReplayPlayer.PlayingReplay) return true;
-            if (!Adofai.Controller.gameworld || ADOBase.isOfficialLevel || Adofai.Controller.paused) return true;
+            if (!ConditionPlayingCustom) return true;
+            using var _ = ConditionPlayingCustom;
 
             __result = 1; // InputType.Keyboard
             return false;
@@ -401,7 +405,8 @@ public static class Injections
         )
         {
             if (!ReplayPlayer.PlayingReplay) return true;
-            if (!Adofai.Controller.gameworld || ADOBase.isOfficialLevel || Adofai.Controller.paused) return true;
+            if (!ConditionPlayingCustom) return true;
+            using var _ = ConditionPlayingCustom;
 
             __result = !___exitingToMainMenu &&
                        (ReplayPlayer.OnGetAnyKeyDown() ||
@@ -428,7 +433,8 @@ public static class Injections
             scrPlanet __instance
         )
         {
-            if (!Adofai.Controller.gameworld || ADOBase.isOfficialLevel || Adofai.Controller.paused) return true;
+            if (!ConditionPlayingCustom) return true;
+            using var _ = ConditionPlayingCustom;
             return ReplayPlayer.OnAngleCorrection(ref __instance.angle);
         }
 
@@ -436,8 +442,9 @@ public static class Injections
             scrPlanet __instance
         )
         {
-            if (!Adofai.Controller.gameworld || ADOBase.isOfficialLevel || Adofai.Controller.paused) return;
             if (!Persistence.GetChosenAsynchronousInput()) return;
+            if (!ConditionPlayingCustom) return;
+            using var _ = ConditionPlayingCustom;
             ReplayRecorder.OnAngleCorrection(__instance.angle);
         }
     }
@@ -447,8 +454,9 @@ public static class Injections
     {
         public static bool Prefix()
         {
-            if (!Adofai.Controller.gameworld || ADOBase.isOfficialLevel || Adofai.Controller.paused) return true;
             if (!ReplayPlayer.PlayingReplay) return true;
+            if (!ConditionPlayingCustom) return true;
+            using var _ = ConditionPlayingCustom;
             Adofai.Controller.chosenPlanet.AsyncRefreshAngles();
             return false;
         }
@@ -459,7 +467,8 @@ public static class Injections
     {
         public static bool Prefix()
         {
-            if (!Adofai.Controller.gameworld || ADOBase.isOfficialLevel || Adofai.Controller.paused) return true;
+            if (!ConditionPlayingCustom) return true;
+            using var _ = ConditionPlayingCustom;
             if (!Persistence.GetChosenAsynchronousInput())
                 ReplayRecorder.OnAngleCorrection(Adofai.Controller.chosenPlanet.angle);
             return !ReplayPlayer.PlayingReplay || ReplayPlayer.AllowGameToUpdateInput;
@@ -474,7 +483,8 @@ public static class Injections
         )
         {
             if (!ReplayPlayer.PlayingReplay) return true;
-            if (!Adofai.Controller.gameworld || ADOBase.isOfficialLevel || Adofai.Controller.paused) return true;
+            if (!ConditionPlayingCustom) return true;
+            using var _ = ConditionPlayingCustom;
             var continueExecution = ReplayPlayer.NextCheckFailMiss;
             ReplayPlayer.NextCheckFailMiss = false;
             return continueExecution;
@@ -490,7 +500,8 @@ public static class Injections
         {
             if (!ReplayPlayer.PlayingReplay) return;
             if (!__instance.noFailInfiniteMargin) return;
-            if (!Adofai.Controller.gameworld || ADOBase.isOfficialLevel || Adofai.Controller.paused) return;
+            if (!ConditionPlayingCustom) return;
+            using var _ = ConditionPlayingCustom;
             ReplayPlayer.NextCheckFailMiss = false;
         }
     }
@@ -525,8 +536,9 @@ public static class Injections
         )
         {
             if (!ReplayPlayer.PlayingReplay) return true;
-            if (!Adofai.Controller.gameworld || ADOBase.isOfficialLevel || Adofai.Controller.paused) return true;
-            var continueExecution = ReplayPlayer.AllowAuto && ReplayPlayer.NextCheckAuto;
+            if (!ConditionPlayingCustom) return true;
+            using var _ = ConditionPlayingCustom;
+            var continueExecution = ReplayPlayer.AllowAuto;
             ReplayPlayer.AllowAuto = false;
             if (!continueExecution) __result = false;
             return continueExecution;
@@ -548,7 +560,8 @@ public static class Injections
             scrController __instance
         )
         {
-            if (!Adofai.Controller.gameworld || ADOBase.isOfficialLevel || Adofai.Controller.paused) return;
+            if (!ConditionPlayingCustom) return;
+            using var _ = ConditionPlayingCustom;
 
             if (__instance.keyTimes.Count <= 0 ||
                 GCS.d_stationary ||
@@ -578,7 +591,8 @@ public static class Injections
         {
             __state = RDInput.inputs;
             if (!ReplayPlayer.PlayingReplay) return;
-            if (!Adofai.Controller.gameworld || ADOBase.isOfficialLevel || Adofai.Controller.paused) return;
+            if (!ConditionPlayingCustom) return;
+            using var _ = ConditionPlayingCustom;
             RDInput.inputs = ReplayKeyboardInputType.SingletonList;
         }
 
@@ -601,7 +615,8 @@ public static class Injections
         {
             __state = RDInput.inputs;
             if (!ReplayPlayer.PlayingReplay) return;
-            if (!Adofai.Controller.gameworld || ADOBase.isOfficialLevel || Adofai.Controller.paused) return;
+            if (!ConditionPlayingCustom) return;
+            using var _ = ConditionPlayingCustom;
             RDInput.inputs = ReplayKeyboardInputType.SingletonList;
         }
 
@@ -624,7 +639,8 @@ public static class Injections
         {
             __state = RDInput.inputs;
             if (!ReplayPlayer.PlayingReplay) return;
-            if (!Adofai.Controller.gameworld || ADOBase.isOfficialLevel || Adofai.Controller.paused) return;
+            if (!ConditionPlayingCustom) return;
+            using var _ = ConditionPlayingCustom;
             RDInput.inputs = ReplayKeyboardInputType.SingletonList;
         }
 
@@ -643,8 +659,10 @@ public static class Injections
     {
         public static bool Prefix()
         {
-            if (!Adofai.Controller.gameworld || ADOBase.isOfficialLevel || Adofai.Controller.paused) return true;
-            return !ReplayPlayer.PlayingReplay;
+            if (!ReplayPlayer.PlayingReplay) return true;
+            if (!ConditionPlayingCustom) return true;
+            using var _ = ConditionPlayingCustom;
+            return false;
         }
     }
 
