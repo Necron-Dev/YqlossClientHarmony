@@ -24,20 +24,21 @@ public static class ReplayRecorder
 
     public static void SaveAndResetReplay()
     {
-        WithReplay(replay =>
+        var replay = Replay;
+        if (replay is null) return;
+
+        if (replay.KeyEvents.Count == 0 && replay.Judgements.Count == 0)
         {
-            if (replay.KeyEvents.Count == 0 && replay.Judgements.Count == 0)
-            {
-                Main.Mod.Logger.Log("discarding replay because it's empty");
-            }
-            else
-            {
-                var fileName = ReplayUtils.ReplayFileName(replay);
-                Main.Mod.Logger.Log($"saving replay as {fileName}");
-                Directory.CreateDirectory(SettingsReplay.Instance.ReplayStorageLocation);
-                ReplayEncoder.LaunchCompressAndSaveAs(replay, fileName);
-            }
-        });
+            Main.Mod.Logger.Log("discarding replay because it's empty");
+        }
+        else
+        {
+            var fileName = ReplayUtils.ReplayFileName(replay);
+            Main.Mod.Logger.Log($"saving replay as {fileName}");
+            Directory.CreateDirectory(SettingsReplay.Instance.ReplayStorageLocation);
+            ReplayEncoder.LaunchCompressAndSaveAs(replay, fileName);
+        }
+
         Replay = null;
     }
 
@@ -76,185 +77,168 @@ public static class ReplayRecorder
         SaveAndResetReplay();
     }
 
-    private static void WithReplay(Action<Replay> receiver)
+    public static void OnHitMargin(HitMargin hitMargin)
     {
         var replay = Replay;
+        if (replay is null) return;
 
-        if (replay is null)
+        var floorId = Adofai.CurrentFloorId;
+
+        if (Adofai.Controller.midspinInfiniteMargin)
         {
-            ErrorMeterValue = null;
-            LastFloorIdJudgement = null;
-            LastFloorIdKeyEvent = null;
-            KeysWithoutAngleCorrection = 0;
+            if (ErrorMeterValue is not null)
+                Main.Mod.Logger.Warning(
+                    $"[Floor {floorId}] error meter already has a value on a midspin, overwriting to NaN"
+                );
+
+            ErrorMeterValue = double.NaN;
+        }
+
+        var errorMeterNullable = ErrorMeterValue;
+        double errorMeter;
+        ErrorMeterValue = null;
+
+        if (errorMeterNullable is null)
+        {
+            Main.Mod.Logger.Warning($"[Floor {floorId}] error meter is null, recording as NaN");
+            errorMeter = double.NaN;
         }
         else
         {
-            receiver(replay);
+            errorMeter = errorMeterNullable.Value;
         }
-    }
 
-    public static void OnHitMargin(HitMargin hitMargin)
-    {
-        WithReplay(replay =>
+        var lastFloorIdNullable = LastFloorIdJudgement;
+        LastFloorIdJudgement = floorId;
+        int lastFloorId;
+
+        if (lastFloorIdNullable is null)
         {
-            var floorId = Adofai.CurrentFloorId;
+            Main.Mod.Logger.Warning($"[Floor {floorId}] judgement last floor id is null, defaulting to {floorId}");
+            lastFloorId = floorId;
+        }
+        else
+        {
+            lastFloorId = lastFloorIdNullable.Value;
+        }
 
-            if (Adofai.Controller.midspinInfiniteMargin)
-            {
-                if (ErrorMeterValue is not null)
-                    Main.Mod.Logger.Warning(
-                        $"[Floor {floorId}] error meter already has a value on a midspin, overwriting to NaN"
-                    );
+        replay.Judgements.Add(new Replay.JudgementType(
+            errorMeter,
+            hitMargin,
+            floorId - lastFloorId
+        ));
 
-                ErrorMeterValue = double.NaN;
-            }
-
-            var errorMeterNullable = ErrorMeterValue;
-            double errorMeter;
-            ErrorMeterValue = null;
-
-            if (errorMeterNullable is null)
-            {
-                Main.Mod.Logger.Warning($"[Floor {floorId}] error meter is null, recording as NaN");
-                errorMeter = double.NaN;
-            }
-            else
-            {
-                errorMeter = errorMeterNullable.Value;
-            }
-
-            var lastFloorIdNullable = LastFloorIdJudgement;
-            LastFloorIdJudgement = floorId;
-            int lastFloorId;
-
-            if (lastFloorIdNullable is null)
-            {
-                Main.Mod.Logger.Warning($"[Floor {floorId}] judgement last floor id is null, defaulting to {floorId}");
-                lastFloorId = floorId;
-            }
-            else
-            {
-                lastFloorId = lastFloorIdNullable.Value;
-            }
-
-            replay.Judgements.Add(new Replay.JudgementType(
-                errorMeter,
-                hitMargin,
-                floorId - lastFloorId
-            ));
-
-            if (SettingsReplay.Instance.Verbose)
-                Main.Mod.Logger.Log($"meter: {errorMeter} margin: {hitMargin} dseq: {floorId - lastFloorId}");
-        });
+        if (SettingsReplay.Instance.Verbose)
+            Main.Mod.Logger.Log($"meter: {errorMeter} margin: {hitMargin} dseq: {floorId - lastFloorId}");
     }
 
     public static void OnErrorMeter(double errorMeter)
     {
-        WithReplay(_ =>
-        {
-            var floorId = Adofai.CurrentFloorId;
-            if (ErrorMeterValue is not null)
-                Main.Mod.Logger.Warning($"[Floor {floorId}] error meter already has a value, overwriting");
-            ErrorMeterValue = errorMeter;
-        });
+        var replay = Replay;
+        if (replay is null) return;
+
+        var floorId = Adofai.CurrentFloorId;
+        if (ErrorMeterValue is not null)
+            Main.Mod.Logger.Warning($"[Floor {floorId}] error meter already has a value, overwriting");
+        ErrorMeterValue = errorMeter;
     }
 
     public static void OnKeyEvent(int keyCode, bool isKeyUp, double songSeconds)
     {
-        WithReplay(replay =>
+        var replay = Replay;
+        if (replay is null) return;
+
+        if (keyCode is KeyCodeEsc or KeyCodeEscAsync) return;
+
+        var floorId = Adofai.CurrentFloorId;
+
+        var lastFloorIdNullable = LastFloorIdKeyEvent;
+        LastFloorIdKeyEvent = floorId;
+        int lastFloorId;
+
+        if (lastFloorIdNullable is null)
         {
-            if (keyCode is KeyCodeEsc or KeyCodeEscAsync) return;
+            Main.Mod.Logger.Warning($"[Floor {floorId}] key event last floor id is null, defaulting to {floorId}");
+            lastFloorId = floorId;
+        }
+        else
+        {
+            lastFloorId = lastFloorIdNullable.Value;
+        }
 
-            var floorId = Adofai.CurrentFloorId;
+        if (SettingsReplay.Instance.StoreSyncKeyCode)
+        {
+            keyCode = KeyCodeMapping.GetSyncKeyCode(keyCode);
 
-            var lastFloorIdNullable = LastFloorIdKeyEvent;
-            LastFloorIdKeyEvent = floorId;
-            int lastFloorId;
+            if (keyCode >= 0x1000)
+                Main.Mod.Logger.Warning($"[Floor {floorId}] unidentified async key code {keyCode}");
+        }
 
-            if (lastFloorIdNullable is null)
-            {
-                Main.Mod.Logger.Warning($"[Floor {floorId}] key event last floor id is null, defaulting to {floorId}");
-                lastFloorId = floorId;
-            }
-            else
-            {
-                lastFloorId = lastFloorIdNullable.Value;
-            }
+        var nextFloor = Adofai.Controller.currFloor.nextfloor;
+        var autoFloor = nextFloor != null && nextFloor.auto;
+        var inputLocked = !Adofai.Controller.responsive;
 
-            if (SettingsReplay.Instance.StoreSyncKeyCode)
-            {
-                keyCode = KeyCodeMapping.GetSyncKeyCode(keyCode);
+        replay.KeyEvents.Add(new Replay.KeyEventType(
+            songSeconds,
+            keyCode,
+            isKeyUp,
+            floorId - lastFloorId,
+            autoFloor,
+            inputLocked
+        ));
 
-                if (keyCode >= 0x1000)
-                    Main.Mod.Logger.Warning($"[Floor {floorId}] unidentified async key code {keyCode}");
-            }
+        ++KeysWithoutAngleCorrection;
 
-            var nextFloor = Adofai.Controller.currFloor.nextfloor;
-            var autoFloor = nextFloor != null && nextFloor.auto;
-            var inputLocked = !Adofai.Controller.responsive;
-
-            replay.KeyEvents.Add(new Replay.KeyEventType(
-                songSeconds,
-                keyCode,
-                isKeyUp,
-                floorId - lastFloorId,
-                autoFloor,
-                inputLocked
-            ));
-
-            ++KeysWithoutAngleCorrection;
-
-            if (SettingsReplay.Instance.Verbose)
-                Main.Mod.Logger.Log(
-                    $"key: {keyCode} up: {isKeyUp} dseq: {floorId - lastFloorId} pos: {songSeconds} auto: {autoFloor} locked: {inputLocked}");
-        });
+        if (SettingsReplay.Instance.Verbose)
+            Main.Mod.Logger.Log(
+                $"key: {keyCode} up: {isKeyUp} dseq: {floorId - lastFloorId} pos: {songSeconds} auto: {autoFloor} locked: {inputLocked}");
     }
 
     public static void OnAngleCorrection(double angle)
     {
-        WithReplay(replay =>
-        {
-            for (; KeysWithoutAngleCorrection > 0; KeysWithoutAngleCorrection--)
-            {
-                replay.AngleCorrections.Add(angle);
+        var replay = Replay;
+        if (replay is null) return;
 
-                if (SettingsReplay.Instance.Verbose) Main.Mod.Logger.Log($"angle: {angle}");
-            }
-        });
+        for (; KeysWithoutAngleCorrection > 0; KeysWithoutAngleCorrection--)
+        {
+            replay.AngleCorrections.Add(angle);
+
+            if (SettingsReplay.Instance.Verbose) Main.Mod.Logger.Log($"angle: {angle}");
+        }
     }
 
     public static void OnIterationStart(int stacked)
     {
-        WithReplay(replay =>
-        {
-            LastIterationFirstKeyIndex = CurrentIterationFirstKeyIndex =
-                Math.Max(0, replay.KeyEvents.Count - stacked);
-        });
+        var replay = Replay;
+        if (replay is null) return;
+
+        LastIterationFirstKeyIndex = CurrentIterationFirstKeyIndex =
+            Math.Max(0, replay.KeyEvents.Count - stacked);
     }
 
     public static void OnKeysProcessed(int count)
     {
-        WithReplay(replay =>
-        {
-            LastIterationFirstKeyIndex = CurrentIterationFirstKeyIndex;
-            CurrentIterationFirstKeyIndex = Math.Min(CurrentIterationFirstKeyIndex + count, replay.KeyEvents.Count);
+        var replay = Replay;
+        if (replay is null) return;
 
-            if (SettingsReplay.Instance.Verbose)
-                Main.Mod.Logger.Log(
-                    $"iteration advance: +{count} {CurrentIterationFirstKeyIndex} total: {replay.KeyEvents.Count}");
-        });
+        LastIterationFirstKeyIndex = CurrentIterationFirstKeyIndex;
+        CurrentIterationFirstKeyIndex = Math.Min(CurrentIterationFirstKeyIndex + count, replay.KeyEvents.Count);
+
+        if (SettingsReplay.Instance.Verbose)
+            Main.Mod.Logger.Log(
+                $"iteration advance: +{count} {CurrentIterationFirstKeyIndex} total: {replay.KeyEvents.Count}");
     }
 
     public static void OnMarkKeyEvent(bool auto, bool responsive)
     {
-        WithReplay(replay =>
-        {
-            var i = CurrentIterationFirstKeyIndex;
-            if (i >= replay.KeyEvents.Count) return;
-            replay.KeyEvents[i] = MarkKeyEvent(replay.KeyEvents[i], auto, !responsive);
-            if (SettingsReplay.Instance.Verbose)
-                Main.Mod.Logger.Log($"mark input locked: index: {i} {auto} {!responsive}");
-        });
+        var replay = Replay;
+        if (replay is null) return;
+
+        var i = CurrentIterationFirstKeyIndex;
+        if (i >= replay.KeyEvents.Count) return;
+        replay.KeyEvents[i] = MarkKeyEvent(replay.KeyEvents[i], auto, !responsive);
+        if (SettingsReplay.Instance.Verbose)
+            Main.Mod.Logger.Log($"mark input locked: index: {i} {auto} {!responsive}");
     }
 
     private static Replay.KeyEventType MarkKeyEvent(Replay.KeyEventType keyEvent, bool auto, bool responsive)

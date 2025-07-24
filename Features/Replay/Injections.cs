@@ -13,7 +13,7 @@ namespace YqlossClientHarmony.Features.Replay;
 
 public static class Injections
 {
-    private static Condition ConditionPlayingCustom { get; } = new(() =>
+    private static ConcurrentCondition ConditionPlayingCustom { get; } = new(() =>
         Adofai.Controller.gameworld && !ADOBase.isOfficialLevel && !Adofai.Controller.paused
     );
 
@@ -123,7 +123,6 @@ public static class Injections
         public static void Prefix()
         {
             ReplayPlayer.UnloadReplay();
-            if (!Adofai.Controller.gameworld || ADOBase.isOfficialLevel) return;
             ReplayRecorder.EndRecording();
             ReplayPlayer.EndPlaying();
         }
@@ -134,7 +133,6 @@ public static class Injections
     {
         public static void Prefix()
         {
-            if (!Adofai.Controller.gameworld || ADOBase.isOfficialLevel) return;
             ReplayRecorder.EndRecording();
             ReplayPlayer.EndPlaying();
         }
@@ -145,7 +143,6 @@ public static class Injections
     {
         public static void Prefix()
         {
-            if (!Adofai.Controller.gameworld || ADOBase.isOfficialLevel) return;
             ReplayRecorder.EndRecording();
             ReplayPlayer.EndPlaying();
         }
@@ -159,10 +156,8 @@ public static class Injections
         )
         {
             if (Interoperation.ReplayIgnoreJudgement) return;
-            if (!ConditionPlayingCustom) return;
-            using var _ = ConditionPlayingCustom;
-            ReplayRecorder.OnHitMargin(hit);
-            ReplayPlayer.OnHitMargin(ref hit);
+            if (ReplayRecorder.Replay is not null) ReplayRecorder.OnHitMargin(hit);
+            if (ReplayPlayer.PlayingReplay) ReplayPlayer.OnHitMargin(ref hit);
         }
     }
 
@@ -185,8 +180,7 @@ public static class Injections
             if (!IsInSwitchChosen) return;
             IsInSwitchChosen = false;
             if (Interoperation.ReplayIgnoreJudgement) return;
-            if (!ConditionPlayingCustom) return;
-            using var _ = ConditionPlayingCustom;
+            if (!ReplayPlayer.PlayingReplay) return;
             ReplayPlayer.OnGetHitMargin(ref __result);
         }
     }
@@ -199,10 +193,9 @@ public static class Injections
         )
         {
             if (Interoperation.ReplayIgnoreJudgement) return;
-            if (!ConditionPlayingCustom) return;
-            using var _ = ConditionPlayingCustom;
+            if (ReplayRecorder.Replay is not null) ReplayRecorder.OnErrorMeter(angleDiff);
+            if (!ReplayPlayer.PlayingReplay) return;
             double result = angleDiff;
-            ReplayRecorder.OnErrorMeter(result);
             ReplayPlayer.OnErrorMeter(ref result);
             angleDiff = (float)result;
         }
@@ -219,8 +212,6 @@ public static class Injections
             var replayToRecord = ReplayRecorder.Replay;
 
             if (replayToRecord == null) return;
-            if (!ConditionPlayingCustom) return;
-            using var _ = ConditionPlayingCustom;
 
             if (
                 !AsyncInputManager.isActive ||
@@ -275,7 +266,7 @@ public static class Injections
 
             using var _ = ConditionPlayingCustom;
 
-            ReplayPlayer.UpdateReplayKeyStates();
+            if (ReplayPlayer.PlayingReplay) ReplayPlayer.UpdateReplayKeyStates();
 
             if (AsyncInputManager.isActive || Persistence.GetChosenAsynchronousInput()) return;
 
@@ -333,10 +324,7 @@ public static class Injections
             KeyCode key
         )
         {
-            if (!ReplayPlayer.PlayingReplay) return true;
-            if (!ConditionPlayingCustom) return true;
-            using var _ = ConditionPlayingCustom;
-            return ReplayPlayer.OnGetKey(key, ref __result);
+            return !ReplayPlayer.PlayingReplay || ReplayPlayer.OnGetKey(key, ref __result);
         }
     }
 
@@ -353,10 +341,7 @@ public static class Injections
             KeyCode key
         )
         {
-            if (!ReplayPlayer.PlayingReplay) return true;
-            if (!ConditionPlayingCustom) return true;
-            using var _ = ConditionPlayingCustom;
-            return ReplayPlayer.OnGetKeyDown(key, ref __result);
+            return !ReplayPlayer.PlayingReplay || ReplayPlayer.OnGetKeyDown(key, ref __result);
         }
     }
 
@@ -373,10 +358,7 @@ public static class Injections
             KeyCode key
         )
         {
-            if (!ReplayPlayer.PlayingReplay) return true;
-            if (!ConditionPlayingCustom) return true;
-            using var _ = ConditionPlayingCustom;
-            return ReplayPlayer.OnGetKeyUp(key, ref __result);
+            return !ReplayPlayer.PlayingReplay || ReplayPlayer.OnGetKeyUp(key, ref __result);
         }
     }
 
@@ -388,8 +370,6 @@ public static class Injections
         )
         {
             if (!ReplayPlayer.PlayingReplay) return true;
-            if (!ConditionPlayingCustom) return true;
-            using var _ = ConditionPlayingCustom;
 
             __result = 1; // InputType.Keyboard
             return false;
@@ -405,8 +385,6 @@ public static class Injections
         )
         {
             if (!ReplayPlayer.PlayingReplay) return true;
-            if (!ConditionPlayingCustom) return true;
-            using var _ = ConditionPlayingCustom;
 
             __result = !___exitingToMainMenu &&
                        (ReplayPlayer.OnGetAnyKeyDown() ||
@@ -433,18 +411,15 @@ public static class Injections
             scrPlanet __instance
         )
         {
-            if (!ConditionPlayingCustom) return true;
-            using var _ = ConditionPlayingCustom;
-            return ReplayPlayer.OnAngleCorrection(ref __instance.angle);
+            return !ReplayPlayer.PlayingReplay || ReplayPlayer.OnAngleCorrection(ref __instance.angle);
         }
 
         public static void Postfix(
             scrPlanet __instance
         )
         {
+            if (ReplayRecorder.Replay is null) return;
             if (!Persistence.GetChosenAsynchronousInput()) return;
-            if (!ConditionPlayingCustom) return;
-            using var _ = ConditionPlayingCustom;
             ReplayRecorder.OnAngleCorrection(__instance.angle);
         }
     }
@@ -455,8 +430,6 @@ public static class Injections
         public static bool Prefix()
         {
             if (!ReplayPlayer.PlayingReplay) return true;
-            if (!ConditionPlayingCustom) return true;
-            using var _ = ConditionPlayingCustom;
             Adofai.Controller.chosenPlanet.AsyncRefreshAngles();
             return false;
         }
@@ -469,8 +442,9 @@ public static class Injections
         {
             if (!ConditionPlayingCustom) return true;
             using var _ = ConditionPlayingCustom;
-            if (!Persistence.GetChosenAsynchronousInput())
+            if (ReplayRecorder.Replay is not null && !Persistence.GetChosenAsynchronousInput())
                 ReplayRecorder.OnAngleCorrection(Adofai.Controller.chosenPlanet.angle);
+            if (!ReplayPlayer.PlayingReplay) return true;
             return !ReplayPlayer.PlayingReplay || ReplayPlayer.AllowGameToUpdateInput;
         }
     }
@@ -483,8 +457,6 @@ public static class Injections
         )
         {
             if (!ReplayPlayer.PlayingReplay) return true;
-            if (!ConditionPlayingCustom) return true;
-            using var _ = ConditionPlayingCustom;
             var continueExecution = ReplayPlayer.NextCheckFailMiss;
             ReplayPlayer.NextCheckFailMiss = false;
             return continueExecution;
@@ -500,8 +472,6 @@ public static class Injections
         {
             if (!ReplayPlayer.PlayingReplay) return;
             if (!__instance.noFailInfiniteMargin) return;
-            if (!ConditionPlayingCustom) return;
-            using var _ = ConditionPlayingCustom;
             ReplayPlayer.NextCheckFailMiss = false;
         }
     }
@@ -536,8 +506,6 @@ public static class Injections
         )
         {
             if (!ReplayPlayer.PlayingReplay) return true;
-            if (!ConditionPlayingCustom) return true;
-            using var _ = ConditionPlayingCustom;
             var continueExecution = ReplayPlayer.AllowAuto;
             ReplayPlayer.AllowAuto = false;
             if (!continueExecution) __result = false;
@@ -560,8 +528,7 @@ public static class Injections
             scrController __instance
         )
         {
-            if (!ConditionPlayingCustom) return;
-            using var _ = ConditionPlayingCustom;
+            if (ReplayRecorder.Replay is null) return;
 
             if (__instance.keyTimes.Count <= 0 ||
                 GCS.d_stationary ||
@@ -591,8 +558,6 @@ public static class Injections
         {
             __state = RDInput.inputs;
             if (!ReplayPlayer.PlayingReplay) return;
-            if (!ConditionPlayingCustom) return;
-            using var _ = ConditionPlayingCustom;
             RDInput.inputs = ReplayKeyboardInputType.SingletonList;
         }
 
@@ -615,8 +580,6 @@ public static class Injections
         {
             __state = RDInput.inputs;
             if (!ReplayPlayer.PlayingReplay) return;
-            if (!ConditionPlayingCustom) return;
-            using var _ = ConditionPlayingCustom;
             RDInput.inputs = ReplayKeyboardInputType.SingletonList;
         }
 
@@ -639,8 +602,6 @@ public static class Injections
         {
             __state = RDInput.inputs;
             if (!ReplayPlayer.PlayingReplay) return;
-            if (!ConditionPlayingCustom) return;
-            using var _ = ConditionPlayingCustom;
             RDInput.inputs = ReplayKeyboardInputType.SingletonList;
         }
 
@@ -659,10 +620,7 @@ public static class Injections
     {
         public static bool Prefix()
         {
-            if (!ReplayPlayer.PlayingReplay) return true;
-            if (!ConditionPlayingCustom) return true;
-            using var _ = ConditionPlayingCustom;
-            return false;
+            return !ReplayPlayer.PlayingReplay;
         }
     }
 
@@ -672,6 +630,8 @@ public static class Injections
         public static void Prefix()
         {
             ReplayPlayer.UnloadReplay();
+            ReplayRecorder.EndRecording();
+            ReplayPlayer.EndPlaying();
         }
     }
 }

@@ -1,4 +1,3 @@
-using System;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
@@ -19,7 +18,7 @@ public static class ReplayPlayer
 
     private static MyQueue<(double, int)>? AngleCorrections { get; set; }
 
-    private static Dictionary<int, bool>? KeyStates { get; set; }
+    private static Dictionary<int, bool> KeyStates { get; set; } = [];
 
     private static HashSet<int> IsKeyDown { get; } = [];
 
@@ -102,159 +101,123 @@ public static class ReplayPlayer
         HitMargins = null;
         ErrorMeters = null;
         KeyEvents = null;
-        KeyStates = null;
+        KeyStates.Clear();
         NextCheckFailMiss = false;
         AllowAuto = false;
     }
 
-    private static void WithReplay(Action<Replay> receiver)
-    {
-        var replay = Replay;
-
-        if (replay is null || !PlayingReplay)
-        {
-            PlayingReplay = false;
-            HitMargins = null;
-            ErrorMeters = null;
-            KeyEvents = null;
-            KeyStates = null;
-            NextCheckFailMiss = false;
-            AllowAuto = false;
-        }
-        else
-        {
-            receiver(replay);
-        }
-    }
-
-    private static bool WithReplay<T>(ref T t, Func<Replay, T?> receiver) where T : struct
-    {
-        var replay = Replay;
-
-        if (replay is null || !PlayingReplay)
-        {
-            PlayingReplay = false;
-            HitMargins = null;
-            ErrorMeters = null;
-            KeyEvents = null;
-            KeyStates = null;
-            NextCheckFailMiss = false;
-            AllowAuto = false;
-            return true;
-        }
-
-        var newT = receiver(replay);
-        if (newT is not null) t = newT.Value;
-        return newT is null;
-    }
-
     public static void OnHitMargin(ref HitMargin result)
     {
-        WithReplay(ref result, _ =>
+        if (!PlayingReplay) return;
+
+        var floorId = Adofai.CurrentFloorId;
+        var hitMargins = HitMargins;
+
+        if (hitMargins?.Count == 0)
         {
-            var floorId = Adofai.CurrentFloorId;
-            var hitMargins = HitMargins;
+            Main.Mod.Logger.Warning($"[Floor {floorId}] hit margins are drained");
+            hitMargins = HitMargins = null;
+        }
 
-            if (hitMargins?.Count == 0)
-            {
-                Main.Mod.Logger.Warning($"[Floor {floorId}] hit margins are drained");
-                hitMargins = HitMargins = null;
-            }
+        if (hitMargins is null) return;
 
-            if (hitMargins is null) return null;
+        var (hitMargin, eventFloorId) = hitMargins.Dequeue();
 
-            var (hitMargin, eventFloorId) = hitMargins.Dequeue();
+        if (floorId != eventFloorId)
+            Main.Mod.Logger.Warning(
+                $"[Floor {floorId}] hit margin floor id mismatch {eventFloorId}. judgements may be incorrect");
 
-            if (floorId != eventFloorId)
-                Main.Mod.Logger.Warning(
-                    $"[Floor {floorId}] hit margin floor id mismatch {eventFloorId}. judgements may be incorrect");
+        if (SettingsReplay.Instance.Verbose)
+            Main.Mod.Logger.Log($"[Floor {floorId}] acc: {eventFloorId} margin: {hitMargin}");
 
-            if (SettingsReplay.Instance.Verbose)
-                Main.Mod.Logger.Log($"[Floor {floorId}] acc: {eventFloorId} margin: {hitMargin}");
+        if (!Adofai.Controller.midspinInfiniteMargin)
+        {
+            result = hitMargin;
+            return;
+        }
 
-            if (!Adofai.Controller.midspinInfiniteMargin) return hitMargin;
+        var errorMeters = ErrorMeters;
 
-            var errorMeters = ErrorMeters;
+        if (errorMeters is null || errorMeters.Count == 0)
+        {
+            result = hitMargin;
+            return;
+        }
 
-            if (errorMeters is null || errorMeters.Count == 0) return hitMargin;
+        var (nextMeter, nextMeterFloor) = errorMeters.Dequeue();
 
-            var (nextMeter, nextMeterFloor) = errorMeters.Dequeue();
+        if (SettingsReplay.Instance.Verbose)
+            Main.Mod.Logger.Log($"[Floor {floorId}] acc: {eventFloorId} midspin meter");
 
-            if (SettingsReplay.Instance.Verbose)
-                Main.Mod.Logger.Log($"[Floor {floorId}] acc: {eventFloorId} midspin meter");
+        if (floorId != nextMeterFloor)
+            Main.Mod.Logger.Warning(
+                $"[Floor {floorId}] midspin error meter floor id mismatch {eventFloorId}. judgements may be incorrect");
 
-            if (floorId != nextMeterFloor)
-                Main.Mod.Logger.Warning(
-                    $"[Floor {floorId}] midspin error meter floor id mismatch {eventFloorId}. judgements may be incorrect");
+        if (!double.IsNaN(nextMeter))
+            Main.Mod.Logger.Warning(
+                $"[Floor {floorId}] midspin error meter has value {nextMeter}. judgements may be incorrect");
 
-            if (!double.IsNaN(nextMeter))
-                Main.Mod.Logger.Warning(
-                    $"[Floor {floorId}] midspin error meter has value {nextMeter}. judgements may be incorrect");
-
-            return hitMargin;
-        });
+        result = hitMargin;
     }
 
     public static void OnErrorMeter(ref double result)
     {
-        WithReplay(ref result, _ =>
+        if (!PlayingReplay) return;
+
+        var floorId = Adofai.CurrentFloorId;
+        var errorMeters = ErrorMeters;
+
+        if (errorMeters?.Count == 0)
         {
-            var floorId = Adofai.CurrentFloorId;
-            var errorMeters = ErrorMeters;
+            Main.Mod.Logger.Warning($"[Floor {floorId}] error meters are drained");
+            errorMeters = ErrorMeters = null;
+        }
 
-            if (errorMeters?.Count == 0)
-            {
-                Main.Mod.Logger.Warning($"[Floor {floorId}] error meters are drained");
-                errorMeters = ErrorMeters = null;
-            }
+        if (errorMeters is null) return;
 
-            if (errorMeters is null) return null;
+        var (errorMeter, eventFloorId) = errorMeters.Dequeue();
 
-            var (errorMeter, eventFloorId) = errorMeters.Dequeue();
+        if (floorId != eventFloorId)
+            Main.Mod.Logger.Warning(
+                $"[Floor {floorId}] error meter floor id mismatch {eventFloorId}. judgements may be incorrect");
 
-            if (floorId != eventFloorId)
-                Main.Mod.Logger.Warning(
-                    $"[Floor {floorId}] error meter floor id mismatch {eventFloorId}. judgements may be incorrect");
+        if (SettingsReplay.Instance.Verbose)
+            Main.Mod.Logger.Log($"[Floor {floorId}] acc: {eventFloorId} meter: {errorMeter}");
 
-            if (SettingsReplay.Instance.Verbose)
-                Main.Mod.Logger.Log($"[Floor {floorId}] acc: {eventFloorId} meter: {errorMeter}");
-
-            return errorMeter;
-        });
+        result = errorMeter;
     }
 
     public static void OnGetHitMargin(ref HitMargin result)
     {
-        WithReplay(ref result, _ =>
+        if (!PlayingReplay) return;
+
+        var floorId = Adofai.CurrentFloorId;
+        var hitMargins = HitMargins;
+
+        if (hitMargins?.Count == 0)
         {
-            var floorId = Adofai.CurrentFloorId;
-            var hitMargins = HitMargins;
+            Main.Mod.Logger.Warning($"[Floor {floorId}] hit margins are drained");
+            hitMargins = HitMargins = null;
+        }
 
-            if (hitMargins?.Count == 0)
-            {
-                Main.Mod.Logger.Warning($"[Floor {floorId}] hit margins are drained");
-                hitMargins = HitMargins = null;
-            }
+        if (hitMargins is null) return;
 
-            if (hitMargins is null) return null;
+        var (hitMargin, eventFloorId) = hitMargins.Peek();
 
-            var (hitMargin, eventFloorId) = hitMargins.Peek();
+        if (floorId != eventFloorId)
+            Main.Mod.Logger.Warning(
+                $"[Floor {floorId}] get hit margin floor id mismatch {eventFloorId}. judgements may be incorrect");
 
-            if (floorId != eventFloorId)
-                Main.Mod.Logger.Warning(
-                    $"[Floor {floorId}] get hit margin floor id mismatch {eventFloorId}. judgements may be incorrect");
+        if (SettingsReplay.Instance.Verbose)
+            Main.Mod.Logger.Log($"[Floor {floorId}] get acc: {eventFloorId} margin: {hitMargin}");
 
-            if (SettingsReplay.Instance.Verbose)
-                Main.Mod.Logger.Log($"[Floor {floorId}] get acc: {eventFloorId} margin: {hitMargin}");
-
-            return hitMargin switch
-            {
-                HitMargin.FailMiss => HitMargin.TooLate,
-                HitMargin.FailOverload => HitMargin.TooEarly,
-                HitMargin.Auto => HitMargin.Perfect,
-                _ => hitMargin
-            };
-        });
+        result = hitMargin switch
+        {
+            HitMargin.FailMiss => HitMargin.TooLate,
+            HitMargin.FailOverload => HitMargin.TooEarly,
+            HitMargin.Auto => HitMargin.Perfect,
+            _ => hitMargin
+        };
     }
 
     private static bool ProcessAutoFloorAndFailMiss()
@@ -317,210 +280,222 @@ public static class ReplayPlayer
 
     public static void UpdateReplayKeyStates()
     {
-        WithReplay(_ =>
+        if (!PlayingReplay) return;
+
+        var songSeconds =
+            Injections.DspToSong(Adofai.Conductor.dspTime, SettingsReplay.Instance.PlayingOffset / 1000.0);
+
+        var isKeyDown = IsKeyDown;
+        var isKeyUp = IsKeyUp;
+
+        var lastKeyStates = KeyStates;
+
+        isKeyDown.Clear();
+        isKeyUp.Clear();
+        AnyKeyDown = false;
+        Adofai.Controller.keyTimes.Clear();
+
+        try
         {
-            var songSeconds =
-                Injections.DspToSong(Adofai.Conductor.dspTime, SettingsReplay.Instance.PlayingOffset / 1000.0);
+            var onlyAllowRelease = ProcessAutoFloorAndFailMiss();
 
-            var isKeyDown = IsKeyDown;
-            var isKeyUp = IsKeyUp;
+            var keyEvents = KeyEvents;
 
-            var lastKeyStates = KeyStates;
-
-            isKeyDown.Clear();
-            isKeyUp.Clear();
-            AnyKeyDown = false;
-            Adofai.Controller.keyTimes.Clear();
-
-            try
+            if (keyEvents?.Count == 0)
             {
-                var onlyAllowRelease = ProcessAutoFloorAndFailMiss();
+                Main.Mod.Logger.Warning($"[Floor {Adofai.CurrentFloorId}] key events are drained");
+                keyEvents = KeyEvents = null;
+            }
 
-                var keyEvents = KeyEvents;
+            if (keyEvents is null)
+            {
+                NextCheckFailMiss = true;
+                ConsumeSingleAngleCorrection = false;
+                CachedAngleCorrection = null;
+                AllowGameToUpdateInput = true;
+                AllowAuto = true;
+                ReplayKeyboardInputType.Instance.MarkUpdate();
+                Adofai.Controller.Simulated_PlayerControl_Update();
+                AllowGameToUpdateInput = false;
+                return;
+            }
 
-                if (keyEvents?.Count == 0)
+            if (lastKeyStates is null) return;
+
+            while (keyEvents.Count != 0)
+            {
+                var floorId = Adofai.CurrentFloorId;
+
+                var (key, keyFloor) = keyEvents.Peek();
+                var syncKeyCode = KeyCodeMapping.GetSyncKeyCode(key.KeyCode);
+
+                if (onlyAllowRelease && !key.IsKeyUp) break;
+
+                var nextFloor = Adofai.Controller.currFloor.nextfloor;
+                var autoFloor = nextFloor != null && nextFloor.auto;
+
+                if (!key.Version1)
                 {
-                    Main.Mod.Logger.Warning($"[Floor {Adofai.CurrentFloorId}] key events are drained");
-                    keyEvents = KeyEvents = null;
+                    if (!key.IsAutoFloor && autoFloor) break;
+                    if (!key.IsInputLocked && !Adofai.Controller.responsive) break;
                 }
 
-                if (keyEvents is null)
+                if (key.SongSeconds > songSeconds)
+                    break;
+
+                if (SettingsReplay.Instance.Verbose)
+                    Main.Mod.Logger.Log(
+                        $"[Floor {floorId}] acc: {keyFloor} simulate key: {syncKeyCode}({key.KeyCode}) up: {key.IsKeyUp} dseq: {key.FloorIdIncrement} pos: {key.SongSeconds} auto: {key.IsAutoFloor} locked: {key.IsInputLocked}"
+                    );
+
+                var keyStates = KeyStates = new Dictionary<int, bool>(lastKeyStates)
                 {
-                    NextCheckFailMiss = true;
-                    ConsumeSingleAngleCorrection = false;
-                    CachedAngleCorrection = null;
+                    [syncKeyCode] = !key.IsKeyUp
+                };
+
+                keyEvents.Dequeue();
+
+                isKeyDown.Clear();
+                isKeyUp.Clear();
+                AnyKeyDown = false;
+
+                foreach (var (keyCode, state) in keyStates)
+                {
+                    var last = lastKeyStates.GetValueOrDefault(keyCode, false);
+
+                    if (state && !last)
+                    {
+                        isKeyDown.Add(keyCode);
+                        AnyKeyDown = true;
+                    }
+
+                    if (!state && last) isKeyUp.Add(keyCode);
+                }
+
+                Adofai.Controller.keyTimes.Clear();
+                NextCheckFailMiss = false;
+                AllowAuto = false;
+
+                if (SettingsReplay.Instance.Verbose) Main.Mod.Logger.Log("begin simulation");
+
+                if (key is { IsAutoFloor: false, IsInputLocked: false })
+                {
                     AllowGameToUpdateInput = true;
-                    AllowAuto = true;
                     ReplayKeyboardInputType.Instance.MarkUpdate();
-                    Adofai.Controller.Simulated_PlayerControl_Update();
-                    AllowGameToUpdateInput = false;
-                    return;
-                }
+                    var angleCorrections = AngleCorrections;
 
-                if (lastKeyStates is null) return;
-
-                while (keyEvents.Count != 0)
-                {
-                    var floorId = Adofai.CurrentFloorId;
-
-                    var (key, keyFloor) = keyEvents.Peek();
-                    var syncKeyCode = KeyCodeMapping.GetSyncKeyCode(key.KeyCode);
-
-                    if (onlyAllowRelease && !key.IsKeyUp) break;
-
-                    var nextFloor = Adofai.Controller.currFloor.nextfloor;
-                    var autoFloor = nextFloor != null && nextFloor.auto;
-
-                    if (!key.Version1)
+                    if (angleCorrections is null || angleCorrections.Count == 0)
                     {
-                        if (!key.IsAutoFloor && autoFloor) break;
-                        if (!key.IsInputLocked && !Adofai.Controller.responsive) break;
-                    }
-
-                    if (key.SongSeconds > songSeconds)
-                        break;
-
-                    if (SettingsReplay.Instance.Verbose)
-                        Main.Mod.Logger.Log(
-                            $"[Floor {floorId}] acc: {keyFloor} simulate key: {syncKeyCode}({key.KeyCode}) up: {key.IsKeyUp} dseq: {key.FloorIdIncrement} pos: {key.SongSeconds} auto: {key.IsAutoFloor} locked: {key.IsInputLocked}"
-                        );
-
-                    var keyStates = KeyStates = new Dictionary<int, bool>(lastKeyStates)
-                    {
-                        [syncKeyCode] = !key.IsKeyUp
-                    };
-
-                    keyEvents.Dequeue();
-
-                    isKeyDown.Clear();
-                    isKeyUp.Clear();
-                    AnyKeyDown = false;
-
-                    foreach (var (keyCode, state) in keyStates)
-                    {
-                        var last = lastKeyStates.GetValueOrDefault(keyCode, false);
-
-                        if (state && !last)
+                        if (angleCorrections?.Count == 0)
                         {
-                            isKeyDown.Add(keyCode);
-                            AnyKeyDown = true;
+                            Main.Mod.Logger.Warning($"[Floor {floorId}] angle corrections are drained");
+                            AngleCorrections = null;
                         }
 
-                        if (!state && last) isKeyUp.Add(keyCode);
-                    }
-
-                    Adofai.Controller.keyTimes.Clear();
-                    NextCheckFailMiss = false;
-                    AllowAuto = false;
-
-                    if (SettingsReplay.Instance.Verbose) Main.Mod.Logger.Log("begin simulation");
-
-                    if (key is { IsAutoFloor: false, IsInputLocked: false })
-                    {
-                        AllowGameToUpdateInput = true;
-                        ReplayKeyboardInputType.Instance.MarkUpdate();
-                        var angleCorrections = AngleCorrections;
-
-                        if (angleCorrections is null || angleCorrections.Count == 0)
-                        {
-                            if (angleCorrections?.Count == 0)
-                            {
-                                Main.Mod.Logger.Warning($"[Floor {floorId}] angle corrections are drained");
-                                AngleCorrections = null;
-                            }
-
-                            ConsumeSingleAngleCorrection = false;
-                            CachedAngleCorrection = null;
-                            Adofai.Controller.Simulated_PlayerControl_Update();
-                        }
-                        else
-                        {
-                            ConsumeSingleAngleCorrection = true;
-                            CachedAngleCorrection = null;
-                            Adofai.Controller.Simulated_PlayerControl_Update(1);
-                        }
-
-                        if (SettingsReplay.Instance.Verbose) Main.Mod.Logger.Log("end simulation");
+                        ConsumeSingleAngleCorrection = false;
+                        CachedAngleCorrection = null;
+                        Adofai.Controller.Simulated_PlayerControl_Update();
                     }
                     else
                     {
-                        var angleCorrections = AngleCorrections;
-
-                        if (angleCorrections is not null && angleCorrections.Count != 0)
-                        {
-                            angleCorrections.Dequeue();
-                            if (SettingsReplay.Instance.Verbose) Main.Mod.Logger.Log("consume angle correction");
-                        }
-
-                        if (SettingsReplay.Instance.Verbose) Main.Mod.Logger.Log("skip simulation");
+                        ConsumeSingleAngleCorrection = true;
+                        CachedAngleCorrection = null;
+                        Adofai.Controller.Simulated_PlayerControl_Update(1);
                     }
 
-                    isKeyDown.Clear();
-                    isKeyUp.Clear();
-                    AnyKeyDown = false;
-                    Adofai.Controller.keyTimes.Clear();
-                    AllowGameToUpdateInput = false;
-                    ConsumeSingleAngleCorrection = false;
-                    CachedAngleCorrection = null;
-                    lastKeyStates = keyStates;
-
-                    if (ProcessAutoFloorAndFailMiss()) onlyAllowRelease = true;
+                    if (SettingsReplay.Instance.Verbose) Main.Mod.Logger.Log("end simulation");
                 }
-            }
-            finally
-            {
+                else
+                {
+                    var angleCorrections = AngleCorrections;
+
+                    if (angleCorrections is not null && angleCorrections.Count != 0)
+                    {
+                        angleCorrections.Dequeue();
+                        if (SettingsReplay.Instance.Verbose) Main.Mod.Logger.Log("consume angle correction");
+                    }
+
+                    if (SettingsReplay.Instance.Verbose) Main.Mod.Logger.Log("skip simulation");
+                }
+
                 isKeyDown.Clear();
                 isKeyUp.Clear();
-                Adofai.Controller.keyTimes.Clear();
                 AnyKeyDown = false;
-                KeyStates = lastKeyStates;
+                Adofai.Controller.keyTimes.Clear();
+                AllowGameToUpdateInput = false;
+                ConsumeSingleAngleCorrection = false;
+                CachedAngleCorrection = null;
+                lastKeyStates = keyStates;
+
+                if (ProcessAutoFloorAndFailMiss()) onlyAllowRelease = true;
             }
-        });
+        }
+        finally
+        {
+            isKeyDown.Clear();
+            isKeyUp.Clear();
+            Adofai.Controller.keyTimes.Clear();
+            AnyKeyDown = false;
+            KeyStates = lastKeyStates;
+        }
     }
 
     public static bool OnAngleCorrection(ref double result)
     {
-        return WithReplay(ref result, _ =>
+        if (!PlayingReplay) return true;
+
+        if (!ConsumeSingleAngleCorrection)
         {
-            if (!ConsumeSingleAngleCorrection) return CachedAngleCorrection;
-            ConsumeSingleAngleCorrection = false;
+            var cached = CachedAngleCorrection;
+            if (cached is not null) result = cached.Value;
+            return cached is null;
+        }
 
-            var floorId = Adofai.CurrentFloorId;
-            var angleCorrections = AngleCorrections;
+        ConsumeSingleAngleCorrection = false;
 
-            if (angleCorrections?.Count == 0)
-            {
-                Main.Mod.Logger.Warning($"[Floor {floorId}] angle corrections are drained");
-                angleCorrections = AngleCorrections = null;
-            }
+        var floorId = Adofai.CurrentFloorId;
+        var angleCorrections = AngleCorrections;
 
-            if (angleCorrections is null) return null;
+        if (angleCorrections?.Count == 0)
+        {
+            Main.Mod.Logger.Warning($"[Floor {floorId}] angle corrections are drained");
+            angleCorrections = AngleCorrections = null;
+        }
 
-            var (angleCorrection, eventFloorId) = angleCorrections.Dequeue();
+        if (angleCorrections is null) return true;
 
-            if (SettingsReplay.Instance.Verbose)
-                Main.Mod.Logger.Log($"[Floor {floorId}] acc: {eventFloorId} angle: {angleCorrection}");
+        var (angleCorrection, eventFloorId) = angleCorrections.Dequeue();
 
-            return CachedAngleCorrection = angleCorrection;
-        });
+        if (SettingsReplay.Instance.Verbose)
+            Main.Mod.Logger.Log($"[Floor {floorId}] acc: {eventFloorId} angle: {angleCorrection}");
+
+        CachedAngleCorrection = angleCorrection;
+        result = angleCorrection;
+        return false;
     }
 
     public static bool OnGetKeyDown(KeyCode keyCode, ref bool result)
     {
-        return keyCode == KeyCode.Escape ||
-               WithReplay(ref result, _ => IsKeyDown.Contains((int)keyCode));
+        if (!PlayingReplay) return true;
+        if (keyCode == KeyCode.Escape) return true;
+        result = IsKeyDown.Contains((int)keyCode);
+        return false;
     }
 
     public static bool OnGetKeyUp(KeyCode keyCode, ref bool result)
     {
-        return keyCode == KeyCode.Escape ||
-               WithReplay(ref result, _ => IsKeyUp.Contains((int)keyCode));
+        if (!PlayingReplay) return true;
+        if (keyCode == KeyCode.Escape) return true;
+        result = IsKeyUp.Contains((int)keyCode);
+        return false;
     }
 
     public static bool OnGetKey(KeyCode keyCode, ref bool result)
     {
-        return keyCode == KeyCode.Escape ||
-               WithReplay(ref result, _ => KeyStates.GetValueOrDefault((int)keyCode, false));
+        if (!PlayingReplay) return true;
+        if (keyCode == KeyCode.Escape) return true;
+        result = KeyStates.GetValueOrDefault((int)keyCode, false);
+        return false;
     }
 
     public static bool OnGetAnyKeyDown()
