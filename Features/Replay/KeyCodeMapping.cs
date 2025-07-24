@@ -48,8 +48,8 @@ public static class KeyCodeMapping
         { 4283, KeyCode.Equals }, // Equal
         { 4104, KeyCode.Backspace }, // Backspace
         { 4105, KeyCode.Tab }, // Tab
-        { 4315, KeyCode.LeftCurlyBracket }, // LeftBrace
-        { 4317, KeyCode.RightCurlyBracket }, // RightBrace
+        { 4315, KeyCode.LeftBracket }, // LeftBrace
+        { 4317, KeyCode.RightBracket }, // RightBrace
         { 4316, KeyCode.Backslash }, // BackSlash
         { 4116, KeyCode.CapsLock }, // CapsLock
         { 4161, KeyCode.A }, // A
