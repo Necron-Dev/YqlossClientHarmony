@@ -20,6 +20,8 @@ public static class Injections
 
     private static bool IsInSwitchChosen { get; set; }
 
+    private static bool IsInMainIgnoreActiveAndPlayingReplay { get; set; }
+
     private static ConcurrentQueue<SkyHookEvent> KeyQueue { get; } = [];
 
     public static double TickToDsp(long ticks)
@@ -510,8 +512,11 @@ public static class Injections
             RDInputType_Keyboard __instance
         )
         {
-            if (!ReplayPlayer.PlayingReplay || !ReplayPlayer.UpdateKeyboardMainKeys) return;
+            if (!ReplayPlayer.PlayingReplay) return;
             if (!Adofai.Controller.gameworld || ADOBase.isOfficialLevel || Adofai.Controller.paused) return;
+            IsInMainIgnoreActiveAndPlayingReplay = true;
+
+            if (!ReplayPlayer.UpdateKeyboardMainKeys) return;
             ReplayPlayer.UpdateKeyboardMainKeys = false;
             var forceUpdate = Time.frameCount - 1;
             __instance.dummyCount.lastFrameUpdated = forceUpdate;
@@ -519,6 +524,14 @@ public static class Injections
             __instance.releaseCount.lastFrameUpdated = forceUpdate;
             __instance.heldCount.lastFrameUpdated = forceUpdate;
             __instance.isReleaseCount.lastFrameUpdated = forceUpdate;
+        }
+
+        public static Exception? Finalizer(
+            Exception? __exception
+        )
+        {
+            IsInMainIgnoreActiveAndPlayingReplay = false;
+            return __exception;
         }
     }
 
@@ -622,6 +635,20 @@ public static class Injections
 
             ReplayRecorder.OnMarkKeyEvent(autoFloor, __instance.responsive);
             ReplayRecorder.OnKeysProcessed(1);
+        }
+    }
+
+    [HarmonyPatch(typeof(RDInputType_Keyboard), nameof(RDInputType_Keyboard.CountSpecialInput))]
+    public static class Inject_RDInputType_Keyboard_CountSpecialInput
+    {
+        public static bool Prefix(
+            RDInputType_Keyboard __instance,
+            ref List<KeyCode> __result
+        )
+        {
+            if (!IsInMainIgnoreActiveAndPlayingReplay) return true;
+            __result = __instance.Cancel() ? [KeyCode.Escape] : [];
+            return false;
         }
     }
 }
