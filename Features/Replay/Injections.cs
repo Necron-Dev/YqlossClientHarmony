@@ -447,6 +447,12 @@ public static class Injections
             if (!ReplayPlayer.PlayingReplay) return true;
             return !ReplayPlayer.PlayingReplay || ReplayPlayer.AllowGameToUpdateInput;
         }
+
+        public static void Postfix()
+        {
+            if (!ReplayPlayer.PlayingReplay) return;
+            scrController.shouldReplaceCamyToPos = false;
+        }
     }
 
     [HarmonyPatch(typeof(scrController), "CheckPostHoldFail")]
