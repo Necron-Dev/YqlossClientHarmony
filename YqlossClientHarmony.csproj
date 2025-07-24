@@ -518,6 +518,7 @@
         <Compile Include="Features\Replay\ReplayDecoder.cs"/>
         <Compile Include="Features\Replay\ReplayEncoder.cs"/>
         <Compile Include="Features\Replay\ReplayGUI.cs"/>
+        <Compile Include="Features\Replay\ReplayKeyboardInputType.cs"/>
         <Compile Include="Features\Replay\ReplayPlayer.cs"/>
         <Compile Include="Features\Replay\ReplayRecorder.cs"/>
         <Compile Include="Features\Replay\ReplayUtils.cs"/>

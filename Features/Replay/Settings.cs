@@ -13,7 +13,6 @@ public class Settings
 
     public bool Enabled => Main.Enabled && Main.Settings.EnableReplay;
 
-    [Header("You must be in synchronous input mode to play replays!")]
     [Header("Recording replays in asynchronous input mode is recommended!")]
     [Header("Currently only keyboard is supported.")]
     [Header("Currently DLC contents are partially supported. Use Normal hold tile mode when recording.")]

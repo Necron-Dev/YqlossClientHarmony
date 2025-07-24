@@ -23,7 +23,7 @@ public static class ReplayGUI
                 3 => ["Official levels are not supported!"],
                 4 => ["You cannot load a replay mid-game!"],
                 5 => ["You cannot unload a replay mid-game!"],
-                6 => ["You must be using synchronous input mode to play replays!"],
+                6 => ["Ciallo～(∠・ω< )⌒★"],
                 _ => [$"Unknown Error {LastLoadingFailure}", "See logs for more information."]
             };
 
@@ -51,12 +51,6 @@ public static class ReplayGUI
         if (!Adofai.Controller.paused)
         {
             LastLoadingFailure = 4;
-            return;
-        }
-
-        if (Persistence.GetChosenAsynchronousInput())
-        {
-            LastLoadingFailure = 6;
             return;
         }
 

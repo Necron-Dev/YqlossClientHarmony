@@ -7,7 +7,6 @@ using HarmonyLib;
 using MonsterLove.StateMachine;
 using SkyHook;
 using UnityEngine;
-using UnityEngine.EventSystems;
 using EventType = SkyHook.EventType;
 
 namespace YqlossClientHarmony.Features.Replay;
@@ -388,33 +387,8 @@ public static class Injections
             if (!ReplayPlayer.PlayingReplay) return true;
             if (!Adofai.Controller.gameworld || ADOBase.isOfficialLevel || Adofai.Controller.paused) return true;
 
-            __result = GetInputTypeForDown();
+            __result = 1; // InputType.Keyboard
             return false;
-
-            int GetInputTypeForDown()
-            {
-                if (Input.touchCount > 0)
-                {
-                    foreach (var touch in Input.touches)
-                        if (touch.phase == TouchPhase.Began)
-                            return 4;
-                }
-                else if (ReplayPlayer.OnGetAnyKeyDown())
-                {
-                    for (var key = 1; key < 600; ++key)
-                    {
-                        if (Input.GetKeyDown(KeyCode.Space))
-                            return 1;
-                        if (Input.GetKeyDown(KeyCode.Mouse0))
-                            return 2;
-                        if (!Input.GetKeyDown((KeyCode)key)) continue;
-                        if (key < 323) return 1;
-                        return key < 350 ? 2 : 3;
-                    }
-                }
-
-                return 0;
-            }
         }
     }
 
@@ -423,31 +397,18 @@ public static class Injections
     {
         public static bool Prefix(
             ref bool __result,
-            bool ___exitingToMainMenu,
-            scrDpadInputChecker ___dpadInputChecker
+            bool ___exitingToMainMenu
         )
         {
             if (!ReplayPlayer.PlayingReplay) return true;
             if (!Adofai.Controller.gameworld || ADOBase.isOfficialLevel || Adofai.Controller.paused) return true;
 
-            __result = ValidInputWasTriggered();
-            return false;
-
-            bool ValidInputWasTriggered()
-            {
-                if (___exitingToMainMenu) return false;
-
-                var mouseOverAButton = false;
-                if (Input.GetKeyDown(KeyCode.Mouse0) || Input.GetKeyDown(KeyCode.Mouse1))
-                    mouseOverAButton = EventSystem.current.IsPointerOverGameObject();
-                if (Adofai.Controller.isCutscene)
-                    mouseOverAButton = false;
-
-                return (ReplayPlayer.OnGetAnyKeyDown() || ___dpadInputChecker.anyDirDown ||
+            __result = !___exitingToMainMenu &&
+                       (ReplayPlayer.OnGetAnyKeyDown() ||
                         RDInput.GetMain(ButtonState.IsDown) > 0) &&
-                       !mouseOverAButton &&
                        Adofai.Controller.CountValidKeysPressed() > 0;
-            }
+
+            return false;
         }
     }
 
@@ -502,36 +463,6 @@ public static class Injections
             if (!Persistence.GetChosenAsynchronousInput())
                 ReplayRecorder.OnAngleCorrection(Adofai.Controller.chosenPlanet.angle);
             return !ReplayPlayer.PlayingReplay || ReplayPlayer.AllowGameToUpdateInput;
-        }
-    }
-
-    [HarmonyPatch(typeof(RDInputType_Keyboard), nameof(RDInputType_Keyboard.MainIgnoreActive))]
-    public static class Inject_RDInputType_Keyboard_MainIgnoreActive
-    {
-        public static void Prefix(
-            RDInputType_Keyboard __instance
-        )
-        {
-            if (!ReplayPlayer.PlayingReplay) return;
-            if (!Adofai.Controller.gameworld || ADOBase.isOfficialLevel || Adofai.Controller.paused) return;
-            IsInMainIgnoreActiveAndPlayingReplay = true;
-
-            if (!ReplayPlayer.UpdateKeyboardMainKeys) return;
-            ReplayPlayer.UpdateKeyboardMainKeys = false;
-            var forceUpdate = Time.frameCount - 1;
-            __instance.dummyCount.lastFrameUpdated = forceUpdate;
-            __instance.pressCount.lastFrameUpdated = forceUpdate;
-            __instance.releaseCount.lastFrameUpdated = forceUpdate;
-            __instance.heldCount.lastFrameUpdated = forceUpdate;
-            __instance.isReleaseCount.lastFrameUpdated = forceUpdate;
-        }
-
-        public static Exception? Finalizer(
-            Exception? __exception
-        )
-        {
-            IsInMainIgnoreActiveAndPlayingReplay = false;
-            return __exception;
         }
     }
 
@@ -638,17 +569,82 @@ public static class Injections
         }
     }
 
-    [HarmonyPatch(typeof(RDInputType_Keyboard), nameof(RDInputType_Keyboard.CountSpecialInput))]
-    public static class Inject_RDInputType_Keyboard_CountSpecialInput
+    [HarmonyPatch(typeof(RDInput), nameof(RDInput.GetState))]
+    public static class Inject_RDInput_GetState
     {
-        public static bool Prefix(
-            RDInputType_Keyboard __instance,
-            ref List<KeyCode> __result
+        public static void Prefix(
+            out List<RDInputType> __state
         )
         {
-            if (!IsInMainIgnoreActiveAndPlayingReplay) return true;
-            __result = __instance.Cancel() ? [KeyCode.Escape] : [];
-            return false;
+            __state = RDInput.inputs;
+            if (!ReplayPlayer.PlayingReplay) return;
+            if (!Adofai.Controller.gameworld || ADOBase.isOfficialLevel || Adofai.Controller.paused) return;
+            RDInput.inputs = ReplayKeyboardInputType.SingletonList;
+        }
+
+        public static Exception? Finalizer(
+            Exception? __exception,
+            List<RDInputType> __state
+        )
+        {
+            RDInput.inputs = __state;
+            return __exception;
+        }
+    }
+
+    [HarmonyPatch(typeof(RDInput), nameof(RDInput.GetMain))]
+    public static class Inject_RDInput_GetMain
+    {
+        public static void Prefix(
+            out List<RDInputType> __state
+        )
+        {
+            __state = RDInput.inputs;
+            if (!ReplayPlayer.PlayingReplay) return;
+            if (!Adofai.Controller.gameworld || ADOBase.isOfficialLevel || Adofai.Controller.paused) return;
+            RDInput.inputs = ReplayKeyboardInputType.SingletonList;
+        }
+
+        public static Exception? Finalizer(
+            Exception? __exception,
+            List<RDInputType> __state
+        )
+        {
+            RDInput.inputs = __state;
+            return __exception;
+        }
+    }
+
+    [HarmonyPatch(typeof(RDInput), nameof(RDInput.GetStateKeys))]
+    public static class Inject_RDInput_GetStateKeys
+    {
+        public static void Prefix(
+            out List<RDInputType> __state
+        )
+        {
+            __state = RDInput.inputs;
+            if (!ReplayPlayer.PlayingReplay) return;
+            if (!Adofai.Controller.gameworld || ADOBase.isOfficialLevel || Adofai.Controller.paused) return;
+            RDInput.inputs = ReplayKeyboardInputType.SingletonList;
+        }
+
+        public static Exception? Finalizer(
+            Exception? __exception,
+            List<RDInputType> __state
+        )
+        {
+            RDInput.inputs = __state;
+            return __exception;
+        }
+    }
+
+    [HarmonyPatch(typeof(scrController), "ProcessKeyInputs")]
+    public static class Inject_scrController_ProcessKeyInputs
+    {
+        public static bool Prefix()
+        {
+            if (!Adofai.Controller.gameworld || ADOBase.isOfficialLevel || Adofai.Controller.paused) return true;
+            return !ReplayPlayer.PlayingReplay;
         }
     }
 }
