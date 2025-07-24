@@ -502,14 +502,14 @@
     <ItemGroup>
         <Compile Include="Adofai.cs"/>
         <Compile Include="Features\FixKillerDecorationsInNoFail\Injections.cs"/>
-        <Compile Include="Features\FixKillerDecorationsInNoFail\Settings.cs"/>
+        <Compile Include="Features\FixKillerDecorationsInNoFail\SettingsFixKillerDecorationsInNoFail.cs"/>
         <Compile Include="Features\FixSetInputEventCrash\Injections.cs"/>
-        <Compile Include="Features\FixSetInputEventCrash\Settings.cs"/>
+        <Compile Include="Features\FixSetInputEventCrash\SettingsFixSetInputEventCrash.cs"/>
         <Compile Include="Features\Interoperation.cs"/>
         <Compile Include="Features\ModifyLoadingLevel\EventType.cs"/>
         <Compile Include="Features\ModifyLoadingLevel\Injections.cs"/>
         <Compile Include="Features\ModifyLoadingLevel\LevelSettingType.cs"/>
-        <Compile Include="Features\ModifyLoadingLevel\Settings.cs"/>
+        <Compile Include="Features\ModifyLoadingLevel\SettingsModifyLoadingLevel.cs"/>
         <Compile Include="Features\Replay\Injections.cs"/>
         <Compile Include="Features\Replay\KeyCodeMapping.cs"/>
         <Compile Include="Features\Replay\MyQueue.cs"/>
@@ -522,9 +522,9 @@
         <Compile Include="Features\Replay\ReplayPlayer.cs"/>
         <Compile Include="Features\Replay\ReplayRecorder.cs"/>
         <Compile Include="Features\Replay\ReplayUtils.cs"/>
-        <Compile Include="Features\Replay\Settings.cs"/>
+        <Compile Include="Features\Replay\SettingsReplay.cs"/>
         <Compile Include="Features\RevertCounterclockwiseUTurnPause\Injections.cs"/>
-        <Compile Include="Features\RevertCounterclockwiseUTurnPause\Settings.cs"/>
+        <Compile Include="Features\RevertCounterclockwiseUTurnPause\SettingsRevertCounterclockwiseUTurnPause.cs"/>
         <Compile Include="Properties\AssemblyInfo.cs"/>
         <Compile Include="Settings.cs"/>
         <Compile Include="Main.cs"/>

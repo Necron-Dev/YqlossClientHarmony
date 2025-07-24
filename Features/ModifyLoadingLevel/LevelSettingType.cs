@@ -5,8 +5,8 @@ namespace YqlossClientHarmony.Features.ModifyLoadingLevel;
 
 public class LevelSettingType(
     string? name,
-    Func<Settings, bool> enabledSelector,
-    Func<Settings, object?> overrideSelector,
+    Func<SettingsModifyLoadingLevel, bool> enabledSelector,
+    Func<SettingsModifyLoadingLevel, object?> overrideSelector,
     Action<Dictionary<string, object?>>? handler = null
 )
 {
@@ -35,7 +35,8 @@ public class LevelSettingType(
         new(
             "position",
             s => s.EnablePosition,
-            _ => new object[] { Settings.Instance.PositionX, Settings.Instance.PositionY }
+            _ => new object[]
+                { SettingsModifyLoadingLevel.Instance.PositionX, SettingsModifyLoadingLevel.Instance.PositionY }
         ),
         new("rotation", s => s.EnableRotation, s => s.Rotation),
         new("zoom", s => s.EnableZoom, s => s.Zoom),
@@ -54,9 +55,9 @@ public class LevelSettingType(
 
     public void Modify(Dictionary<string, object?> settings)
     {
-        if (!enabledSelector(Settings.Instance)) return;
+        if (!enabledSelector(SettingsModifyLoadingLevel.Instance)) return;
 
         if (name is null) handler?.Invoke(settings);
-        else settings[name] = overrideSelector(Settings.Instance);
+        else settings[name] = overrideSelector(SettingsModifyLoadingLevel.Instance);
     }
 }

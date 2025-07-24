@@ -3,9 +3,9 @@ using JetBrains.Annotations;
 namespace YqlossClientHarmony.Features.RevertCounterclockwiseUTurnPause;
 
 [NoReorder]
-public class Settings
+public class SettingsRevertCounterclockwiseUTurnPause
 {
-    public static Settings Instance { get; } = new();
+    public static SettingsRevertCounterclockwiseUTurnPause Instance { get; } = new();
 
     public bool Enabled => Main.Enabled && Main.Settings.EnableRevertCounterclockwiseUTurnPause;
 }

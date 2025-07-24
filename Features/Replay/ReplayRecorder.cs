@@ -34,7 +34,7 @@ public static class ReplayRecorder
             {
                 var fileName = ReplayUtils.ReplayFileName(replay);
                 Main.Mod.Logger.Log($"saving replay as {fileName}");
-                Directory.CreateDirectory(Settings.Instance.ReplayStorageLocation);
+                Directory.CreateDirectory(SettingsReplay.Instance.ReplayStorageLocation);
                 ReplayEncoder.LaunchCompressAndSaveAs(replay, fileName);
             }
         });
@@ -143,7 +143,7 @@ public static class ReplayRecorder
                 floorId - lastFloorId
             ));
 
-            if (Settings.Instance.Verbose)
+            if (SettingsReplay.Instance.Verbose)
                 Main.Mod.Logger.Log($"meter: {errorMeter} margin: {hitMargin} dseq: {floorId - lastFloorId}");
         });
     }
@@ -181,7 +181,7 @@ public static class ReplayRecorder
                 lastFloorId = lastFloorIdNullable.Value;
             }
 
-            if (Settings.Instance.StoreSyncKeyCode)
+            if (SettingsReplay.Instance.StoreSyncKeyCode)
             {
                 keyCode = KeyCodeMapping.GetSyncKeyCode(keyCode);
 
@@ -204,7 +204,7 @@ public static class ReplayRecorder
 
             ++KeysWithoutAngleCorrection;
 
-            if (Settings.Instance.Verbose)
+            if (SettingsReplay.Instance.Verbose)
                 Main.Mod.Logger.Log(
                     $"key: {keyCode} up: {isKeyUp} dseq: {floorId - lastFloorId} pos: {songSeconds} auto: {autoFloor} locked: {inputLocked}");
         });
@@ -218,7 +218,7 @@ public static class ReplayRecorder
             {
                 replay.AngleCorrections.Add(angle);
 
-                if (Settings.Instance.Verbose) Main.Mod.Logger.Log($"angle: {angle}");
+                if (SettingsReplay.Instance.Verbose) Main.Mod.Logger.Log($"angle: {angle}");
             }
         });
     }
@@ -239,7 +239,7 @@ public static class ReplayRecorder
             LastIterationFirstKeyIndex = CurrentIterationFirstKeyIndex;
             CurrentIterationFirstKeyIndex = Math.Min(CurrentIterationFirstKeyIndex + count, replay.KeyEvents.Count);
 
-            if (Settings.Instance.Verbose)
+            if (SettingsReplay.Instance.Verbose)
                 Main.Mod.Logger.Log(
                     $"iteration advance: +{count} {CurrentIterationFirstKeyIndex} total: {replay.KeyEvents.Count}");
         });
@@ -252,7 +252,7 @@ public static class ReplayRecorder
             var i = CurrentIterationFirstKeyIndex;
             if (i >= replay.KeyEvents.Count) return;
             replay.KeyEvents[i] = MarkKeyEvent(replay.KeyEvents[i], auto, !responsive);
-            if (Settings.Instance.Verbose)
+            if (SettingsReplay.Instance.Verbose)
                 Main.Mod.Logger.Log($"mark input locked: index: {i} {auto} {!responsive}");
         });
     }

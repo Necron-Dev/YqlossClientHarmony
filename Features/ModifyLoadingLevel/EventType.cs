@@ -5,7 +5,7 @@ namespace YqlossClientHarmony.Features.ModifyLoadingLevel;
 
 public class EventType(
     string? name,
-    Func<Settings, bool> settingSelector,
+    Func<SettingsModifyLoadingLevel, bool> settingSelector,
     Func<Dictionary<string, object?>, bool>? filter = null
 )
 {
@@ -76,7 +76,7 @@ public class EventType(
 
     public bool Matches(Dictionary<string, object?> actionOrDecoration)
     {
-        return settingSelector(Settings.Instance) && MatchesName(actionOrDecoration) &&
+        return settingSelector(SettingsModifyLoadingLevel.Instance) && MatchesName(actionOrDecoration) &&
                MatchesFilter(actionOrDecoration);
     }
 }

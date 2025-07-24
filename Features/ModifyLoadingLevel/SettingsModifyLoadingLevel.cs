@@ -5,9 +5,9 @@ using UnityModManagerNet;
 namespace YqlossClientHarmony.Features.ModifyLoadingLevel;
 
 [NoReorder]
-public class Settings
+public class SettingsModifyLoadingLevel
 {
-    public static Settings Instance => Main.Settings.ModifyLoadingLevelSettings;
+    public static SettingsModifyLoadingLevel Instance => Main.Settings.ModifyLoadingLevelSettings;
 
     public bool Enabled => Main.Enabled && Main.Settings.EnableModifyLoadingLevel;
 

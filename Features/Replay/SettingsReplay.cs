@@ -7,9 +7,9 @@ using UnityModManagerNet;
 namespace YqlossClientHarmony.Features.Replay;
 
 [NoReorder]
-public class Settings
+public class SettingsReplay
 {
-    public static Settings Instance => Main.Settings.ReplaySettings;
+    public static SettingsReplay Instance => Main.Settings.ReplaySettings;
 
     public bool Enabled => Main.Enabled && Main.Settings.EnableReplay;
 

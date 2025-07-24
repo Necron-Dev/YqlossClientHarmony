@@ -17,7 +17,7 @@ public static class Injections
             string key
         )
         {
-            if (!Settings.Instance.Enabled) return __exception;
+            if (!SettingsFixSetInputEventCrash.Instance.Enabled) return __exception;
             if (__exception is null) return null;
             if (__exception is not KeyNotFoundException) return __exception;
 

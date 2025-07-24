@@ -72,7 +72,7 @@ public static class Injections
             int seqID
         )
         {
-            if (!Settings.Instance.Enabled) return;
+            if (!SettingsReplay.Instance.Enabled) return;
             if (ADOBase.isOfficialLevel) return;
             if (RDC.auto)
             {
@@ -244,7 +244,7 @@ public static class Injections
                 ReplayRecorder.OnKeyEvent(
                     0x1000 + key.Key,
                     key.Type == EventType.KeyReleased,
-                    DspToSong(TickToDsp(ticks), Settings.Instance.AsyncRecordingOffset / 1000.0)
+                    DspToSong(TickToDsp(ticks), SettingsReplay.Instance.AsyncRecordingOffset / 1000.0)
                 );
         }
     }
@@ -312,7 +312,7 @@ public static class Injections
                     ReplayRecorder.OnKeyEvent(
                         (int)mainKey,
                         isKeyUp,
-                        DspToSong(Adofai.Conductor.dspTime, Settings.Instance.SyncRecordingOffset / 1000.0)
+                        DspToSong(Adofai.Conductor.dspTime, SettingsReplay.Instance.SyncRecordingOffset / 1000.0)
                     );
                     SyncKeyDownMap[mainKey] = !isKeyUp;
                 }

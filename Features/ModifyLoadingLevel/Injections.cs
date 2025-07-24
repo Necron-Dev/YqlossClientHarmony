@@ -56,7 +56,7 @@ public static class Injections
             ref string __result
         )
         {
-            if (!Settings.Instance.Enabled) return;
+            if (!SettingsModifyLoadingLevel.Instance.Enabled) return;
             if (!IsInLoadLevelMethod) return;
 
             try

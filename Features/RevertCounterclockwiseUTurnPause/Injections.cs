@@ -16,7 +16,7 @@ public static class Injections
     {
         public static void Prefix()
         {
-            if (!Settings.Instance.Enabled) return;
+            if (!SettingsRevertCounterclockwiseUTurnPause.Instance.Enabled) return;
 
             IsInPlayMethod = true;
         }
@@ -53,7 +53,7 @@ public static class Injections
             List<LevelEvent>[]? floorEvents
         )
         {
-            if (!Settings.Instance.Enabled) return;
+            if (!SettingsRevertCounterclockwiseUTurnPause.Instance.Enabled) return;
             if (!IsInPlayMethod) return;
 
             List<LevelEvent>[] notNullFloorEvents;

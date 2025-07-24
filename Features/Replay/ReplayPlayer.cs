@@ -171,7 +171,7 @@ public static class ReplayPlayer
                 Main.Mod.Logger.Warning(
                     $"[Floor {floorId}] hit margin floor id mismatch {eventFloorId}. judgements may be incorrect");
 
-            if (Settings.Instance.Verbose)
+            if (SettingsReplay.Instance.Verbose)
                 Main.Mod.Logger.Log($"[Floor {floorId}] acc: {eventFloorId} margin: {hitMargin}");
 
             if (!Adofai.Controller.midspinInfiniteMargin) return hitMargin;
@@ -182,7 +182,7 @@ public static class ReplayPlayer
 
             var (nextMeter, nextMeterFloor) = errorMeters.Dequeue();
 
-            if (Settings.Instance.Verbose)
+            if (SettingsReplay.Instance.Verbose)
                 Main.Mod.Logger.Log($"[Floor {floorId}] acc: {eventFloorId} midspin meter");
 
             if (floorId != nextMeterFloor)
@@ -218,7 +218,7 @@ public static class ReplayPlayer
                 Main.Mod.Logger.Warning(
                     $"[Floor {floorId}] error meter floor id mismatch {eventFloorId}. judgements may be incorrect");
 
-            if (Settings.Instance.Verbose)
+            if (SettingsReplay.Instance.Verbose)
                 Main.Mod.Logger.Log($"[Floor {floorId}] acc: {eventFloorId} meter: {errorMeter}");
 
             return errorMeter;
@@ -246,7 +246,7 @@ public static class ReplayPlayer
                 Main.Mod.Logger.Warning(
                     $"[Floor {floorId}] get hit margin floor id mismatch {eventFloorId}. judgements may be incorrect");
 
-            if (Settings.Instance.Verbose)
+            if (SettingsReplay.Instance.Verbose)
                 Main.Mod.Logger.Log($"[Floor {floorId}] get acc: {eventFloorId} margin: {hitMargin}");
 
             return hitMargin switch
@@ -279,7 +279,7 @@ public static class ReplayPlayer
                 Adofai.Controller.Simulated_PlayerControl_Update();
                 AllowGameToUpdateInput = false;
                 if (Adofai.CurrentFloorId == floorId) break;
-                if (Settings.Instance.Verbose) Main.Mod.Logger.Log("auto floor");
+                if (SettingsReplay.Instance.Verbose) Main.Mod.Logger.Log("auto floor");
             }
         }
 
@@ -311,7 +311,7 @@ public static class ReplayPlayer
                 }
 
                 if (HitMargins?.Count == hitMarginCount) return true;
-                if (Settings.Instance.Verbose) Main.Mod.Logger.Log("fail miss");
+                if (SettingsReplay.Instance.Verbose) Main.Mod.Logger.Log("fail miss");
             }
         }
 
@@ -323,7 +323,7 @@ public static class ReplayPlayer
         WithReplay(_ =>
         {
             var songSeconds =
-                Injections.DspToSong(Adofai.Conductor.dspTime, Settings.Instance.PlayingOffset / 1000.0);
+                Injections.DspToSong(Adofai.Conductor.dspTime, SettingsReplay.Instance.PlayingOffset / 1000.0);
 
             var isKeyDown = IsKeyDown;
             var isKeyUp = IsKeyUp;
@@ -384,7 +384,7 @@ public static class ReplayPlayer
                     if (key.SongSeconds > songSeconds)
                         break;
 
-                    if (Settings.Instance.Verbose)
+                    if (SettingsReplay.Instance.Verbose)
                         Main.Mod.Logger.Log(
                             $"[Floor {floorId}] acc: {keyFloor} simulate key: {syncKeyCode}({key.KeyCode}) up: {key.IsKeyUp} dseq: {key.FloorIdIncrement} pos: {key.SongSeconds} auto: {key.IsAutoFloor} locked: {key.IsInputLocked}"
                         );
@@ -417,7 +417,7 @@ public static class ReplayPlayer
                     NextCheckFailMiss = false;
                     AllowAuto = false;
 
-                    if (Settings.Instance.Verbose) Main.Mod.Logger.Log("begin simulation");
+                    if (SettingsReplay.Instance.Verbose) Main.Mod.Logger.Log("begin simulation");
 
                     if (key is { IsAutoFloor: false, IsInputLocked: false })
                     {
@@ -444,7 +444,7 @@ public static class ReplayPlayer
                             Adofai.Controller.Simulated_PlayerControl_Update(1);
                         }
 
-                        if (Settings.Instance.Verbose) Main.Mod.Logger.Log("end simulation");
+                        if (SettingsReplay.Instance.Verbose) Main.Mod.Logger.Log("end simulation");
                     }
                     else
                     {
@@ -453,10 +453,10 @@ public static class ReplayPlayer
                         if (angleCorrections is not null && angleCorrections.Count != 0)
                         {
                             angleCorrections.Dequeue();
-                            if (Settings.Instance.Verbose) Main.Mod.Logger.Log("consume angle correction");
+                            if (SettingsReplay.Instance.Verbose) Main.Mod.Logger.Log("consume angle correction");
                         }
 
-                        if (Settings.Instance.Verbose) Main.Mod.Logger.Log("skip simulation");
+                        if (SettingsReplay.Instance.Verbose) Main.Mod.Logger.Log("skip simulation");
                     }
 
                     isKeyDown.Clear();
@@ -502,7 +502,7 @@ public static class ReplayPlayer
 
             var (angleCorrection, eventFloorId) = angleCorrections.Dequeue();
 
-            if (Settings.Instance.Verbose)
+            if (SettingsReplay.Instance.Verbose)
                 Main.Mod.Logger.Log($"[Floor {floorId}] acc: {eventFloorId} angle: {angleCorrection}");
 
             return CachedAngleCorrection = angleCorrection;

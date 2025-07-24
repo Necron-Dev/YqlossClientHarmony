@@ -56,7 +56,7 @@ public static class ReplayGUI
 
         string[] levelPaths = StandaloneFileBrowser.OpenFilePanel(
             "Load Replay",
-            Settings.Instance.ReplayStorageLocation,
+            SettingsReplay.Instance.ReplayStorageLocation,
             [new ExtensionFilter("Compressed YCH Replay", "ychreplay.gz")],
             false
         );

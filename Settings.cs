@@ -1,6 +1,7 @@
 using System;
 using JetBrains.Annotations;
 using UnityModManagerNet;
+using YqlossClientHarmony.Features.ModifyLoadingLevel;
 using YqlossClientHarmony.Features.Replay;
 
 namespace YqlossClientHarmony;
@@ -20,12 +21,12 @@ public class Settings : UnityModManager.ModSettings, IDrawable
     [Draw("Modify Loading Level")] public bool EnableModifyLoadingLevel = false;
 
     [Draw("Modify Loading Level Settings", Collapsible = true)]
-    public Features.ModifyLoadingLevel.Settings ModifyLoadingLevelSettings = new();
+    public SettingsModifyLoadingLevel ModifyLoadingLevelSettings = new();
 
     [Draw("Replay")] public bool EnableReplay = false;
 
     [Draw("Replay Settings", Collapsible = true)]
-    public Features.Replay.Settings ReplaySettings = new();
+    public SettingsReplay ReplaySettings = new();
 
     public void OnChange()
     {
