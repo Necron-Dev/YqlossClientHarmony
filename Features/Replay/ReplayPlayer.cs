@@ -320,8 +320,6 @@ public static class ReplayPlayer
                 return;
             }
 
-            if (lastKeyStates is null) return;
-
             while (keyEvents.Count != 0)
             {
                 var floorId = Adofai.CurrentFloorId;

@@ -16,11 +16,9 @@ public static class ReplayRecorder
 
     private static int? LastFloorIdKeyEvent { get; set; }
 
-    public static int KeysWithoutAngleCorrection { get; set; }
+    private static int KeysWithoutAngleCorrection { get; set; }
 
-    public static int LastIterationFirstKeyIndex { get; set; }
-
-    public static int CurrentIterationFirstKeyIndex { get; set; }
+    private static int CurrentIterationFirstKeyIndex { get; set; }
 
     public static void SaveAndResetReplay()
     {
@@ -212,8 +210,7 @@ public static class ReplayRecorder
         var replay = Replay;
         if (replay is null) return;
 
-        LastIterationFirstKeyIndex = CurrentIterationFirstKeyIndex =
-            Math.Max(0, replay.KeyEvents.Count - stacked);
+        CurrentIterationFirstKeyIndex = Math.Max(0, replay.KeyEvents.Count - stacked);
     }
 
     public static void OnKeysProcessed(int count)
@@ -221,7 +218,6 @@ public static class ReplayRecorder
         var replay = Replay;
         if (replay is null) return;
 
-        LastIterationFirstKeyIndex = CurrentIterationFirstKeyIndex;
         CurrentIterationFirstKeyIndex = Math.Min(CurrentIterationFirstKeyIndex + count, replay.KeyEvents.Count);
 
         if (SettingsReplay.Instance.Verbose)
