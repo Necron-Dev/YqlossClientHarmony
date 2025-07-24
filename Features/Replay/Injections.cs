@@ -647,4 +647,13 @@ public static class Injections
             return !ReplayPlayer.PlayingReplay;
         }
     }
+
+    [HarmonyPatch(typeof(scnEditor), "ClearAllFloorOffsets")]
+    public static class Inject_scnEditor_ClearAllFloorOffsets
+    {
+        public static void Prefix()
+        {
+            ReplayPlayer.UnloadReplay();
+        }
+    }
 }
