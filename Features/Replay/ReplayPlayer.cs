@@ -22,6 +22,8 @@ public static class ReplayPlayer
 
     private static Dictionary<int, bool> KeyStates { get; set; } = [];
 
+    private static Dictionary<int, bool> KeyStatesForReceivers { get; set; } = [];
+
     private static HashSet<int> IsKeyDown { get; } = [];
 
     private static HashSet<int> IsKeyUp { get; } = [];
@@ -303,9 +305,8 @@ public static class ReplayPlayer
         var isKeyDown = IsKeyDown;
         var isKeyUp = IsKeyUp;
 
-        Dictionary<int, bool> keyStatesForReceivers = new(KeyStates);
-
         var lastKeyStates = KeyStates;
+        var lastKeyStatesForReceivers = KeyStatesForReceivers;
 
         isKeyDown.Clear();
         isKeyUp.Clear();
@@ -444,15 +445,15 @@ public static class ReplayPlayer
                 if (ProcessAutoFloorAndFailMiss()) onlyAllowRelease = true;
             }
 
+            isKeyDown.Clear();
+            isKeyUp.Clear();
+            Adofai.Controller.keyTimes.Clear();
+            AnyKeyDown = false;
             KeyStates = lastKeyStates;
 
             var keyEventsForReceivers = KeyEventsForReceivers;
 
             if (keyEventsForReceivers is null) return;
-
-            isKeyDown.Clear();
-            isKeyUp.Clear();
-            KeyStates = keyStatesForReceivers;
 
             while (keyEventsForReceivers.Count != 0)
             {
@@ -463,7 +464,7 @@ public static class ReplayPlayer
 
                 keyEventsForReceivers.Dequeue();
 
-                keyStatesForReceivers = KeyStates = new Dictionary<int, bool>(keyStatesForReceivers)
+                lastKeyStatesForReceivers = KeyStatesForReceivers = new Dictionary<int, bool>(lastKeyStatesForReceivers)
                 {
                     [syncKeyCode] = !key.IsKeyUp
                 };
@@ -477,6 +478,8 @@ public static class ReplayPlayer
             isKeyUp.Clear();
             Adofai.Controller.keyTimes.Clear();
             AnyKeyDown = false;
+            KeyStates = lastKeyStates;
+            KeyStatesForReceivers = lastKeyStatesForReceivers;
         }
     }
 
@@ -534,7 +537,7 @@ public static class ReplayPlayer
     {
         if (!PlayingReplay) return true;
         if (keyCode == KeyCode.Escape) return true;
-        result = KeyStates.GetValueOrDefault((int)keyCode, false);
+        result = KeyStatesForReceivers.GetValueOrDefault((int)keyCode, false);
         return false;
     }
 
