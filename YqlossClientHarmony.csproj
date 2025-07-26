@@ -512,8 +512,10 @@
         <Compile Include="Features\ModifyLoadingLevel\SettingsModifyLoadingLevel.cs"/>
         <Compile Include="Features\Replay\ConcurrentCondition.cs"/>
         <Compile Include="Features\Replay\Condition.cs"/>
+        <Compile Include="Features\Replay\IKeyEventReceiver.cs"/>
         <Compile Include="Features\Replay\Injections.cs"/>
         <Compile Include="Features\Replay\KeyCodeMapping.cs"/>
+        <Compile Include="Features\Replay\KeyEventReceiverManager.cs"/>
         <Compile Include="Features\Replay\MyQueue.cs"/>
         <Compile Include="Features\Replay\Replay.cs"/>
         <Compile Include="Features\Replay\ReplayConstants.cs"/>
@@ -525,6 +527,7 @@
         <Compile Include="Features\Replay\ReplayRecorder.cs"/>
         <Compile Include="Features\Replay\ReplayUtils.cs"/>
         <Compile Include="Features\Replay\SettingsReplay.cs"/>
+        <Compile Include="Features\Replay\ReplayInputKeyEventReceiver.cs"/>
         <Compile Include="Features\RevertCounterclockwiseUTurnPause\Injections.cs"/>
         <Compile Include="Features\RevertCounterclockwiseUTurnPause\SettingsRevertCounterclockwiseUTurnPause.cs"/>
         <Compile Include="Properties\AssemblyInfo.cs"/>

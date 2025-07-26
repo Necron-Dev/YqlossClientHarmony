@@ -14,7 +14,9 @@ public static class ReplayPlayer
 
     private static MyQueue<(double, int)>? ErrorMeters { get; set; }
 
-    private static MyQueue<(Replay.KeyEventType, int)>? KeyEvents { get; set; }
+    private static MyQueue<Replay.KeyEventType>? KeyEvents { get; set; }
+
+    private static MyQueue<Replay.KeyEventType>? KeyEventsForReceivers { get; set; }
 
     private static MyQueue<(double, int)>? AngleCorrections { get; set; }
 
@@ -38,6 +40,8 @@ public static class ReplayPlayer
 
     public static void StartPlaying(int floorId)
     {
+        _ = KeyEventReceiverManager.Instance;
+
         var replay = Replay;
         if (replay is null) return;
 
@@ -53,9 +57,11 @@ public static class ReplayPlayer
 
         {
             var accumulatedFloorId = replay.Metadata.StartingFloorId;
-            MyQueue<(Replay.KeyEventType, int)> keyEvents = new();
+            MyQueue<Replay.KeyEventType> keyEvents = new();
+            MyQueue<Replay.KeyEventType> keyEventsForReceivers = new();
             MyQueue<(double, int)> angleCorrections = new();
             KeyEvents = keyEvents;
+            KeyEventsForReceivers = keyEventsForReceivers;
             AngleCorrections = angleCorrections;
             var keyIndex = 0;
 
@@ -69,7 +75,8 @@ public static class ReplayPlayer
                     continue;
                 }
 
-                keyEvents.Enqueue((keyEvent, accumulatedFloorId));
+                keyEvents.Enqueue(keyEvent);
+                keyEventsForReceivers.Enqueue(keyEvent);
                 if (keyIndex < replay.AngleCorrections.Count)
                     angleCorrections.Enqueue((replay.AngleCorrections[keyIndex], accumulatedFloorId));
                 ++keyIndex;
@@ -91,12 +98,20 @@ public static class ReplayPlayer
             }
         }
 
+        KeyEventReceiverManager.Instance.Begin();
+
         Main.Mod.Logger.Log("starting to play replay");
     }
 
     public static void EndPlaying()
     {
-        if (PlayingReplay) Main.Mod.Logger.Log("stopped playing replay");
+        if (PlayingReplay)
+        {
+            Main.Mod.Logger.Log("stopped playing replay");
+
+            KeyEventReceiverManager.Instance.End();
+        }
+
         PlayingReplay = false;
         HitMargins = null;
         ErrorMeters = null;
@@ -288,6 +303,8 @@ public static class ReplayPlayer
         var isKeyDown = IsKeyDown;
         var isKeyUp = IsKeyUp;
 
+        Dictionary<int, bool> keyStatesForReceivers = new(KeyStates);
+
         var lastKeyStates = KeyStates;
 
         isKeyDown.Clear();
@@ -324,7 +341,7 @@ public static class ReplayPlayer
             {
                 var floorId = Adofai.CurrentFloorId;
 
-                var (key, keyFloor) = keyEvents.Peek();
+                var key = keyEvents.Peek();
                 var syncKeyCode = KeyCodeMapping.GetSyncKeyCode(key.KeyCode);
 
                 if (onlyAllowRelease && !key.IsKeyUp) break;
@@ -338,12 +355,11 @@ public static class ReplayPlayer
                     if (!key.IsInputLocked && !Adofai.Controller.responsive) break;
                 }
 
-                if (key.SongSeconds > songSeconds)
-                    break;
+                if (key.SongSeconds > songSeconds) break;
 
                 if (SettingsReplay.Instance.Verbose)
                     Main.Mod.Logger.Log(
-                        $"[Floor {floorId}] acc: {keyFloor} simulate key: {syncKeyCode}({key.KeyCode}) up: {key.IsKeyUp} dseq: {key.FloorIdIncrement} pos: {key.SongSeconds} auto: {key.IsAutoFloor} locked: {key.IsInputLocked}"
+                        $"[Floor {floorId}] simulate key: {syncKeyCode}({key.KeyCode}) up: {key.IsKeyUp} dseq: {key.FloorIdIncrement} pos: {key.SongSeconds} auto: {key.IsAutoFloor} locked: {key.IsInputLocked}"
                     );
 
                 var keyStates = KeyStates = new Dictionary<int, bool>(lastKeyStates)
@@ -427,6 +443,33 @@ public static class ReplayPlayer
 
                 if (ProcessAutoFloorAndFailMiss()) onlyAllowRelease = true;
             }
+
+            KeyStates = lastKeyStates;
+
+            var keyEventsForReceivers = KeyEventsForReceivers;
+
+            if (keyEventsForReceivers is null) return;
+
+            isKeyDown.Clear();
+            isKeyUp.Clear();
+            KeyStates = keyStatesForReceivers;
+
+            while (keyEventsForReceivers.Count != 0)
+            {
+                var key = keyEventsForReceivers.Peek();
+                var syncKeyCode = KeyCodeMapping.GetSyncKeyCode(key.KeyCode);
+
+                if (key.SongSeconds > songSeconds) break;
+
+                keyEventsForReceivers.Dequeue();
+
+                keyStatesForReceivers = KeyStates = new Dictionary<int, bool>(keyStatesForReceivers)
+                {
+                    [syncKeyCode] = !key.IsKeyUp
+                };
+
+                KeyEventReceiverManager.Instance.OnKey((KeyCode)syncKeyCode, !key.IsKeyUp);
+            }
         }
         finally
         {
@@ -434,7 +477,6 @@ public static class ReplayPlayer
             isKeyUp.Clear();
             Adofai.Controller.keyTimes.Clear();
             AnyKeyDown = false;
-            KeyStates = lastKeyStates;
         }
     }
 
