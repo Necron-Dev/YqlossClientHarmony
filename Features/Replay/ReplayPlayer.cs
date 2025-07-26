@@ -237,7 +237,7 @@ public static class ReplayPlayer
         };
     }
 
-    private static bool ProcessAutoFloorAndFailMiss()
+    private static void ProcessAutoFloorAndFailMiss()
     {
         {
             for (
@@ -287,12 +287,10 @@ public static class ReplayPlayer
                     break;
                 }
 
-                if (HitMargins?.Count == hitMarginCount) return true;
+                if (HitMargins?.Count == hitMarginCount) return;
                 if (SettingsReplay.Instance.Verbose) Main.Mod.Logger.Log("fail miss");
             }
         }
-
-        return false;
     }
 
     public static void UpdateReplayKeyStates()
@@ -315,7 +313,7 @@ public static class ReplayPlayer
 
         try
         {
-            var onlyAllowRelease = ProcessAutoFloorAndFailMiss();
+            ProcessAutoFloorAndFailMiss();
 
             var keyEvents = KeyEvents;
 
@@ -344,8 +342,6 @@ public static class ReplayPlayer
 
                 var key = keyEvents.Peek();
                 var syncKeyCode = KeyCodeMapping.GetSyncKeyCode(key.KeyCode);
-
-                if (onlyAllowRelease && !key.IsKeyUp) break;
 
                 var nextFloor = Adofai.Controller.currFloor.nextfloor;
                 var autoFloor = nextFloor != null && nextFloor.auto;
@@ -442,7 +438,7 @@ public static class ReplayPlayer
                 CachedAngleCorrection = null;
                 lastKeyStates = keyStates;
 
-                if (ProcessAutoFloorAndFailMiss()) onlyAllowRelease = true;
+                ProcessAutoFloorAndFailMiss();
             }
 
             isKeyDown.Clear();
