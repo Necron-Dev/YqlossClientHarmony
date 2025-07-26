@@ -32,6 +32,9 @@ public class SettingsReplay
     [Draw("Store Synchronous Key Code In Asynchronous Input Mode 在使用异步输入模式时存储同步键码")]
     public bool StoreSyncKeyCode = false;
 
+    [Draw("Only Record The Last Key Release When A Key Is Released Multiple Times 当按键被松开多次时只记录最后一次")]
+    public bool OnlyStoreLastInMultiReleases = false;
+
     [Header("The option below should be 0. 以下的选项值应该为 0。")] [Draw("Playing Offset (ms) 播放偏移（毫秒）")]
     public double PlayingOffset = 0.0;
 

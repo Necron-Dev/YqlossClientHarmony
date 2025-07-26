@@ -1,6 +1,8 @@
 using System;
+using System.Collections.Generic;
 using System.IO;
 using System.IO.Compression;
+using System.Linq;
 using System.Threading;
 using System.Windows.Forms;
 
@@ -129,6 +131,7 @@ public static class ReplayEncoder
 
     public static void CompressAndSaveAs(Replay replay, string path)
     {
+        HandleMultiReleases(replay.KeyEvents);
         var data = Encode(replay);
         try
         {
@@ -173,5 +176,29 @@ public static class ReplayEncoder
                 throw;
             }
         }) { IsBackground = false }.Start();
+    }
+
+    private static void HandleMultiReleases(List<Replay.KeyEventType> keyEvents)
+    {
+        if (!SettingsReplay.Instance.OnlyStoreLastInMultiReleases) return;
+
+        List<Replay.KeyEventType> filtered = [];
+        Dictionary<int, bool> isKeyDown = [];
+
+        foreach (var keyEvent in Enumerable.Reverse(keyEvents))
+            if (keyEvent.IsKeyUp)
+            {
+                if (!isKeyDown.GetValueOrDefault(keyEvent.KeyCode, true)) continue;
+                isKeyDown[keyEvent.KeyCode] = false;
+                filtered.Add(keyEvent);
+            }
+            else
+            {
+                isKeyDown[keyEvent.KeyCode] = true;
+                filtered.Add(keyEvent);
+            }
+
+        keyEvents.Clear();
+        keyEvents.AddRange(Enumerable.Reverse(filtered));
     }
 }
