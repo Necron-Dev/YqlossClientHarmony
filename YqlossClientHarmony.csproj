@@ -510,6 +510,7 @@
         <Compile Include="Features\ModifyLoadingLevel\Injections.cs"/>
         <Compile Include="Features\ModifyLoadingLevel\LevelSettingType.cs"/>
         <Compile Include="Features\ModifyLoadingLevel\SettingsModifyLoadingLevel.cs"/>
+        <Compile Include="Features\Replay\CompatibilityOverlayer.cs"/>
         <Compile Include="Features\Replay\ConcurrentCondition.cs"/>
         <Compile Include="Features\Replay\Condition.cs"/>
         <Compile Include="Features\Replay\IKeyEventReceiver.cs"/>

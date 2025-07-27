@@ -48,6 +48,7 @@ public static class ReplayPlayer
     public static void StartPlaying(int floorId)
     {
         _ = KeyEventReceiverManager.Instance;
+        _ = CompatibilityOverlayer.Instance;
 
         var replay = Replay;
         if (replay is null) return;

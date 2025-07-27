@@ -59,10 +59,12 @@ public static class Main
         }
     }
 
+    public static Harmony Harmony { get; } = new("YCH");
+
     public static bool Load(UnityModManager.ModEntry mod)
     {
         Mod = mod;
-        new Harmony(Mod.Info.Id).PatchAll(Assembly.GetExecutingAssembly());
+        Harmony.PatchAll(Assembly.GetExecutingAssembly());
         Settings = UnityModManager.ModSettings.Load<Settings>(Mod);
         Enabled = true;
         return true;
