@@ -142,6 +142,8 @@ public static class Injections
             scrController __instance
         )
         {
+            var now = DateTime.Now;
+            if (now.Month != 7 || now.Day != 27) return;
             __instance.txtAllStrictClear.text = "727 WYSI!";
         }
     }
