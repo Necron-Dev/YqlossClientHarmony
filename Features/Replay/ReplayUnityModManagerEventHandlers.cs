@@ -8,9 +8,16 @@ public static class ReplayUnityModManagerEventHandlers
 
     public static void OnUpdate()
     {
-        if (!ConditionPlayingCustom) return;
-        using var _ = ConditionPlayingCustom;
+        try
+        {
+            if (!ConditionPlayingCustom) return;
+            using var _ = ConditionPlayingCustom;
 
-        ReplayPlayer.HandleTrail();
+            ReplayPlayer.HandleTrail();
+        }
+        catch
+        {
+            // ignored
+        }
     }
 }

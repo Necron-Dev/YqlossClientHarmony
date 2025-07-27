@@ -80,6 +80,13 @@ public static class Main
 
     private static void OnUpdate(UnityModManager.ModEntry mod, float _)
     {
-        ReplayUnityModManagerEventHandlers.OnUpdate();
+        try
+        {
+            ReplayUnityModManagerEventHandlers.OnUpdate();
+        }
+        catch
+        {
+            // ignored
+        }
     }
 }

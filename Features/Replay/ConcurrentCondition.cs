@@ -26,8 +26,8 @@ public class ConcurrentCondition(Func<bool> predicate, Action? onTrue = null, Ac
             return false;
         }
 
-        ++condition.Counter.Value;
         condition.OnTrue?.Invoke();
+        ++condition.Counter.Value;
         return true;
     }
 }

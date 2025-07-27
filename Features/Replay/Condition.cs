@@ -25,8 +25,8 @@ public class Condition(Func<bool> predicate, Action? onTrue = null, Action? onFa
             return false;
         }
 
-        ++condition.Counter;
         condition.OnTrue?.Invoke();
+        ++condition.Counter;
         return true;
     }
 }
