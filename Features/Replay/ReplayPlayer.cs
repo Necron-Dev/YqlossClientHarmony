@@ -274,7 +274,7 @@ public static class ReplayPlayer
         };
     }
 
-    private static void ProcessAutoFloorAndFailMiss()
+    private static bool ProcessAutoFloorAndFailMiss()
     {
         {
             for (
@@ -324,10 +324,12 @@ public static class ReplayPlayer
                     break;
                 }
 
-                if (HitMargins?.Count == hitMarginCount) return;
+                if (HitMargins?.Count == hitMarginCount) return true;
                 if (SettingsReplay.Instance.Verbose) Main.Mod.Logger.Log("fail miss");
             }
         }
+
+        return false;
     }
 
     public static void HandleTrail()
@@ -420,7 +422,7 @@ public static class ReplayPlayer
 
         try
         {
-            ProcessAutoFloorAndFailMiss();
+            if (ProcessAutoFloorAndFailMiss()) return;
 
             var keyEvents = KeyEvents;
 
@@ -545,7 +547,7 @@ public static class ReplayPlayer
                 CachedAngleCorrection = null;
                 lastKeyStates = keyStates;
 
-                ProcessAutoFloorAndFailMiss();
+                if (ProcessAutoFloorAndFailMiss()) return;
             }
         }
         finally
