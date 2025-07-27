@@ -125,6 +125,7 @@ public static class Injections
             ReplayPlayer.UnloadReplay();
             ReplayRecorder.EndRecording();
             ReplayPlayer.EndPlaying();
+            ReplayPlayer.ResetTrailingAnimation();
         }
     }
 
@@ -145,6 +146,7 @@ public static class Injections
         {
             ReplayRecorder.EndRecording();
             ReplayPlayer.EndPlaying();
+            ReplayPlayer.ResetTrailingAnimation();
         }
     }
 
@@ -324,7 +326,7 @@ public static class Injections
             KeyCode key
         )
         {
-            return !ReplayPlayer.PlayingReplay || ReplayPlayer.OnGetKey(key, ref __result);
+            return ReplayPlayer.OnGetKey(key, ref __result);
         }
     }
 

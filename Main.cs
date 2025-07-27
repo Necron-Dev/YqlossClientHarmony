@@ -2,6 +2,7 @@ using System;
 using System.Reflection;
 using HarmonyLib;
 using UnityModManagerNet;
+using YqlossClientHarmony.Features.Replay;
 
 namespace YqlossClientHarmony;
 
@@ -30,6 +31,8 @@ public static class Main
             _mod.OnGUI += mod => Settings.DrawGUI(mod);
 
             _mod.OnSaveGUI += mod => Settings.Save(mod);
+
+            _mod.OnUpdate += OnUpdate;
         }
     }
 
@@ -71,5 +74,10 @@ public static class Main
 
     private static void OnSettingChange()
     {
+    }
+
+    private static void OnUpdate(UnityModManager.ModEntry mod, float _)
+    {
+        ReplayUnityModManagerEventHandlers.OnUpdate();
     }
 }

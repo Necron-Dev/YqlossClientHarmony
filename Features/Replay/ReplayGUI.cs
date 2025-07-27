@@ -127,9 +127,9 @@ public static class ReplayGUI
 
             if (GUILayout.Button("Select 选择")) LoadReplay();
 
-            GUILayout.Label("Unload Replay 卸载回放文件");
+            GUILayout.Label("Unload Replay 取消加载回放文件");
 
-            if (GUILayout.Button("Unload 卸载")) UnloadReplay();
+            if (GUILayout.Button("Unload 取消加载")) UnloadReplay();
         }
         GUILayout.EndHorizontal();
     }

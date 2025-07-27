@@ -38,6 +38,9 @@ public class SettingsReplay
     [Header("The option below should be 0. 以下的选项值应该为 0。")] [Draw("Playing Offset (ms) 播放偏移（毫秒）")]
     public double PlayingOffset = 0.0;
 
+    [Draw("Trailing Length For Keys Held At The End Of Playing (ms) 播放结束时按住的按键拖尾长度（毫秒）")]
+    public double TrailLength = -1.0;
+
     [Header("Debug Options 调试选项")] [Draw("Verbose")]
     public bool Verbose = false;
 }

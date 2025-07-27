@@ -525,6 +525,7 @@
         <Compile Include="Features\Replay\ReplayKeyboardInputType.cs"/>
         <Compile Include="Features\Replay\ReplayPlayer.cs"/>
         <Compile Include="Features\Replay\ReplayRecorder.cs"/>
+        <Compile Include="Features\Replay\ReplayUnityModManagerEventHandlers.cs"/>
         <Compile Include="Features\Replay\ReplayUtils.cs"/>
         <Compile Include="Features\Replay\SettingsReplay.cs"/>
         <Compile Include="Features\Replay\ReplayInputKeyEventReceiver.cs"/>

@@ -40,6 +40,11 @@ public static class ReplayPlayer
 
     public static bool AllowAuto { get; set; }
 
+    private static double? TrailEndTime { get; set; }
+
+    private static double SongSeconds =>
+        Injections.DspToSong(Adofai.Conductor.dspTime, SettingsReplay.Instance.PlayingOffset / 1000.0);
+
     public static void StartPlaying(int floorId)
     {
         _ = KeyEventReceiverManager.Instance;
@@ -50,10 +55,12 @@ public static class ReplayPlayer
         PlayingReplay = true;
 
         KeyStates = [];
+        KeyStatesForReceivers = [];
         ConsumeSingleAngleCorrection = false;
         AllowGameToUpdateInput = false;
         NextCheckFailMiss = false;
         AllowAuto = false;
+        TrailEndTime = null;
 
         ReplayKeyboardInputType.Instance.MarkUpdate();
 
@@ -111,7 +118,20 @@ public static class ReplayPlayer
         {
             Main.Mod.Logger.Log("stopped playing replay");
 
-            KeyEventReceiverManager.Instance.End();
+            var trailLengthMs = SettingsReplay.Instance.TrailLength;
+
+            if (trailLengthMs <= 0)
+            {
+                TrailEndTime = null;
+                KeyEventReceiverManager.Instance.End();
+            }
+            else
+            {
+                TrailEndTime = SongSeconds + trailLengthMs / 1000.0;
+
+                if (SettingsReplay.Instance.Verbose)
+                    Main.Mod.Logger.Log($"key release scheduled at {TrailEndTime}");
+            }
         }
 
         PlayingReplay = false;
@@ -119,8 +139,17 @@ public static class ReplayPlayer
         ErrorMeters = null;
         KeyEvents = null;
         KeyStates.Clear();
+        KeyEventsForReceivers = null;
         NextCheckFailMiss = false;
         AllowAuto = false;
+    }
+
+    public static void ResetTrailingAnimation()
+    {
+        Main.Mod.Logger.Log("reset key animation");
+        TrailEndTime = null;
+        KeyStatesForReceivers.Clear();
+        KeyEventReceiverManager.Instance.End();
     }
 
     public static void OnHitMargin(ref HitMargin result)
@@ -300,12 +329,82 @@ public static class ReplayPlayer
         }
     }
 
+    public static void HandleTrail()
+    {
+        var trail = TrailEndTime;
+
+        if (!PlayingReplay && trail is null) return;
+
+        try
+        {
+            var songSeconds = SongSeconds;
+            if (!PlayingReplay && songSeconds > trail) ResetTrailingAnimation();
+        }
+        catch
+        {
+            // ignored
+        }
+    }
+
+    private static void HandleKeyEventReceivers()
+    {
+        if (!PlayingReplay) return;
+
+        var isKeyDown = IsKeyDown;
+        var isKeyUp = IsKeyUp;
+        var lastKeyStatesForReceivers = KeyStatesForReceivers;
+
+        try
+        {
+            var songSeconds = SongSeconds;
+
+            isKeyDown.Clear();
+            isKeyUp.Clear();
+            AnyKeyDown = false;
+            Adofai.Controller.keyTimes.Clear();
+
+            var keyEventsForReceivers = KeyEventsForReceivers;
+
+            if (keyEventsForReceivers is null) return;
+
+            while (keyEventsForReceivers.Count != 0)
+            {
+                var key = keyEventsForReceivers.Peek();
+                var syncKeyCode = KeyCodeMapping.GetSyncKeyCode(key.KeyCode);
+
+                if (key.SongSeconds > songSeconds) break;
+
+                keyEventsForReceivers.Dequeue();
+
+                lastKeyStatesForReceivers = KeyStatesForReceivers = new Dictionary<int, bool>(lastKeyStatesForReceivers)
+                {
+                    [syncKeyCode] = !key.IsKeyUp
+                };
+
+                KeyEventReceiverManager.Instance.OnKey((KeyCode)syncKeyCode, !key.IsKeyUp);
+            }
+        }
+        catch
+        {
+            // ignored
+        }
+        finally
+        {
+            isKeyDown.Clear();
+            isKeyUp.Clear();
+            AnyKeyDown = false;
+            Adofai.Controller.keyTimes.Clear();
+            KeyStatesForReceivers = lastKeyStatesForReceivers;
+        }
+    }
+
     public static void UpdateReplayKeyStates()
     {
         if (!PlayingReplay) return;
 
-        var songSeconds =
-            Injections.DspToSong(Adofai.Conductor.dspTime, SettingsReplay.Instance.PlayingOffset / 1000.0);
+        HandleKeyEventReceivers();
+
+        var songSeconds = SongSeconds;
 
         var isKeyDown = IsKeyDown;
         var isKeyUp = IsKeyUp;
@@ -447,33 +546,6 @@ public static class ReplayPlayer
 
                 ProcessAutoFloorAndFailMiss();
             }
-
-            isKeyDown.Clear();
-            isKeyUp.Clear();
-            Adofai.Controller.keyTimes.Clear();
-            AnyKeyDown = false;
-            KeyStates = lastKeyStates;
-
-            var keyEventsForReceivers = KeyEventsForReceivers;
-
-            if (keyEventsForReceivers is null) return;
-
-            while (keyEventsForReceivers.Count != 0)
-            {
-                var key = keyEventsForReceivers.Peek();
-                var syncKeyCode = KeyCodeMapping.GetSyncKeyCode(key.KeyCode);
-
-                if (key.SongSeconds > songSeconds) break;
-
-                keyEventsForReceivers.Dequeue();
-
-                lastKeyStatesForReceivers = KeyStatesForReceivers = new Dictionary<int, bool>(lastKeyStatesForReceivers)
-                {
-                    [syncKeyCode] = !key.IsKeyUp
-                };
-
-                KeyEventReceiverManager.Instance.OnKey((KeyCode)syncKeyCode, !key.IsKeyUp);
-            }
         }
         finally
         {
@@ -545,7 +617,7 @@ public static class ReplayPlayer
 
     public static bool OnGetKey(KeyCode keyCode, ref bool result)
     {
-        if (!PlayingReplay) return true;
+        if (!PlayingReplay && TrailEndTime is null) return true;
         if (keyCode == KeyCode.Escape) return true;
         result = KeyStatesForReceivers.GetValueOrDefault((int)keyCode, false);
         return false;
