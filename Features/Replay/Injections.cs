@@ -137,6 +137,13 @@ public static class Injections
             ReplayRecorder.EndRecording();
             ReplayPlayer.EndPlaying();
         }
+
+        public static void Postfix(
+            scrController __instance
+        )
+        {
+            __instance.txtAllStrictClear.text = "727 WYSI!";
+        }
     }
 
     [HarmonyPatch(typeof(scnEditor), "ResetScene")]
