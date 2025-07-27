@@ -194,6 +194,13 @@ public static class ReplayPlayer
 
         var (errorMeter, eventFloorId) = errorMeters.Dequeue();
 
+        if (!double.IsFinite(errorMeter))
+        {
+            Main.Mod.Logger.Warning(
+                $"[Floor {floorId}] error meter is not finite {errorMeter}. judgements may be incorrect");
+            return;
+        }
+
         if (floorId != eventFloorId)
             Main.Mod.Logger.Warning(
                 $"[Floor {floorId}] error meter floor id mismatch {eventFloorId}. judgements may be incorrect");
@@ -504,6 +511,13 @@ public static class ReplayPlayer
         if (angleCorrections is null) return true;
 
         var (angleCorrection, eventFloorId) = angleCorrections.Dequeue();
+
+        if (!double.IsFinite(angleCorrection))
+        {
+            Main.Mod.Logger.Warning(
+                $"[Floor {floorId}] angle correction is not finite {angleCorrection}. judgements may be incorrect");
+            return true;
+        }
 
         if (SettingsReplay.Instance.Verbose)
             Main.Mod.Logger.Log($"[Floor {floorId}] acc: {eventFloorId} angle: {angleCorrection}");
