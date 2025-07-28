@@ -36,6 +36,47 @@
   >
   > (7BG what the f are you doing in your code??????)
 
+## ❓ Common Issues
+
+* **I can't load the mod! "!!!"**
+
+  This is 90% because you downloaded the source code repository instead of the release file.
+
+* **My planets are stuck in the main menu!**
+
+  Update your Unity Mod Manager.
+
+* **How do I start recording a replay?**
+
+  Enable YCH and enable Replay in YCH settings. YCH will automatically record every play for you
+  until you die or win. The replay will end every time you die and a new one will be recorded when
+  you revive. The replay file will be saved in the specified location in settings.
+
+  Please use asynchronous input system.
+
+  Note that only some versions of KeyboardChatterBlocker are compatible with the replay recorder.
+  I only tested 0.0.7 and 0.0.10 and 0.0.10 worked well while 0.0.7 didn't.
+
+  DLC is not well-supported currently. Feel free to report issues related to DLC!
+
+  "Normal" behavior Hold Tiles are supported if they are completed without a miss.
+
+  Three Planets is supported.
+
+  Free Roam is not supported.
+
+* **How do I play a replay?**
+
+  Enable YCH and enable Replay in YCH settings. Open the level in level editor, click the "Select"
+  button and select the replay file (.ychreplay.gz). Then adjust your game settings to match the
+  recorder's game settings (except Async Input). Click "Jump To Start" and start playing the level.
+
+  Disable KeyboardChatterBlocker while playing replays.
+
+* **How do I fix the planets de-syncing with the floors while playing replays?**
+
+  Disable KeyboardChatterBlocker while playing replays.
+
 ## ⚙️ How To Build
 
 Install Unity Mod Manager in your ADOFAI.
