@@ -126,9 +126,9 @@ public class ReplayKeyboardInputType : RDInputType
 
         var keys = state switch
         {
-            ButtonState.WentDown => ReplayPlayer.GetKeysDownUnchecked(MainKeys),
-            ButtonState.WentUp => ReplayPlayer.GetKeysUpUnchecked(MainKeys),
-            ButtonState.IsDown => ReplayPlayer.GetKeysUnchecked(MainKeys),
+            ButtonState.WentDown => ReplayPlayer.GetKeysDownUnchecked(),
+            ButtonState.WentUp => ReplayPlayer.GetKeysUpUnchecked(),
+            ButtonState.IsDown => ReplayPlayer.GetKeysUnchecked(),
             ButtonState.IsUp => ReplayPlayer.GetKeysReleasedUnchecked(MainKeys),
             _ => []
         };

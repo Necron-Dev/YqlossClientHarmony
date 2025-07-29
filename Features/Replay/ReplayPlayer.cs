@@ -666,19 +666,25 @@ public static class ReplayPlayer
         return keyCodes.Any(it => !GetKeyUnchecked(it));
     }
 
-    public static IEnumerable<KeyCode> GetKeysDownUnchecked(KeyCode[] keyCodes)
+    public static IEnumerable<KeyCode> GetKeysDownUnchecked(KeyCode[]? keyCodes = null)
     {
-        return keyCodes.Where(GetKeyDownUnchecked);
+        return keyCodes is null
+            ? IsKeyDown.Where(key => key != (int)KeyCode.Escape).Select(key => (KeyCode)key)
+            : keyCodes.Where(GetKeyDownUnchecked);
     }
 
-    public static IEnumerable<KeyCode> GetKeysUpUnchecked(KeyCode[] keyCodes)
+    public static IEnumerable<KeyCode> GetKeysUpUnchecked(KeyCode[]? keyCodes = null)
     {
-        return keyCodes.Where(GetKeyUpUnchecked);
+        return keyCodes is null
+            ? IsKeyUp.Where(key => key != (int)KeyCode.Escape).Select(key => (KeyCode)key)
+            : keyCodes.Where(GetKeyUpUnchecked);
     }
 
-    public static IEnumerable<KeyCode> GetKeysUnchecked(KeyCode[] keyCodes)
+    public static IEnumerable<KeyCode> GetKeysUnchecked(KeyCode[]? keyCodes = null)
     {
-        return keyCodes.Where(GetKeyUnchecked);
+        return keyCodes is null
+            ? KeyStates.Where(pair => pair.Key != (int)KeyCode.Escape && pair.Value).Select(pair => (KeyCode)pair.Key)
+            : keyCodes.Where(GetKeyUnchecked);
     }
 
     public static IEnumerable<KeyCode> GetKeysReleasedUnchecked(KeyCode[] keyCodes)
