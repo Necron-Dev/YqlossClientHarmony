@@ -194,7 +194,9 @@
         <Reference Include="System.Windows.Forms">
             <HintPath>ADOFAIGame\A Dance of Fire and Ice\A Dance of Fire and Ice_Data\Managed\System.Windows.Forms.dll</HintPath>
         </Reference>
-        <Reference Include="System.Xml"/>
+        <Reference Include="System.Xml">
+            <HintPath>ADOFAIGame\A Dance of Fire and Ice\A Dance of Fire and Ice_Data\Managed\UnityModManager\System.Xml.dll</HintPath>
+        </Reference>
         <Reference Include="System.Xml.Linq">
             <HintPath>ADOFAIGame\A Dance of Fire and Ice\A Dance of Fire and Ice_Data\Managed\System.Xml.Linq.dll</HintPath>
         </Reference>
@@ -522,7 +524,6 @@
         <Compile Include="Features\Replay\ReplayConstants.cs"/>
         <Compile Include="Features\Replay\ReplayDecoder.cs"/>
         <Compile Include="Features\Replay\ReplayEncoder.cs"/>
-        <Compile Include="Features\Replay\ReplayGUI.cs"/>
         <Compile Include="Features\Replay\ReplayKeyboardInputType.cs"/>
         <Compile Include="Features\Replay\ReplayPlayer.cs"/>
         <Compile Include="Features\Replay\ReplayRecorder.cs"/>
@@ -532,11 +533,24 @@
         <Compile Include="Features\Replay\ReplayInputKeyEventReceiver.cs"/>
         <Compile Include="Features\RevertCounterclockwiseUTurnPause\Injections.cs"/>
         <Compile Include="Features\RevertCounterclockwiseUTurnPause\SettingsRevertCounterclockwiseUTurnPause.cs"/>
+        <Compile Include="Gui\GuiManager.cs"/>
+        <Compile Include="Gui\Pages\EffectRemoverPage.cs"/>
+        <Compile Include="Gui\Pages\LanguagePage.cs"/>
+        <Compile Include="Gui\Pages\OtherFeaturesPage.cs"/>
+        <Compile Include="Gui\Pages\ReplayPage.cs"/>
+        <Compile Include="Gui\SettingUtil.cs"/>
+        <Compile Include="Gui\Trigger.cs"/>
+        <Compile Include="Gui\YCHLayout.cs"/>
+        <Compile Include="Gui\YCHLayoutPreset.cs"/>
+        <Compile Include="I18N.cs"/>
         <Compile Include="Properties\AssemblyInfo.cs"/>
         <Compile Include="Settings.cs"/>
         <Compile Include="Main.cs"/>
     </ItemGroup>
     <ItemGroup>
+        <Content Include="Languages\Common.lang"/>
+        <Content Include="Languages\en_US.lang"/>
+        <Content Include="Languages\zh_CN.lang"/>
         <Content Include="README.md"/>
     </ItemGroup>
     <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets"/>

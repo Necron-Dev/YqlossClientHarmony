@@ -1,0 +1,194 @@
+Name=English
+Parents=Common
+
+Page.Language.Name=Language
+Page.Replay.Name=Replay
+Page.EffectRemover.Name=Effect Remover
+Page.OtherFeatures.Name=Other Features
+
+Setting.FixKillerDecorationsInNoFail.Enabled=Fix killer decorations failing the game in no fail mode (count as "Overload!" if enabled)
+Setting.FixSetInputEventCrash.Enabled=Fix Set Input Event making levels unplayable
+Setting.RevertCounterclockwiseUTurnPause.Enabled=Revert changes to Pause on counterclockwise U-Turns in 2.9.4
+
+Setting.ModifyLoadingLevel.Enabled=Enable Effect Remover
+
+Gui.EffectRemover.LevelSettingsValueWarning=On the level settings page, all text boxes for options that correspond to in-game dropdown menus can only be filled with their internal code names, which are the values found in the .adofai file. If you're not sure what to enter, you can create a level, set the desired value, save it, and then view the corresponding value in the .adofai file using a text editor.
+
+Gui.EffectRemover.LevelSettings=Level Settings
+
+Gui.EffectRemover.LevelSettings.SongSettings=Song Settings
+Setting.ModifyLoadingLevel.Hitsound=Override Hitsound
+
+Gui.EffectRemover.LevelSettings.TrackSettings=Track Settings
+Setting.ModifyLoadingLevel.TrackTexture=Disable Track texture
+Setting.ModifyLoadingLevel.TrackColorType=Override Track color type
+Setting.ModifyLoadingLevel.TrackStyle=Override Track style
+Setting.ModifyLoadingLevel.TrackColor=Override Track color
+Setting.ModifyLoadingLevel.SecondaryTrackColor=Override Secondary track color
+Setting.ModifyLoadingLevel.ColorAnimDuration=Override Color animation interval
+Setting.ModifyLoadingLevel.TrackGlowIntensity=Override Glow intensity
+Setting.ModifyLoadingLevel.TrackAnimation=Override Track appear animation
+Setting.ModifyLoadingLevel.BeatsAhead=Override Beats before for animation
+Setting.ModifyLoadingLevel.TrackDisappearAnimation=Override Track disappear animation
+Setting.ModifyLoadingLevel.BeatsBehind=Override Beats after for animation
+
+Gui.EffectRemover.LevelSettings.BackgroundSettings=Background Settings
+Setting.ModifyLoadingLevel.BgImage=Disable Background image
+Setting.ModifyLoadingLevel.BackgroundColor=Override Background color
+Setting.ModifyLoadingLevel.ShowDefaultBgTile=Override Show tutorial background pattern
+Setting.ModifyLoadingLevel.DefaultBgTileColor=Override Tutorial background pattern color
+Setting.ModifyLoadingLevel.DefaultBgShapeType=Override Tutorial background shape
+Setting.ModifyLoadingLevel.DefaultBgShapeColor=Override Tutorial background shape color
+
+Gui.EffectRemover.LevelSettings.CameraSettings=Camera Settings
+Setting.ModifyLoadingLevel.RelativeTo=Override Relative to
+Setting.ModifyLoadingLevel.Position=Override Position
+Setting.ModifyLoadingLevel.Position.X=X
+Setting.ModifyLoadingLevel.Position.Y=Y
+Setting.ModifyLoadingLevel.Rotation=Override Rotation
+Setting.ModifyLoadingLevel.Zoom=Override Zoom
+Setting.ModifyLoadingLevel.PulseOnFloor=Override Pulse camera at tiles
+
+Gui.EffectRemover.LevelSettings.MiscSettings=Misc Settings
+Setting.ModifyLoadingLevel.BgVideo=Disable Video background
+Setting.ModifyLoadingLevel.FloorIconOutlines=Override Tile icon outlines
+Setting.ModifyLoadingLevel.StickToFloors=Override Sticky tiles
+Setting.ModifyLoadingLevel.PlanetEase=Override Planet orbit ease
+Setting.ModifyLoadingLevel.PlanetEaseParts=Override Orbit ease parts
+Setting.ModifyLoadingLevel.PlanetEasePartBehavior=Override Ease part behavior
+Setting.ModifyLoadingLevel.DefaultTextColor=Override Default text color
+Setting.ModifyLoadingLevel.DefaultTextShadowColor=Override Default text shadow color
+Setting.ModifyLoadingLevel.CongratsText=Override "Congratulations!" text
+Setting.ModifyLoadingLevel.PerfectText=Override "Pure Perfect!" text
+
+Gui.EffectRemover.Decorations=Decorations
+Setting.ModifyLoadingLevel.AddDecoration=Disable Image
+Setting.ModifyLoadingLevel.AddText=Disable Text
+Setting.ModifyLoadingLevel.AddObject=Disable Object
+Setting.ModifyLoadingLevel.AddParticle=Disable Particle Emitter
+Setting.ModifyLoadingLevel.KillerDecorations=Disable Killer Decorations
+
+Gui.EffectRemover.Events=Events
+
+Gui.EffectRemover.FunctionalEvents=Functional Events
+Setting.ModifyLoadingLevel.Checkpoint=Disable Checkpoint
+Setting.ModifyLoadingLevel.AutoPlayTiles=Disable AutoPlay Tiles
+Setting.ModifyLoadingLevel.RepeatEvents=Disable Repeat Events
+Setting.ModifyLoadingLevel.SetConditionalEvents=Disable Set Conditional Events
+Setting.ModifyLoadingLevel.SetInputEvent=Disable Set Input Event
+Setting.ModifyLoadingLevel.ScaleMargin=Disable Timing Window Scale
+
+Gui.EffectRemover.AuditoryEvents=Auditory Events
+Setting.ModifyLoadingLevel.SetHitsound=Disable Set Hitsound
+Setting.ModifyLoadingLevel.PlaySound=Disable Play Sound
+Setting.ModifyLoadingLevel.SetHoldSound=Disable Set Hold Sound
+
+Gui.EffectRemover.PlanetEvents=Planet-Related Events
+Setting.ModifyLoadingLevel.SetPlanetRotation=Disable Set Planet Orbit
+Setting.ModifyLoadingLevel.ScalePlanets=Disable Scale Planets
+Setting.ModifyLoadingLevel.ScaleRadius=Disable Planet Radius Scale
+
+Gui.EffectRemover.TrackEvents=Track-Related Events
+Setting.ModifyLoadingLevel.Hide=Disable Hide Judgement/Floor Icons
+Setting.ModifyLoadingLevel.MoveTrack=Disable Move Track
+Setting.ModifyLoadingLevel.PositionTrack=Disable Position Track
+Setting.ModifyLoadingLevel.ColorTrack=Disable Set Track Color
+Setting.ModifyLoadingLevel.AnimateTrack=Disable Set Track Animation
+Setting.ModifyLoadingLevel.RecolorTrack=Disable Recolor Track
+
+Gui.EffectRemover.DecorationEvents=Decoration-Related Events
+Setting.ModifyLoadingLevel.MoveDecorations=Disable Move Decorations
+Setting.ModifyLoadingLevel.SetText=Disable Set Text
+Setting.ModifyLoadingLevel.EmitParticle=Disable Emit Particle
+Setting.ModifyLoadingLevel.SetParticle=Disable Set Particle
+Setting.ModifyLoadingLevel.SetObject=Disable Set Object
+Setting.ModifyLoadingLevel.SetDefaultText=Disable Set Default Text
+
+Gui.EffectRemover.MiscVisualEvents=Misc Visual Events
+Setting.ModifyLoadingLevel.MoveCamera=Disable Move Camera
+Setting.ModifyLoadingLevel.CustomBackground=Disable Set Background
+
+Gui.EffectRemover.EffectEvents=Visual Effect Events
+Setting.ModifyLoadingLevel.Flash=Disable Flash
+Setting.ModifyLoadingLevel.SetFilter=Disable Set Filter
+Setting.ModifyLoadingLevel.SetFilterAdvanced=Disable Set Filter Advanced
+Setting.ModifyLoadingLevel.HallOfMirrors=Disable Hall of Mirrors
+Setting.ModifyLoadingLevel.ShakeScreen=Disable Shake Screen
+Setting.ModifyLoadingLevel.Bloom=Disable Bloom
+Setting.ModifyLoadingLevel.ScreenTile=Disable Tile Screen
+Setting.ModifyLoadingLevel.ScreenScroll=Disable Scroll Screen
+Setting.ModifyLoadingLevel.SetFrameRate=Disable Set Frame Rate
+
+Gui.EffectRemover.MiscEvents=Misc Events
+Setting.ModifyLoadingLevel.EditorComment=Disable Editor Comment
+Setting.ModifyLoadingLevel.Bookmark=Disable Bookmark
+
+Setting.Replay.Enabled=Enable Replay Recording
+Setting.Replay.Enabled.Description=Start recording on starting or respawning from a checkpoint. Stop recording on death or reaching the last floor.
+
+Dialog.Replay.SelectReplay.Title=Select Replay File
+Dialog.Replay.SelectReplay.FileTypeName=YCH Replay File
+
+Dialog.Replay.SelectReplayStorageLocation.Title=Select Replay File Storage Location
+
+Gui.Replay.LoadReplay=Load Replay
+Gui.Replay.UnloadReplay=Unload Replay
+Gui.Replay.JumpToStartingFloor=Jump to Start
+Gui.Replay.JumpToEndingFloor=Jump to End
+
+Gui.Replay.Error.LoadReplay=An error occurred while loading the replay. See logs for more information.
+Gui.Replay.Error.RequireInLevel=You must load in a level to load replays!
+Gui.Replay.Error.OfficialLevel=Official levels are not supported!
+Gui.Replay.Error.LoadInGame=You cannot load a replay mid-game!
+Gui.Replay.Error.UnloadInGame=You cannot unload a replay mid-game!
+
+Gui.Replay.ReplayInformation=Replay Information
+Gui.Replay.ReplayInformation.ReplayFile.Name=<b>Replay File:</b>
+Gui.Replay.ReplayInformation.Artist.Name=<b>Artist:</b>
+Gui.Replay.ReplayInformation.Song.Name=<b>Song:</b>
+Gui.Replay.ReplayInformation.Author.Name=<b>Author:</b>
+Gui.Replay.ReplayInformation.XAccuracy.Name=<b>X-Accuracy:</b>
+Gui.Replay.ReplayInformation.Progress.Name=<b>Progress:</b>
+Gui.Replay.ReplayInformation.Judgements.Name=<b>Judgements:</b>
+Gui.Replay.ReplayInformation.Difficulty.Name=<b>Difficulty:</b>
+Gui.Replay.ReplayInformation.Difficulty.Lenient=Lenient
+Gui.Replay.ReplayInformation.Difficulty.Normal=Normal
+Gui.Replay.ReplayInformation.Difficulty.Strict=Strict
+Gui.Replay.ReplayInformation.AsyncInput.Name=<b>Async Input:</b>
+Gui.Replay.ReplayInformation.AsyncInput.False=OFF
+Gui.Replay.ReplayInformation.AsyncInput.True=ON
+Gui.Replay.ReplayInformation.NoFail.Name=<b>No Fail:</b>
+Gui.Replay.ReplayInformation.NoFail.False=OFF
+Gui.Replay.ReplayInformation.NoFail.True=ON
+Gui.Replay.ReplayInformation.HoldTileBehavior.Name=<b>Hold Tile Behavior:</b>
+Gui.Replay.ReplayInformation.HoldTileBehavior.Normal=Normal
+Gui.Replay.ReplayInformation.HoldTileBehavior.CanHitEnd=Allow Tapping End Tile
+Gui.Replay.ReplayInformation.HoldTileBehavior.NoHoldNeeded=No Holding Required
+Gui.Replay.ReplayInformation.LimitJudgements.Name=<b>Limit Judgements:</b>
+Gui.Replay.ReplayInformation.LimitJudgements.None=None
+Gui.Replay.ReplayInformation.LimitJudgements.PerfectsOnly=Perfects Only
+Gui.Replay.ReplayInformation.LimitJudgements.PurePerfectOnly=Pure Perfects Only
+
+Gui.Replay.Important=Important
+Gui.Replay.Important.RecordInAsync=Record replays in asynchronous input mode!
+Gui.Replay.Important.OnlySupportKeyboard=Only keyboard is supported!
+Gui.Replay.Important.DLCCompatibility=Compatible with Three Planets.\nIncompatible with Free Roam.\nCompatible with "Normal" behavior Hold Tiles that are successfully completed.
+Gui.Replay.Important.KeyboardChatterBlockerCompatibility=Compatible with KeyboardChatterBlocker v0.0.10. Possibly compatible with other versions.\nDisable KeyboardChatterBlocker when you play replays!
+Gui.Replay.Important.OverlayerCompatibility=Possibly incompatible with some features of Overlayer.
+
+Gui.Replay.Settings=Settings
+Setting.Replay.ReplayStorageLocation=Replay storage location
+Setting.Replay.ReplayStorageLocation.Select=Select
+Setting.Replay.StoreSyncKeyCode=Store synchronous key code in asynchronous input mode
+Setting.Replay.OnlyStoreLastInMultiReleases=Only record the last key release when a key is released multiple times
+Setting.Replay.OnlyStoreLastInMultiReleases.Description=This is useful when working with KeyboardChatterBlocker. When your keyboard chatters, this allows to show a full rain instead of the first rain segment when you play the recorded replay.
+Setting.Replay.TrailLength=Trailing length for keys held at the end of replaying (ms)
+Setting.Replay.TrailLength.Description=Set this to any positive number to extend key rains at the end of replaying. Otherwise the last key rain will end instantly and not be shown.
+Gui.Replay.Settings.OffsetZeroWarning=The offset settings below should always be set to 0. Don't modify them unless you know what you are doing!
+Setting.Replay.SyncRecordingOffset=Synchronous input recording offset (ms)
+Setting.Replay.AsyncRecordingOffset=Asynchronous input recording offset (ms)
+Setting.Replay.PlayingOffset=Playing offset (ms)
+
+Gui.Replay.DebugOptions=Debug Options
+Gui.Replay.DebugOptions.Warning=Don't modify them unless you know what you are doing!
+Setting.Replay.Verbose=Verbose

@@ -1,0 +1,191 @@
+Name=简体中文
+Parents=Common en_US
+
+Page.Language.Name=语言 Language
+Page.Replay.Name=回放
+Page.EffectRemover.Name=去特效
+Page.OtherFeatures.Name=其他功能
+
+Setting.FixKillerDecorationsInNoFail.Enabled=修复死亡装饰物在不会失败模式中导致玩家死亡（开启功能后算作“按太快！”）
+Setting.FixSetInputEventCrash.Enabled=修复设置输入事件使谱面无法播放
+Setting.RevertCounterclockwiseUTurnPause.Enabled=撤销 2.9.4 中对逆时针发卡弯上的暂停的修改
+
+Setting.ModifyLoadingLevel.Enabled=开启去特效功能
+
+Gui.EffectRemover.LevelSettingsValueWarning=关卡设置页面中所有对应游戏中下拉菜单选项的文本框均只能填写代码内部名称，也就是 .adofai 文件里的值！如果不确定应该填写什么，可以创建一张谱面，把想要的选项设置好，保存后使用文本编辑器查看 .adofai 文件中对应的值。
+
+Gui.EffectRemover.LevelSettings=关卡设置
+
+Gui.EffectRemover.LevelSettings.SongSettings=歌曲设置
+Setting.ModifyLoadingLevel.Hitsound=覆盖 打拍声
+Gui.EffectRemover.LevelSettings.TrackSettings=轨道设置
+Setting.ModifyLoadingLevel.TrackTexture=禁用 轨道纹理
+Setting.ModifyLoadingLevel.TrackColorType=覆盖 轨道颜色类型
+Setting.ModifyLoadingLevel.TrackStyle=覆盖 轨道风格
+Setting.ModifyLoadingLevel.TrackColor=覆盖 轨道主色调
+Setting.ModifyLoadingLevel.SecondaryTrackColor=覆盖 轨道副色调
+Setting.ModifyLoadingLevel.ColorAnimDuration=覆盖 色彩动画间隔
+Setting.ModifyLoadingLevel.TrackGlowIntensity=覆盖 辉度
+Setting.ModifyLoadingLevel.TrackAnimation=覆盖 轨道出现动画
+Setting.ModifyLoadingLevel.BeatsAhead=覆盖 动画前节拍
+Setting.ModifyLoadingLevel.TrackDisappearAnimation=覆盖 轨道消失动画
+Setting.ModifyLoadingLevel.BeatsBehind=覆盖 动画后节拍
+
+Gui.EffectRemover.LevelSettings.BackgroundSettings=背景设置
+Setting.ModifyLoadingLevel.BgImage=禁用 背景图片
+Setting.ModifyLoadingLevel.BackgroundColor=覆盖 背景颜色
+Setting.ModifyLoadingLevel.ShowDefaultBgTile=覆盖 显示教程背景图案
+Setting.ModifyLoadingLevel.DefaultBgTileColor=覆盖 教程背景图案颜色
+Setting.ModifyLoadingLevel.DefaultBgShapeType=覆盖 教程背景图形
+Setting.ModifyLoadingLevel.DefaultBgShapeColor=覆盖 教程背景图形颜色
+Gui.EffectRemover.LevelSettings.CameraSettings=摄像头设置
+Setting.ModifyLoadingLevel.RelativeTo=覆盖 关联到
+Setting.ModifyLoadingLevel.Position=覆盖 位置
+Setting.ModifyLoadingLevel.Position.X=X
+Setting.ModifyLoadingLevel.Position.Y=Y
+Setting.ModifyLoadingLevel.Rotation=覆盖 角度
+Setting.ModifyLoadingLevel.Zoom=覆盖 缩放
+Setting.ModifyLoadingLevel.PulseOnFloor=覆盖 触发方块时摄像头脉动
+
+Gui.EffectRemover.LevelSettings.MiscSettings=杂项设置
+Setting.ModifyLoadingLevel.BgVideo=禁用 视频背景
+Setting.ModifyLoadingLevel.FloorIconOutlines=覆盖 方块图标描边
+Setting.ModifyLoadingLevel.StickToFloors=覆盖 黏性方块
+Setting.ModifyLoadingLevel.PlanetEase=覆盖 星球轨道缓速
+Setting.ModifyLoadingLevel.PlanetEaseParts=覆盖 轨道缓速部分
+Setting.ModifyLoadingLevel.PlanetEasePartBehavior=覆盖 缓速部分行为
+Setting.ModifyLoadingLevel.DefaultTextColor=覆盖 默认文本颜色
+Setting.ModifyLoadingLevel.DefaultTextShadowColor=覆盖 默认文本阴影颜色
+Setting.ModifyLoadingLevel.CongratsText=覆盖 “庆贺！”文本
+Setting.ModifyLoadingLevel.PerfectText=覆盖 “完美无瑕！”文本
+
+Gui.EffectRemover.Decorations=装饰
+Setting.ModifyLoadingLevel.AddDecoration=禁用 装饰（图像装饰）
+Setting.ModifyLoadingLevel.AddText=禁用 文本装饰
+Setting.ModifyLoadingLevel.AddObject=禁用 对象装饰
+Setting.ModifyLoadingLevel.AddParticle=禁用 粒子发射器
+Setting.ModifyLoadingLevel.KillerDecorations=禁用 死亡装饰物
+
+Gui.EffectRemover.Events=事件
+
+Gui.EffectRemover.FunctionalEvents=功能型事件
+Setting.ModifyLoadingLevel.Checkpoint=禁用 检查点
+Setting.ModifyLoadingLevel.AutoPlayTiles=禁用 自动播放格子
+Setting.ModifyLoadingLevel.RepeatEvents=禁用 重复事件
+Setting.ModifyLoadingLevel.SetConditionalEvents=禁用 设置条件事件
+Setting.ModifyLoadingLevel.SetInputEvent=禁用 设置输入事件
+Setting.ModifyLoadingLevel.ScaleMargin=禁用 定时窗口大小
+
+Gui.EffectRemover.AuditoryEvents=音效事件
+Setting.ModifyLoadingLevel.SetHitsound=禁用 设置打拍音
+Setting.ModifyLoadingLevel.PlaySound=禁用 播放音效
+Setting.ModifyLoadingLevel.SetHoldSound=禁用 设置长按音效
+
+Gui.EffectRemover.PlanetEvents=星球相关事件
+Setting.ModifyLoadingLevel.SetPlanetRotation=禁用 设置星球轨道
+Setting.ModifyLoadingLevel.ScalePlanets=禁用 缩放行星
+Setting.ModifyLoadingLevel.ScaleRadius=禁用 星球半径大小
+
+Gui.EffectRemover.TrackEvents=轨道相关事件
+Setting.ModifyLoadingLevel.Hide=禁用 隐藏判定/地板图标
+Setting.ModifyLoadingLevel.MoveTrack=禁用 移动轨道
+Setting.ModifyLoadingLevel.PositionTrack=禁用 位置轨道
+Setting.ModifyLoadingLevel.ColorTrack=禁用 设置轨道颜色
+Setting.ModifyLoadingLevel.AnimateTrack=禁用 设置轨道动画
+Setting.ModifyLoadingLevel.RecolorTrack=禁用 重新设置轨道颜色
+
+Gui.EffectRemover.DecorationEvents=装饰相关事件
+Setting.ModifyLoadingLevel.MoveDecorations=禁用 移动装饰
+Setting.ModifyLoadingLevel.SetText=禁用 设置文本
+Setting.ModifyLoadingLevel.EmitParticle=禁用 发射粒子
+Setting.ModifyLoadingLevel.SetParticle=禁用 设置粒子
+Setting.ModifyLoadingLevel.SetObject=禁用 设置对象
+Setting.ModifyLoadingLevel.SetDefaultText=禁用 设置默认文本
+
+Gui.EffectRemover.MiscVisualEvents=其他视觉事件
+Setting.ModifyLoadingLevel.MoveCamera=禁用 移动摄像头
+Setting.ModifyLoadingLevel.CustomBackground=禁用 设置背景
+
+Gui.EffectRemover.EffectEvents=视觉效果事件
+Setting.ModifyLoadingLevel.Flash=禁用 闪光
+Setting.ModifyLoadingLevel.SetFilter=禁用 预设滤镜
+Setting.ModifyLoadingLevel.SetFilterAdvanced=禁用 预设高级滤镜
+Setting.ModifyLoadingLevel.HallOfMirrors=禁用 镜厅
+Setting.ModifyLoadingLevel.ShakeScreen=禁用 振屏
+Setting.ModifyLoadingLevel.Bloom=禁用 绽放
+Setting.ModifyLoadingLevel.ScreenTile=禁用 平铺
+Setting.ModifyLoadingLevel.ScreenScroll=禁用 卷屏
+Setting.ModifyLoadingLevel.SetFrameRate=禁用 设置帧率
+
+Gui.EffectRemover.MiscEvents=其他事件
+Setting.ModifyLoadingLevel.EditorComment=禁用 编辑器附注
+Setting.ModifyLoadingLevel.Bookmark=禁用 书签
+
+Setting.Replay.Enabled=开启回放录制
+Setting.Replay.Enabled.Description=在开始或从检查点复活时开始录制，在死亡或到达终点时结束录制。
+
+Dialog.Replay.SelectReplay.Title=选择回放文件
+Dialog.Replay.SelectReplay.FileTypeName=YCH 回放文件
+
+Dialog.Replay.SelectReplayStorageLocation.Title=选择回放文件存储位置
+
+Gui.Replay.LoadReplay=加载回放
+Gui.Replay.UnloadReplay=取消加载
+Gui.Replay.JumpToStartingFloor=跳转至起点
+Gui.Replay.JumpToEndingFloor=跳转至终点
+
+Gui.Replay.Error.LoadReplay=加载回放时出现错误，详细信息请查看日志。
+Gui.Replay.Error.RequireInLevel=必须打开谱面才能加载回放！
+Gui.Replay.Error.OfficialLevel=不支持官方关卡！
+Gui.Replay.Error.LoadInGame=无法在游戏中途加载回放！
+Gui.Replay.Error.UnloadInGame=无法在游戏中途取消加载回放！
+
+Gui.Replay.ReplayInformation=回放信息
+Gui.Replay.ReplayInformation.ReplayFile.Name=<b>回放文件：</b>
+Gui.Replay.ReplayInformation.Artist.Name=<b>音乐作者：</b>
+Gui.Replay.ReplayInformation.Song.Name=<b>歌曲：</b>
+Gui.Replay.ReplayInformation.Author.Name=<b>关卡作者：</b>
+Gui.Replay.ReplayInformation.XAccuracy.Name=<b>X-精准度：</b>
+Gui.Replay.ReplayInformation.Progress.Name=<b>进度：</b>
+Gui.Replay.ReplayInformation.Judgements.Name=<b>判定：</b>
+Gui.Replay.ReplayInformation.Difficulty.Name=<b>难度：</b>
+Gui.Replay.ReplayInformation.Difficulty.Lenient=宽松
+Gui.Replay.ReplayInformation.Difficulty.Normal=标准
+Gui.Replay.ReplayInformation.Difficulty.Strict=严格
+Gui.Replay.ReplayInformation.AsyncInput.Name=<b>异步输入：</b>
+Gui.Replay.ReplayInformation.AsyncInput.False=关闭
+Gui.Replay.ReplayInformation.AsyncInput.True=开启
+Gui.Replay.ReplayInformation.NoFail.Name=<b>不会失败模式：</b>
+Gui.Replay.ReplayInformation.NoFail.False=关闭
+Gui.Replay.ReplayInformation.NoFail.True=开启
+Gui.Replay.ReplayInformation.HoldTileBehavior.Name=<b>长按方块行为:</b>
+Gui.Replay.ReplayInformation.HoldTileBehavior.Normal=标准
+Gui.Replay.ReplayInformation.HoldTileBehavior.CanHitEnd=允许点击终点方块
+Gui.Replay.ReplayInformation.HoldTileBehavior.NoHoldNeeded=无需长按
+Gui.Replay.ReplayInformation.LimitJudgements.Name=<b>限制判定：</b>
+Gui.Replay.ReplayInformation.LimitJudgements.None=关闭
+Gui.Replay.ReplayInformation.LimitJudgements.PerfectsOnly=仅限完美
+Gui.Replay.ReplayInformation.LimitJudgements.PurePerfectOnly=仅限完美无瑕
+
+Gui.Replay.Important=注意事项
+Gui.Replay.Important.RecordInAsync=录制时请使用异步输入系统！
+Gui.Replay.Important.OnlySupportKeyboard=只支持键盘输入！
+Gui.Replay.Important.DLCCompatibility=兼容多行星。\n不兼容自由移动。\n兼容“标准”长按方块行为下成功完成的长按。
+Gui.Replay.Important.KeyboardChatterBlockerCompatibility=兼容 KeyboardChatterBlocker v0.0.10，可能兼容其他版本。\n播放时请关闭 KeyboardChatterBlocker。
+Gui.Replay.Important.OverlayerCompatibility=可能不兼容 Overlayer 的某些功能。
+
+Gui.Replay.Settings=设置
+Setting.Replay.ReplayStorageLocation=回放存储位置
+Setting.Replay.ReplayStorageLocation.Select=选择
+Setting.Replay.StoreSyncKeyCode=使用异步输入系统时存储同步键码
+Setting.Replay.OnlyStoreLastInMultiReleases=当按键被松开多次时只记录最后一次
+Setting.Replay.OnlyStoreLastInMultiReleases.Description=与 KeyboardChatterBlocker 一起使用时非常有用。当发生弹键时，这个功能可以让录制的回放在播放时显示完整的键雨，而不是弹出来的第一段。
+Setting.Replay.TrailLength=播放结束时按住的按键拖尾长度（毫秒）
+Setting.Replay.TrailLength.Description=请设置一个正值以延长播放结束时的键雨，否则最后一条键雨会瞬间结束，不会显示出来。
+Gui.Replay.Settings.OffsetZeroWarning=以下的偏移设置应全部设置为 0。如果不清楚它们的作用，请不要修改！
+Setting.Replay.SyncRecordingOffset=同步输入模式录制偏移（毫秒）
+Setting.Replay.AsyncRecordingOffset=异步输入模式录制偏移（毫秒）
+Setting.Replay.PlayingOffset=播放偏移（毫秒）
+
+Gui.Replay.DebugOptions=调试选项
+Gui.Replay.DebugOptions.Warning=如果不清楚它们的作用，请不要修改！

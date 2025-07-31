@@ -3,6 +3,7 @@ using System.Reflection;
 using HarmonyLib;
 using UnityModManagerNet;
 using YqlossClientHarmony.Features.Replay;
+using YqlossClientHarmony.Gui;
 
 namespace YqlossClientHarmony;
 
@@ -28,7 +29,7 @@ public static class Main
                 return true;
             };
 
-            _mod.OnGUI += mod => Settings.DrawGUI(mod);
+            _mod.OnGUI += _ => GuiManager.Draw();
 
             _mod.OnSaveGUI += mod => Settings.Save(mod);
 
