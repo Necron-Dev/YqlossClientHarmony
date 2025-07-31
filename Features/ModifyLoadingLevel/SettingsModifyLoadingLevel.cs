@@ -25,11 +25,11 @@ public class SettingsModifyLoadingLevel
 
     public bool EnableTrackColor = false;
 
-    public string TrackColor = "debb7b";
+    public string TrackColor = "DEBB7B";
 
     public bool EnableSecondaryTrackColor = false;
 
-    public string SecondaryTrackColor = "ffffff";
+    public string SecondaryTrackColor = "FFFFFF";
 
     public bool EnableColorAnimDuration = false;
 
@@ -75,7 +75,7 @@ public class SettingsModifyLoadingLevel
 
     public bool EnableDefaultBgShapeColor = false;
 
-    public string DefaultBgShapeColor = "ffffff";
+    public string DefaultBgShapeColor = "FFFFFF";
 
     public bool EnableRelativeTo = false;
 
@@ -123,7 +123,7 @@ public class SettingsModifyLoadingLevel
 
     public bool EnableDefaultTextColor = false;
 
-    public string DefaultTextColor = "ffffff";
+    public string DefaultTextColor = "FFFFFF";
 
     public bool EnableDefaultTextShadowColor = false;
 
