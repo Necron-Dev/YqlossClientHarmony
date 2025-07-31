@@ -61,6 +61,13 @@ public static class EffectRemoverPage
                                 ref settings.Hitsound,
                                 "Setting.ModifyLoadingLevel.Hitsound"
                             );
+                            Separator();
+                            CheckboxIntOption(
+                                groupSong,
+                                ref settings.EnableHitsoundVolume,
+                                ref settings.HitsoundVolume,
+                                "Setting.ModifyLoadingLevel.HitsoundVolume"
+                            );
                         }
                         End();
                     }

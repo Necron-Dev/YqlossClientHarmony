@@ -18,6 +18,8 @@ Gui.EffectRemover.LevelSettings=关卡设置
 
 Gui.EffectRemover.LevelSettings.SongSettings=歌曲设置
 Setting.ModifyLoadingLevel.Hitsound=覆盖 打拍声
+Setting.ModifyLoadingLevel.HitsoundVolume=覆盖 打拍声音量
+
 Gui.EffectRemover.LevelSettings.TrackSettings=轨道设置
 Setting.ModifyLoadingLevel.TrackTexture=禁用 轨道纹理
 Setting.ModifyLoadingLevel.TrackColorType=覆盖 轨道颜色类型
@@ -38,6 +40,7 @@ Setting.ModifyLoadingLevel.ShowDefaultBgTile=覆盖 显示教程背景图案
 Setting.ModifyLoadingLevel.DefaultBgTileColor=覆盖 教程背景图案颜色
 Setting.ModifyLoadingLevel.DefaultBgShapeType=覆盖 教程背景图形
 Setting.ModifyLoadingLevel.DefaultBgShapeColor=覆盖 教程背景图形颜色
+
 Gui.EffectRemover.LevelSettings.CameraSettings=摄像头设置
 Setting.ModifyLoadingLevel.RelativeTo=覆盖 关联到
 Setting.ModifyLoadingLevel.Position=覆盖 位置

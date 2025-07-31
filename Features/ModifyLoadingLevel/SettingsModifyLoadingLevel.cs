@@ -13,6 +13,10 @@ public class SettingsModifyLoadingLevel
 
     public string Hitsound = "Kick";
 
+    public bool EnableHitsoundVolume = false;
+
+    public int HitsoundVolume = 100;
+
     public bool DisableTrackTexture = false;
 
     public bool EnableTrackColorType = false;

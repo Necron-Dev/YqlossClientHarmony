@@ -13,6 +13,7 @@ public class LevelSettingType(
     public static LevelSettingType[] Types { get; } =
     [
         new("hitsound", s => s.EnableHitsound, s => s.Hitsound),
+        new("hitsoundVolume", s => s.EnableHitsoundVolume, s => s.HitsoundVolume),
         new("trackTexture", s => s.DisableTrackTexture, _ => ""),
         new("trackColorType", s => s.EnableTrackColorType, s => s.TrackColorType),
         new("trackStyle", s => s.EnableTrackStyle, s => s.TrackStyle),

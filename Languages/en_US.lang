@@ -18,6 +18,7 @@ Gui.EffectRemover.LevelSettings=Level Settings
 
 Gui.EffectRemover.LevelSettings.SongSettings=Song Settings
 Setting.ModifyLoadingLevel.Hitsound=Override Hitsound
+Setting.ModifyLoadingLevel.HitsoundVolume=Override Hitsound Volume
 
 Gui.EffectRemover.LevelSettings.TrackSettings=Track Settings
 Setting.ModifyLoadingLevel.TrackTexture=Disable Track texture
