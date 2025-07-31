@@ -1,6 +1,4 @@
 using JetBrains.Annotations;
-using UnityEngine;
-using UnityModManagerNet;
 
 namespace YqlossClientHarmony.Features.ModifyLoadingLevel;
 
@@ -148,18 +146,6 @@ public class SettingsModifyLoadingLevel
     public bool DisableAddParticle = false;
 
     public bool DisableKillerDecorations = false;
-
-    public bool DisableCheckpoint = false;
-
-    public bool DisableAutoPlayTiles = false;
-
-    public bool DisableRepeatEvents = false;
-
-    public bool DisableSetConditionalEvents = false;
-
-    public bool DisableSetInputEvent = false;
-
-    public bool DisableScaleMargin = false;
 
     public bool DisableSetHitsound = false;
 

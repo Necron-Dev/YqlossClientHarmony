@@ -20,11 +20,9 @@ public class EventType(
             s => s.DisableKillerDecorations,
             o => o.GetValueOrDefault("hitbox", null) is "Kill"
         ),
-        new("Checkpoint", s => s.DisableCheckpoint),
         new("SetHitsound", s => s.DisableSetHitsound),
         new("PlaySound", s => s.DisablePlaySound),
         new("SetPlanetRotation", s => s.DisableSetPlanetRotation),
-        new("AutoPlayTiles", s => s.DisableAutoPlayTiles),
         new("ScalePlanets", s => s.DisableScalePlanets),
         new("ColorTrack", s => s.DisableColorTrack),
         new("AnimateTrack", s => s.DisableAnimateTrack),
@@ -48,14 +46,10 @@ public class EventType(
         new("ScreenTile", s => s.DisableScreenTile),
         new("ScreenScroll", s => s.DisableScreenScroll),
         new("SetFrameRate", s => s.DisableSetFrameRate),
-        new("RepeatEvents", s => s.DisableRepeatEvents),
-        new("SetConditionalEvents", s => s.DisableSetConditionalEvents),
-        new("SetInputEvent", s => s.DisableSetInputEvent),
         new("EditorComment", s => s.DisableEditorComment),
         new("Bookmark", s => s.DisableBookmark),
         new("SetHoldSound", s => s.DisableSetHoldSound),
         new("Hide", s => s.DisableHide),
-        new("ScaleMargin", s => s.DisableScaleMargin),
         new("ScaleRadius", s => s.DisableScaleRadius)
     ];
 

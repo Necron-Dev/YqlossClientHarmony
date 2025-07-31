@@ -70,14 +70,6 @@ Setting.ModifyLoadingLevel.KillerDecorations=Disable Killer Decorations
 
 Gui.EffectRemover.Events=Events
 
-Gui.EffectRemover.FunctionalEvents=Functional Events
-Setting.ModifyLoadingLevel.Checkpoint=Disable Checkpoint
-Setting.ModifyLoadingLevel.AutoPlayTiles=Disable AutoPlay Tiles
-Setting.ModifyLoadingLevel.RepeatEvents=Disable Repeat Events
-Setting.ModifyLoadingLevel.SetConditionalEvents=Disable Set Conditional Events
-Setting.ModifyLoadingLevel.SetInputEvent=Disable Set Input Event
-Setting.ModifyLoadingLevel.ScaleMargin=Disable Timing Window Scale
-
 Gui.EffectRemover.AuditoryEvents=Auditory Events
 Setting.ModifyLoadingLevel.SetHitsound=Disable Set Hitsound
 Setting.ModifyLoadingLevel.PlaySound=Disable Play Sound

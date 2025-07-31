@@ -68,14 +68,6 @@ Setting.ModifyLoadingLevel.KillerDecorations=禁用 死亡装饰物
 
 Gui.EffectRemover.Events=事件
 
-Gui.EffectRemover.FunctionalEvents=功能型事件
-Setting.ModifyLoadingLevel.Checkpoint=禁用 检查点
-Setting.ModifyLoadingLevel.AutoPlayTiles=禁用 自动播放格子
-Setting.ModifyLoadingLevel.RepeatEvents=禁用 重复事件
-Setting.ModifyLoadingLevel.SetConditionalEvents=禁用 设置条件事件
-Setting.ModifyLoadingLevel.SetInputEvent=禁用 设置输入事件
-Setting.ModifyLoadingLevel.ScaleMargin=禁用 定时窗口大小
-
 Gui.EffectRemover.AuditoryEvents=音效事件
 Setting.ModifyLoadingLevel.SetHitsound=禁用 设置打拍音
 Setting.ModifyLoadingLevel.PlaySound=禁用 播放音效

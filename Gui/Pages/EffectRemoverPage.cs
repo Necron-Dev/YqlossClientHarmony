@@ -15,7 +15,6 @@ public static class EffectRemoverPage
     private static bool _expandLevelMisc;
     private static bool _expandDecorations;
     private static bool _expandEvents;
-    private static bool _expandEventFunctional;
     private static bool _expandEventAuditory;
     private static bool _expandEventPlanet;
     private static bool _expandEventTrack;
@@ -415,57 +414,6 @@ public static class EffectRemoverPage
             {
                 Begin(ContainerDirection.Vertical, ContainerStyle.Background, options: WidthMax);
                 {
-                    var groupEventFunctional = groupEvents.Group;
-                    if (
-                        Collapse(
-                            groupEventFunctional,
-                            ref _expandEventFunctional,
-                            "Gui.EffectRemover.FunctionalEvents",
-                            TextStyle.Subtitle
-                        )
-                    )
-                    {
-                        Begin(ContainerDirection.Vertical, ContainerStyle.Background, options: WidthMax);
-                        {
-                            SwitchOption(
-                                groupEventFunctional,
-                                ref settings.DisableCheckpoint,
-                                "Setting.ModifyLoadingLevel.Checkpoint"
-                            );
-                            Separator();
-                            SwitchOption(
-                                groupEventFunctional,
-                                ref settings.DisableAutoPlayTiles,
-                                "Setting.ModifyLoadingLevel.AutoPlayTiles"
-                            );
-                            Separator();
-                            SwitchOption(
-                                groupEventFunctional,
-                                ref settings.DisableRepeatEvents,
-                                "Setting.ModifyLoadingLevel.RepeatEvents"
-                            );
-                            Separator();
-                            SwitchOption(
-                                groupEventFunctional,
-                                ref settings.DisableSetConditionalEvents,
-                                "Setting.ModifyLoadingLevel.SetConditionalEvents"
-                            );
-                            Separator();
-                            SwitchOption(
-                                groupEventFunctional,
-                                ref settings.DisableSetInputEvent,
-                                "Setting.ModifyLoadingLevel.SetInputEvent"
-                            );
-                            Separator();
-                            SwitchOption(
-                                groupEventFunctional,
-                                ref settings.DisableScaleMargin,
-                                "Setting.ModifyLoadingLevel.ScaleMargin"
-                            );
-                        }
-                        End();
-                    }
-
                     var groupEventAuditory = groupEvents.Group;
                     if (
                         Collapse(
