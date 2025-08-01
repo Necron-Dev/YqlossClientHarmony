@@ -63,11 +63,12 @@ Setting.ModifyLoadingLevel.CongratsText=Override "Congratulations!" text
 Setting.ModifyLoadingLevel.PerfectText=Override "Pure Perfect!" text
 
 Gui.EffectRemover.Decorations=Decorations
-Setting.ModifyLoadingLevel.AddDecoration=Disable Image
+Setting.ModifyLoadingLevel.KillerDecorations=Disable Killer Image Decorations
+Setting.ModifyLoadingLevel.OtherDecorations=Disable Other Image Decorations
 Setting.ModifyLoadingLevel.AddText=Disable Text
-Setting.ModifyLoadingLevel.AddObject=Disable Object
+Setting.ModifyLoadingLevel.AddObjectFloor=Disable Floor Object
+Setting.ModifyLoadingLevel.AddObjectPlanet=Disable Planet Object
 Setting.ModifyLoadingLevel.AddParticle=Disable Particle Emitter
-Setting.ModifyLoadingLevel.KillerDecorations=Disable Killer Decorations
 
 Gui.EffectRemover.Events=Events
 

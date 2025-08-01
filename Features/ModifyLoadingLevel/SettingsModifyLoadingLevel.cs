@@ -141,15 +141,17 @@ public class SettingsModifyLoadingLevel
 
     public string PerfectText = "";
 
-    public bool DisableAddDecoration = false;
+    public bool DisableKillerDecorations = false;
+
+    public bool DisableOtherDecorations = false;
 
     public bool DisableAddText = false;
 
-    public bool DisableAddObject = false;
+    public bool DisableAddObjectFloor = false;
+
+    public bool DisableAddObjectPlanet = false;
 
     public bool DisableAddParticle = false;
-
-    public bool DisableKillerDecorations = false;
 
     public bool DisableSetHitsound = false;
 

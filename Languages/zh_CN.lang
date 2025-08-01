@@ -63,11 +63,12 @@ Setting.ModifyLoadingLevel.CongratsText=覆盖 “庆贺！”文本
 Setting.ModifyLoadingLevel.PerfectText=覆盖 “完美无瑕！”文本
 
 Gui.EffectRemover.Decorations=装饰
-Setting.ModifyLoadingLevel.AddDecoration=禁用 装饰（图像装饰）
+Setting.ModifyLoadingLevel.KillerDecorations=禁用 死亡图像装饰
+Setting.ModifyLoadingLevel.OtherDecorations=禁用 其他图像装饰
 Setting.ModifyLoadingLevel.AddText=禁用 文本装饰
-Setting.ModifyLoadingLevel.AddObject=禁用 对象装饰
+Setting.ModifyLoadingLevel.AddObjectFloor=禁用 地板对象装饰
+Setting.ModifyLoadingLevel.AddObjectPlanet=禁用 星球对象装饰
 Setting.ModifyLoadingLevel.AddParticle=禁用 粒子发射器
-Setting.ModifyLoadingLevel.KillerDecorations=禁用 死亡装饰物
 
 Gui.EffectRemover.Events=事件
 

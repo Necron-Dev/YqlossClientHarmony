@@ -11,15 +11,27 @@ public class EventType(
 {
     public static EventType[] Types { get; } =
     [
-        new("AddDecoration", s => s.DisableAddDecoration),
-        new("AddText", s => s.DisableAddText),
-        new("AddObject", s => s.DisableAddObject),
-        new("AddParticle", s => s.DisableAddParticle),
         new(
             "AddDecoration",
             s => s.DisableKillerDecorations,
             o => o.GetValueOrDefault("hitbox", null) is "Kill"
         ),
+        new("AddDecoration",
+            s => s.DisableOtherDecorations,
+            o => o.GetValueOrDefault("hitbox", null) is not "Kill"
+        ),
+        new("AddText", s => s.DisableAddText),
+        new(
+            "AddObject",
+            s => s.DisableAddObjectFloor,
+            o => o.GetValueOrDefault("objectType", null) is not "Planet"
+        ),
+        new(
+            "AddObject",
+            s => s.DisableAddObjectPlanet,
+            o => o.GetValueOrDefault("objectType", null) is "Planet"
+        ),
+        new("AddParticle", s => s.DisableAddParticle),
         new("SetHitsound", s => s.DisableSetHitsound),
         new("PlaySound", s => s.DisablePlaySound),
         new("SetPlanetRotation", s => s.DisableSetPlanetRotation),

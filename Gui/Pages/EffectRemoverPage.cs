@@ -385,8 +385,14 @@ public static class EffectRemoverPage
                 {
                     SwitchOption(
                         groupDecorations,
-                        ref settings.DisableAddDecoration,
-                        "Setting.ModifyLoadingLevel.AddDecoration"
+                        ref settings.DisableKillerDecorations,
+                        "Setting.ModifyLoadingLevel.KillerDecorations"
+                    );
+                    Separator();
+                    SwitchOption(
+                        groupDecorations,
+                        ref settings.DisableOtherDecorations,
+                        "Setting.ModifyLoadingLevel.OtherDecorations"
                     );
                     Separator();
                     SwitchOption(
@@ -397,20 +403,20 @@ public static class EffectRemoverPage
                     Separator();
                     SwitchOption(
                         groupDecorations,
-                        ref settings.DisableAddObject,
-                        "Setting.ModifyLoadingLevel.AddObject"
+                        ref settings.DisableAddObjectFloor,
+                        "Setting.ModifyLoadingLevel.AddObjectFloor"
+                    );
+                    Separator();
+                    SwitchOption(
+                        groupDecorations,
+                        ref settings.DisableAddObjectPlanet,
+                        "Setting.ModifyLoadingLevel.AddObjectPlanet"
                     );
                     Separator();
                     SwitchOption(
                         groupDecorations,
                         ref settings.DisableAddParticle,
                         "Setting.ModifyLoadingLevel.AddParticle"
-                    );
-                    Separator();
-                    SwitchOption(
-                        groupDecorations,
-                        ref settings.DisableKillerDecorations,
-                        "Setting.ModifyLoadingLevel.KillerDecorations"
                     );
                 }
                 End();
