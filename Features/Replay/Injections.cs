@@ -74,7 +74,6 @@ public static class Injections
             int seqID
         )
         {
-            if (!SettingsReplay.Instance.Enabled) return;
             if (ADOBase.isOfficialLevel) return;
             if (RDC.auto)
             {
@@ -83,8 +82,9 @@ public static class Injections
             }
 
             TickToDspOffset = null;
-            ReplayRecorder.StartRecording(seqID);
             ReplayPlayer.StartPlaying(seqID);
+            if (!SettingsReplay.Instance.Enabled) return;
+            ReplayRecorder.StartRecording(seqID);
         }
     }
 
