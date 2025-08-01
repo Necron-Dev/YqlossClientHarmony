@@ -117,13 +117,11 @@ Gui.EffectRemover.MiscEvents=Misc Events
 Setting.ModifyLoadingLevel.EditorComment=Disable Editor Comment
 Setting.ModifyLoadingLevel.Bookmark=Disable Bookmark
 
+Dialog.ModifyLoadingLevel.SaveModifiedLevel.Title=Modified Level Saving Confirmation
+Dialog.ModifyLoadingLevel.SaveModifiedLevel.Text=Are you sure you want to save this modified level?\nSaving this level can cause all changes YCH has made to be saved in the .adofai file!\nThis is irreversible!!!\nYou can disable Effect Remover in YCH settings if you are editing levels.
+
 Setting.Replay.Enabled=Enable Replay Recording
 Setting.Replay.Enabled.Description=Start recording on starting or respawning from a checkpoint. Stop recording on death or reaching the last floor.
-
-Dialog.Replay.SelectReplay.Title=Select Replay File
-Dialog.Replay.SelectReplay.FileTypeName=YCH Replay File
-
-Dialog.Replay.SelectReplayStorageLocation.Title=Select Replay File Storage Location
 
 Gui.Replay.LoadReplay=Load Replay
 Gui.Replay.UnloadReplay=Unload Replay
@@ -186,3 +184,14 @@ Setting.Replay.PlayingOffset=Playing offset (ms)
 Gui.Replay.DebugOptions=Debug Options
 Gui.Replay.DebugOptions.Warning=Don't modify them unless you know what you are doing!
 Setting.Replay.Verbose=Verbose
+
+Dialog.Replay.SelectReplay.Title=Select Replay File
+Dialog.Replay.SelectReplay.FileTypeName=YCH Replay File
+
+Dialog.Replay.SelectReplayStorageLocation.Title=Select Replay File Storage Location
+
+Dialog.Replay.SaveFailure.Title=Replay Saving Failure
+Dialog.Replay.SaveFailure.Text=Failed to save replay!\nPlease save your game logs (click "Open detailed log" in Unity Mod Manager's "Logs" page) and ask for help!\nIn most cases your replay can be recovered with your game logs!
+
+Dialog.Replay.EncodeFailure.Title=Replay Encoding Failure
+Dialog.Replay.EncodeFailure.Text=Failed to encode replay, and your replay has been lost forever!\nPlease save your game logs (click "Open detailed log" in Unity Mod Manager's "Logs" page) and ask for help!

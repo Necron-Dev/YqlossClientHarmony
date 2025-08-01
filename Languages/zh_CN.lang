@@ -117,13 +117,11 @@ Gui.EffectRemover.MiscEvents=其他事件
 Setting.ModifyLoadingLevel.EditorComment=禁用 编辑器附注
 Setting.ModifyLoadingLevel.Bookmark=禁用 书签
 
+Dialog.ModifyLoadingLevel.SaveModifiedLevel.Title=保存已被 YCH 修改的关卡
+Dialog.ModifyLoadingLevel.SaveModifiedLevel.Text=确定要保存已被 YCH 修改的关卡吗？\n保存此关卡会导致 YCH 所做的所有修改被保存到 .adofai 文件中。\n此操作不可逆！！！\n编辑关卡时可以在 YCH 设置中关闭”去特效“功能。
+
 Setting.Replay.Enabled=开启回放录制
 Setting.Replay.Enabled.Description=在开始或从检查点复活时开始录制，在死亡或到达终点时结束录制。
-
-Dialog.Replay.SelectReplay.Title=选择回放文件
-Dialog.Replay.SelectReplay.FileTypeName=YCH 回放文件
-
-Dialog.Replay.SelectReplayStorageLocation.Title=选择回放文件存储位置
 
 Gui.Replay.LoadReplay=加载回放
 Gui.Replay.UnloadReplay=取消加载
@@ -185,3 +183,15 @@ Setting.Replay.PlayingOffset=播放偏移（毫秒）
 
 Gui.Replay.DebugOptions=调试选项
 Gui.Replay.DebugOptions.Warning=如果不清楚它们的作用，请不要修改！
+
+Dialog.Replay.SelectReplay.Title=选择回放文件
+Dialog.Replay.SelectReplay.FileTypeName=YCH 回放文件
+
+Dialog.Replay.SelectReplayStorageLocation.Title=选择回放文件存储位置
+
+Dialog.Replay.SaveFailure.Title=回放保存失败
+Dialog.Replay.SaveFailure.Text=回放保存失败！\n请保存你的游戏日志（在 Unity Mod Manager 的 Logs 页面中点击 Open detailed log）并寻求帮助！\n回放文件在大多数情况下可以通过游戏日志恢复！
+
+Dialog.Replay.EncodeFailure.Title=回放编码失败
+Dialog.Replay.EncodeFailure.Text=回放编码失败，且无法被恢复！\n请保存你的游戏日志（在 Unity Mod Manager 的 Logs 页面中点击 Open detailed log）并寻求帮助！
+

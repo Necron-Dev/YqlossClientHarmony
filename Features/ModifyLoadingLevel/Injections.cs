@@ -19,11 +19,8 @@ public static class Injections
     private static bool ShowConfirmSavingDialog()
     {
         return ConfirmedSaving = MessageBox.Show(
-            "Are you sure you want to save this modified level?\n" +
-            "Saving this level can cause all changes YCH has made to be actually saved in the original .adofai file!\n" +
-            "This is irreversible!!!\n" +
-            "You can disable Modify Loading Level in YCH settings if you are editing levels.",
-            "Save Level Confirmation",
+            I18N.Translate("Dialog.ModifyLoadingLevel.SaveModifiedLevel.Text"),
+            I18N.Translate("Dialog.ModifyLoadingLevel.SaveModifiedLevel.Title"),
             MessageBoxButtons.YesNo,
             MessageBoxIcon.Warning,
             MessageBoxDefaultButton.Button2
