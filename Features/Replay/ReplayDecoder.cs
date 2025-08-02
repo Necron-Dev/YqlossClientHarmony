@@ -97,6 +97,9 @@ public static class ReplayDecoder
                 reader.ReadBoolean()
             ));
 
+        if (SettingsReplay.Instance.DecoderSortKeyEvents)
+            keyEvents.Sort((x, y) => x.SongSeconds.CompareTo(y.SongSeconds));
+
         return false;
     }
 

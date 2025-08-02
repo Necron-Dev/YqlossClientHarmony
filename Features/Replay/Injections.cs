@@ -25,29 +25,38 @@ public static class Injections
 
     public static double TickToDsp(long ticks)
     {
-        var tickToDspOffsetNullable = TickToDspOffset;
         long tickToDspOffset;
 
-        if (tickToDspOffsetNullable is null)
+        if (SettingsReplay.Instance.NoTickToDspCache)
         {
-            List<long> samples = [];
-
-            for (var i = 0; i < 10; i++)
-                samples.Add((long)(AudioSettings.dspTime * 10000000.0) - DateTime.Now.Ticks);
-
-            samples.Sort();
-            samples.RemoveRange(8, 2);
-            samples.RemoveRange(0, 2);
-
-            var total = (long)0;
-
-            foreach (var sample in samples) total += sample;
-
-            TickToDspOffset = tickToDspOffset = total / samples.Count;
+            TickToDspOffset = null;
+            tickToDspOffset = (long)(AudioSettings.dspTime * 10000000.0) - DateTime.Now.Ticks;
         }
         else
         {
-            tickToDspOffset = tickToDspOffsetNullable.Value;
+            var tickToDspOffsetNullable = TickToDspOffset;
+
+            if (tickToDspOffsetNullable is null)
+            {
+                List<long> samples = [];
+
+                for (var i = 0; i < 10; i++)
+                    samples.Add((long)(AudioSettings.dspTime * 10000000.0) - DateTime.Now.Ticks);
+
+                samples.Sort();
+                samples.RemoveRange(8, 2);
+                samples.RemoveRange(0, 2);
+
+                var total = (long)0;
+
+                foreach (var sample in samples) total += sample;
+
+                TickToDspOffset = tickToDspOffset = total / samples.Count;
+            }
+            else
+            {
+                tickToDspOffset = tickToDspOffsetNullable.Value;
+            }
         }
 
         return (ticks + tickToDspOffset) / 10000000.0;

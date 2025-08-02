@@ -25,5 +25,9 @@ public class SettingsReplay
 
     public double TrailLength = 100.0;
 
+    public bool NoTickToDspCache = false;
+
+    public bool DecoderSortKeyEvents = false;
+
     public bool Verbose = false;
 }
