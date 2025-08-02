@@ -712,6 +712,7 @@ public static class YCHLayout
 
         public int? Parse(string text)
         {
+            if (text.IsNullOrEmpty()) return 0;
             if (!int.TryParse(text, out var result)) return null;
             result = Math.Clamp(result, min, max);
             return result;
