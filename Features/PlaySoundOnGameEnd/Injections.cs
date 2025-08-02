@@ -72,7 +72,7 @@ public static class Injections
             if (!SettingsPlaySoundOnGameEnd.Instance.Enabled) return;
 
             if (!Equals(States.Fail, State)) return;
-            Main.Mod.Logger.Log("fail");
+            Main.Mod.Logger.Log("playing death sound");
             TryPlaySound(SettingsPlaySoundOnGameEnd.Instance.OnDeath);
         }
     }
