@@ -347,6 +347,8 @@ public static class ReplayPage
                 Separator();
                 SwitchOption(settingsGroup, ref settings.DecoderSortKeyEvents, "Setting.Replay.DecoderSortKeyEvents", true);
                 Separator();
+                CheckboxIntOption(settingsGroup, ref settings.EnableDecoderLimitKeyCount, ref settings.DecoderLimitKeyCount, "Setting.Replay.DecoderLimitKeyCount", true);
+                Separator();
                 IconText(settingsGroup, IconStyle.Warning, "Gui.Replay.Settings.OffsetZeroWarning");
                 Separator();
                 DoubleOption(settingsGroup, ref settings.SyncRecordingOffset, "Setting.Replay.SyncRecordingOffset");

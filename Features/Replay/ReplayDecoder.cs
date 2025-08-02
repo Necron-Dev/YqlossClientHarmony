@@ -278,6 +278,7 @@ public static class ReplayDecoder
         replay.Judgements.AddRange(judgements ?? []);
         replay.AngleCorrections.AddRange(angleCorrections ?? []);
         ReplayUtils.HandleMultiReleases(replay.KeyEvents);
+        ReplayUtils.HandleLimitKeyCount(replay.KeyEvents);
         return replay;
     }
 

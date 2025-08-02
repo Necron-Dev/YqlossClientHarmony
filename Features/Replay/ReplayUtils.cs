@@ -105,4 +105,30 @@ public static class ReplayUtils
         keyEvents.Clear();
         keyEvents.AddRange(Enumerable.Reverse(filtered));
     }
+
+    public static void HandleLimitKeyCount(List<Replay.KeyEventType> keyEvents)
+    {
+        if (!SettingsReplay.Instance.EnableDecoderLimitKeyCount) return;
+
+        List<Replay.KeyEventType> filtered = [];
+        Dictionary<int, int> keyDownCount = [];
+
+        foreach (var keyEvent in keyEvents)
+            if (!keyEvent.IsKeyUp)
+                keyDownCount[keyEvent.KeyCode] = keyDownCount.GetValueOrDefault(keyEvent.KeyCode, 0) + 1;
+
+        var entries = keyDownCount.Select(pair => (pair.Key, pair.Value)).ToList();
+        entries.Sort((pair1, pair2) => pair2.Value.CompareTo(pair1.Value));
+        var limitedCount = SettingsReplay.Instance.DecoderLimitKeyCount;
+        if (entries.Count > limitedCount)
+            entries.RemoveRange(limitedCount, entries.Count - limitedCount);
+        var allowedKeys = entries.Select(pair => pair.Key).ToHashSet();
+
+        foreach (var keyEvent in keyEvents)
+            if (allowedKeys.Contains(keyEvent.KeyCode))
+                filtered.Add(keyEvent);
+
+        keyEvents.Clear();
+        keyEvents.AddRange(Enumerable.Reverse(filtered));
+    }
 }

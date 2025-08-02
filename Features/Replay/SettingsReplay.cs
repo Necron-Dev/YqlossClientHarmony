@@ -31,5 +31,9 @@ public class SettingsReplay
 
     public bool DecoderSortKeyEvents = false;
 
+    public bool EnableDecoderLimitKeyCount = false;
+
+    public int DecoderLimitKeyCount = 16;
+
     public bool Verbose = false;
 }
