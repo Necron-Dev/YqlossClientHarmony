@@ -36,8 +36,7 @@ public class LevelSettingType(
         new(
             "position",
             s => s.EnablePosition,
-            _ => new object[]
-                { SettingsModifyLoadingLevel.Instance.PositionX, SettingsModifyLoadingLevel.Instance.PositionY }
+            _ => new object[] { SettingsModifyLoadingLevel.Instance.PositionX, SettingsModifyLoadingLevel.Instance.PositionY }
         ),
         new("rotation", s => s.EnableRotation, s => s.Rotation),
         new("zoom", s => s.EnableZoom, s => s.Zoom),

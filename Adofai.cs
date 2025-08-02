@@ -12,6 +12,5 @@ public static class Adofai
 
     public static int CurrentFloorId => Controller.currFloor.seqID;
 
-    public static int TotalFloorCount =>
-        Game.levelData.isOldLevel ? Game.levelData.pathData.Length : Game.levelData.angleData.Count;
+    public static int TotalFloorCount => Game.levelData.isOldLevel ? Game.levelData.pathData.Length : Game.levelData.angleData.Count;
 }

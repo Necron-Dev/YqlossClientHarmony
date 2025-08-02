@@ -34,9 +34,7 @@ public class CompatibilityOverlayer
 
             Main.Harmony.Patch(
                 AccessTools.DeclaredMethod(typeJudgementTagPatch, "IncreaseCCount"),
-                new HarmonyMethod(
-                    typeof(CompatibilityOverlayer)
-                        .GetMethod(nameof(Inject_JudgementTagPatch_IncreaseCCount_Prefix)))
+                new HarmonyMethod(typeof(CompatibilityOverlayer).GetMethod(nameof(Inject_JudgementTagPatch_IncreaseCCount_Prefix)))
             );
 
             var typeHit = assembly.GetType("Overlayer.Tags.Hit")!;

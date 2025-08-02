@@ -44,199 +44,73 @@ public static class EffectRemoverPage
                 Begin(ContainerDirection.Vertical, ContainerStyle.Background, options: WidthMax);
                 {
                     var groupSong = groupLevel.Group;
-                    if (
-                        Collapse(
-                            groupSong,
-                            ref _expandLevelSong,
-                            "Gui.EffectRemover.LevelSettings.SongSettings",
-                            TextStyle.Subtitle
-                        )
-                    )
+                    if (Collapse(groupSong, ref _expandLevelSong, "Gui.EffectRemover.LevelSettings.SongSettings", TextStyle.Subtitle))
                     {
                         Begin(ContainerDirection.Vertical, ContainerStyle.Background, options: WidthMax);
                         {
-                            CheckboxTextOption(
-                                groupSong,
-                                ref settings.EnableHitsound,
-                                ref settings.Hitsound,
-                                "Setting.ModifyLoadingLevel.Hitsound"
-                            );
+                            CheckboxTextOption(groupSong, ref settings.EnableHitsound, ref settings.Hitsound, "Setting.ModifyLoadingLevel.Hitsound");
                             Separator();
-                            CheckboxIntOption(
-                                groupSong,
-                                ref settings.EnableHitsoundVolume,
-                                ref settings.HitsoundVolume,
-                                "Setting.ModifyLoadingLevel.HitsoundVolume"
-                            );
+                            CheckboxIntOption(groupSong, ref settings.EnableHitsoundVolume, ref settings.HitsoundVolume, "Setting.ModifyLoadingLevel.HitsoundVolume");
                         }
                         End();
                     }
 
                     var groupTrack = groupLevel.Group;
-                    if (
-                        Collapse(
-                            groupTrack,
-                            ref _expandLevelTrack,
-                            "Gui.EffectRemover.LevelSettings.TrackSettings",
-                            TextStyle.Subtitle
-                        )
-                    )
+                    if (Collapse(groupTrack, ref _expandLevelTrack, "Gui.EffectRemover.LevelSettings.TrackSettings", TextStyle.Subtitle))
                     {
                         Begin(ContainerDirection.Vertical, ContainerStyle.Background, options: WidthMax);
                         {
-                            SwitchOption(
-                                groupTrack,
-                                ref settings.DisableTrackTexture,
-                                "Setting.ModifyLoadingLevel.TrackTexture"
-                            );
+                            SwitchOption(groupTrack, ref settings.DisableTrackTexture, "Setting.ModifyLoadingLevel.TrackTexture");
                             Separator();
-                            CheckboxTextOption(
-                                groupTrack,
-                                ref settings.EnableTrackColorType,
-                                ref settings.TrackColorType,
-                                "Setting.ModifyLoadingLevel.TrackColorType"
-                            );
+                            CheckboxTextOption(groupTrack, ref settings.EnableTrackColorType, ref settings.TrackColorType, "Setting.ModifyLoadingLevel.TrackColorType");
                             Separator();
-                            CheckboxTextOption(
-                                groupTrack,
-                                ref settings.EnableTrackStyle,
-                                ref settings.TrackStyle,
-                                "Setting.ModifyLoadingLevel.TrackStyle"
-                            );
+                            CheckboxTextOption(groupTrack, ref settings.EnableTrackStyle, ref settings.TrackStyle, "Setting.ModifyLoadingLevel.TrackStyle");
                             Separator();
-                            CheckboxTextOption(
-                                groupTrack,
-                                ref settings.EnableTrackColor,
-                                ref settings.TrackColor,
-                                "Setting.ModifyLoadingLevel.TrackColor"
-                            );
+                            CheckboxTextOption(groupTrack, ref settings.EnableTrackColor, ref settings.TrackColor, "Setting.ModifyLoadingLevel.TrackColor");
                             Separator();
-                            CheckboxTextOption(
-                                groupTrack,
-                                ref settings.EnableSecondaryTrackColor,
-                                ref settings.SecondaryTrackColor,
-                                "Setting.ModifyLoadingLevel.SecondaryTrackColor"
-                            );
+                            CheckboxTextOption(groupTrack, ref settings.EnableSecondaryTrackColor, ref settings.SecondaryTrackColor, "Setting.ModifyLoadingLevel.SecondaryTrackColor");
                             Separator();
-                            CheckboxDoubleOption(
-                                groupTrack,
-                                ref settings.EnableColorAnimDuration,
-                                ref settings.ColorAnimDuration,
-                                "Setting.ModifyLoadingLevel.ColorAnimDuration"
-                            );
+                            CheckboxDoubleOption(groupTrack, ref settings.EnableColorAnimDuration, ref settings.ColorAnimDuration, "Setting.ModifyLoadingLevel.ColorAnimDuration");
                             Separator();
-                            CheckboxDoubleOption(
-                                groupTrack,
-                                ref settings.EnableTrackGlowIntensity,
-                                ref settings.TrackGlowIntensity,
-                                "Setting.ModifyLoadingLevel.TrackGlowIntensity"
-                            );
+                            CheckboxDoubleOption(groupTrack, ref settings.EnableTrackGlowIntensity, ref settings.TrackGlowIntensity, "Setting.ModifyLoadingLevel.TrackGlowIntensity");
                             Separator();
-                            CheckboxTextOption(
-                                groupTrack,
-                                ref settings.EnableTrackAnimation,
-                                ref settings.TrackAnimation,
-                                "Setting.ModifyLoadingLevel.TrackAnimation"
-                            );
+                            CheckboxTextOption(groupTrack, ref settings.EnableTrackAnimation, ref settings.TrackAnimation, "Setting.ModifyLoadingLevel.TrackAnimation");
                             Separator();
-                            CheckboxDoubleOption(
-                                groupTrack,
-                                ref settings.EnableBeatsAhead,
-                                ref settings.BeatsAhead,
-                                "Setting.ModifyLoadingLevel.BeatsAhead"
-                            );
+                            CheckboxDoubleOption(groupTrack, ref settings.EnableBeatsAhead, ref settings.BeatsAhead, "Setting.ModifyLoadingLevel.BeatsAhead");
                             Separator();
-                            CheckboxTextOption(
-                                groupTrack,
-                                ref settings.EnableTrackDisappearAnimation,
-                                ref settings.TrackDisappearAnimation,
-                                "Setting.ModifyLoadingLevel.TrackDisappearAnimation"
-                            );
+                            CheckboxTextOption(groupTrack, ref settings.EnableTrackDisappearAnimation, ref settings.TrackDisappearAnimation, "Setting.ModifyLoadingLevel.TrackDisappearAnimation");
                             Separator();
-                            CheckboxDoubleOption(
-                                groupTrack,
-                                ref settings.EnableBeatsBehind,
-                                ref settings.BeatsBehind,
-                                "Setting.ModifyLoadingLevel.BeatsBehind"
-                            );
+                            CheckboxDoubleOption(groupTrack, ref settings.EnableBeatsBehind, ref settings.BeatsBehind, "Setting.ModifyLoadingLevel.BeatsBehind");
                         }
                         End();
                     }
 
                     var groupBackground = groupLevel.Group;
-                    if (
-                        Collapse(
-                            groupBackground,
-                            ref _expandLevelBackground,
-                            "Gui.EffectRemover.LevelSettings.BackgroundSettings",
-                            TextStyle.Subtitle
-                        )
-                    )
+                    if (Collapse(groupBackground, ref _expandLevelBackground, "Gui.EffectRemover.LevelSettings.BackgroundSettings", TextStyle.Subtitle))
                     {
                         Begin(ContainerDirection.Vertical, ContainerStyle.Background, options: WidthMax);
                         {
-                            SwitchOption(
-                                groupBackground,
-                                ref settings.DisableBgImage,
-                                "Setting.ModifyLoadingLevel.BgImage"
-                            );
+                            SwitchOption(groupBackground, ref settings.DisableBgImage, "Setting.ModifyLoadingLevel.BgImage");
                             Separator();
-                            CheckboxTextOption(
-                                groupBackground,
-                                ref settings.EnableBackgroundColor,
-                                ref settings.BackgroundColor,
-                                "Setting.ModifyLoadingLevel.BackgroundColor"
-                            );
+                            CheckboxTextOption(groupBackground, ref settings.EnableBackgroundColor, ref settings.BackgroundColor, "Setting.ModifyLoadingLevel.BackgroundColor");
                             Separator();
-                            CheckboxSwitchOption(
-                                groupBackground,
-                                ref settings.EnableShowDefaultBgTile,
-                                ref settings.ShowDefaultBgTile,
-                                "Setting.ModifyLoadingLevel.ShowDefaultBgTile"
-                            );
+                            CheckboxSwitchOption(groupBackground, ref settings.EnableShowDefaultBgTile, ref settings.ShowDefaultBgTile, "Setting.ModifyLoadingLevel.ShowDefaultBgTile");
                             Separator();
-                            CheckboxTextOption(
-                                groupBackground,
-                                ref settings.EnableDefaultBgTileColor,
-                                ref settings.DefaultBgTileColor,
-                                "Setting.ModifyLoadingLevel.DefaultBgTileColor"
-                            );
+                            CheckboxTextOption(groupBackground, ref settings.EnableDefaultBgTileColor, ref settings.DefaultBgTileColor, "Setting.ModifyLoadingLevel.DefaultBgTileColor");
                             Separator();
-                            CheckboxTextOption(
-                                groupBackground,
-                                ref settings.EnableDefaultBgShapeType,
-                                ref settings.DefaultBgShapeType,
-                                "Setting.ModifyLoadingLevel.DefaultBgShapeType"
-                            );
+                            CheckboxTextOption(groupBackground, ref settings.EnableDefaultBgShapeType, ref settings.DefaultBgShapeType, "Setting.ModifyLoadingLevel.DefaultBgShapeType");
                             Separator();
-                            CheckboxTextOption(
-                                groupBackground,
-                                ref settings.EnableDefaultBgShapeColor,
-                                ref settings.DefaultBgShapeColor,
-                                "Setting.ModifyLoadingLevel.DefaultBgShapeColor"
-                            );
+                            CheckboxTextOption(groupBackground, ref settings.EnableDefaultBgShapeColor, ref settings.DefaultBgShapeColor, "Setting.ModifyLoadingLevel.DefaultBgShapeColor");
                         }
                         End();
                     }
 
                     var groupCamera = groupLevel.Group;
-                    if (
-                        Collapse(
-                            groupCamera,
-                            ref _expandLevelCamera,
-                            "Gui.EffectRemover.LevelSettings.CameraSettings",
-                            TextStyle.Subtitle
-                        )
-                    )
+                    if (Collapse(groupCamera, ref _expandLevelCamera, "Gui.EffectRemover.LevelSettings.CameraSettings", TextStyle.Subtitle))
                     {
                         Begin(ContainerDirection.Vertical, ContainerStyle.Background, options: WidthMax);
                         {
-                            CheckboxTextOption(
-                                groupCamera,
-                                ref settings.EnableRelativeTo,
-                                ref settings.RelativeTo,
-                                "Setting.ModifyLoadingLevel.RelativeTo"
-                            );
+                            CheckboxTextOption(groupCamera, ref settings.EnableRelativeTo, ref settings.RelativeTo, "Setting.ModifyLoadingLevel.RelativeTo");
                             Separator();
                             Begin(ContainerDirection.Horizontal, sizes: groupCamera, options: WidthMax);
                             PushAlign(0.5);
@@ -248,15 +122,13 @@ public static class EffectRemoverPage
                                 {
                                     Begin(ContainerDirection.Horizontal, sizes: groupCamera, options: WidthMax);
                                     {
-                                        Text(I18N.Translate("Setting.ModifyLoadingLevel.Position.X"),
-                                            options: WidthMin);
+                                        Text(I18N.Translate("Setting.ModifyLoadingLevel.Position.X"), options: WidthMin);
                                         Save |= StructField(ref settings.PositionX, DoubleFormat(), WidthMin);
                                     }
                                     End();
                                     Begin(ContainerDirection.Horizontal, sizes: groupCamera, options: WidthMax);
                                     {
-                                        Text(I18N.Translate("Setting.ModifyLoadingLevel.Position.Y"),
-                                            options: WidthMin);
+                                        Text(I18N.Translate("Setting.ModifyLoadingLevel.Position.Y"), options: WidthMin);
                                         Save |= StructField(ref settings.PositionY, DoubleFormat(), WidthMin);
                                     }
                                     End();
@@ -266,111 +138,40 @@ public static class EffectRemoverPage
                             PopAlign();
                             End();
                             Separator();
-                            CheckboxDoubleOption(
-                                groupCamera,
-                                ref settings.EnableRotation,
-                                ref settings.Rotation,
-                                "Setting.ModifyLoadingLevel.Rotation"
-                            );
+                            CheckboxDoubleOption(groupCamera, ref settings.EnableRotation, ref settings.Rotation, "Setting.ModifyLoadingLevel.Rotation");
                             Separator();
-                            CheckboxDoubleOption(
-                                groupCamera,
-                                ref settings.EnableZoom,
-                                ref settings.Zoom,
-                                "Setting.ModifyLoadingLevel.Zoom"
-                            );
+                            CheckboxDoubleOption(groupCamera, ref settings.EnableZoom, ref settings.Zoom, "Setting.ModifyLoadingLevel.Zoom");
                             Separator();
-                            CheckboxSwitchOption(
-                                groupCamera,
-                                ref settings.EnablePulseOnFloor,
-                                ref settings.PulseOnFloor,
-                                "Setting.ModifyLoadingLevel.PulseOnFloor"
-                            );
+                            CheckboxSwitchOption(groupCamera, ref settings.EnablePulseOnFloor, ref settings.PulseOnFloor, "Setting.ModifyLoadingLevel.PulseOnFloor");
                         }
                         End();
                     }
 
 
                     var groupMisc = groupLevel.Group;
-                    if (
-                        Collapse(
-                            groupMisc,
-                            ref _expandLevelMisc,
-                            "Gui.EffectRemover.LevelSettings.MiscSettings",
-                            TextStyle.Subtitle
-                        )
-                    )
+                    if (Collapse(groupMisc, ref _expandLevelMisc, "Gui.EffectRemover.LevelSettings.MiscSettings", TextStyle.Subtitle))
                     {
                         Begin(ContainerDirection.Vertical, ContainerStyle.Background, options: WidthMax);
                         {
-                            SwitchOption(
-                                groupMisc,
-                                ref settings.DisableBgVideo,
-                                "Setting.ModifyLoadingLevel.BgVideo"
-                            );
+                            SwitchOption(groupMisc, ref settings.DisableBgVideo, "Setting.ModifyLoadingLevel.BgVideo");
                             Separator();
-                            CheckboxSwitchOption(
-                                groupMisc,
-                                ref settings.EnableFloorIconOutlines,
-                                ref settings.FloorIconOutlines,
-                                "Setting.ModifyLoadingLevel.FloorIconOutlines"
-                            );
+                            CheckboxSwitchOption(groupMisc, ref settings.EnableFloorIconOutlines, ref settings.FloorIconOutlines, "Setting.ModifyLoadingLevel.FloorIconOutlines");
                             Separator();
-                            CheckboxSwitchOption(
-                                groupMisc,
-                                ref settings.EnableStickToFloors,
-                                ref settings.StickToFloors,
-                                "Setting.ModifyLoadingLevel.StickToFloors"
-                            );
+                            CheckboxSwitchOption(groupMisc, ref settings.EnableStickToFloors, ref settings.StickToFloors, "Setting.ModifyLoadingLevel.StickToFloors");
                             Separator();
-                            CheckboxTextOption(
-                                groupMisc,
-                                ref settings.EnablePlanetEase,
-                                ref settings.PlanetEase,
-                                "Setting.ModifyLoadingLevel.PlanetEase"
-                            );
+                            CheckboxTextOption(groupMisc, ref settings.EnablePlanetEase, ref settings.PlanetEase, "Setting.ModifyLoadingLevel.PlanetEase");
                             Separator();
-                            CheckboxIntOption(
-                                groupMisc,
-                                ref settings.EnablePlanetEaseParts,
-                                ref settings.PlanetEaseParts,
-                                "Setting.ModifyLoadingLevel.PlanetEaseParts"
-                            );
+                            CheckboxIntOption(groupMisc, ref settings.EnablePlanetEaseParts, ref settings.PlanetEaseParts, "Setting.ModifyLoadingLevel.PlanetEaseParts");
                             Separator();
-                            CheckboxTextOption(
-                                groupMisc,
-                                ref settings.EnablePlanetEasePartBehavior,
-                                ref settings.PlanetEasePartBehavior,
-                                "Setting.ModifyLoadingLevel.PlanetEasePartBehavior"
-                            );
+                            CheckboxTextOption(groupMisc, ref settings.EnablePlanetEasePartBehavior, ref settings.PlanetEasePartBehavior, "Setting.ModifyLoadingLevel.PlanetEasePartBehavior");
                             Separator();
-                            CheckboxTextOption(
-                                groupMisc,
-                                ref settings.EnableDefaultTextColor,
-                                ref settings.DefaultTextColor,
-                                "Setting.ModifyLoadingLevel.DefaultTextColor"
-                            );
+                            CheckboxTextOption(groupMisc, ref settings.EnableDefaultTextColor, ref settings.DefaultTextColor, "Setting.ModifyLoadingLevel.DefaultTextColor");
                             Separator();
-                            CheckboxTextOption(
-                                groupMisc,
-                                ref settings.EnableDefaultTextShadowColor,
-                                ref settings.DefaultTextShadowColor,
-                                "Setting.ModifyLoadingLevel.DefaultTextShadowColor"
-                            );
+                            CheckboxTextOption(groupMisc, ref settings.EnableDefaultTextShadowColor, ref settings.DefaultTextShadowColor, "Setting.ModifyLoadingLevel.DefaultTextShadowColor");
                             Separator();
-                            CheckboxTextOption(
-                                groupMisc,
-                                ref settings.EnableCongratsText,
-                                ref settings.CongratsText,
-                                "Setting.ModifyLoadingLevel.CongratsText"
-                            );
+                            CheckboxTextOption(groupMisc, ref settings.EnableCongratsText, ref settings.CongratsText, "Setting.ModifyLoadingLevel.CongratsText");
                             Separator();
-                            CheckboxTextOption(
-                                groupMisc,
-                                ref settings.EnablePerfectText,
-                                ref settings.PerfectText,
-                                "Setting.ModifyLoadingLevel.PerfectText"
-                            );
+                            CheckboxTextOption(groupMisc, ref settings.EnablePerfectText, ref settings.PerfectText, "Setting.ModifyLoadingLevel.PerfectText");
                         }
                         End();
                     }
@@ -383,41 +184,17 @@ public static class EffectRemoverPage
             {
                 Begin(ContainerDirection.Vertical, ContainerStyle.Background, options: WidthMax);
                 {
-                    SwitchOption(
-                        groupDecorations,
-                        ref settings.DisableKillerDecorations,
-                        "Setting.ModifyLoadingLevel.KillerDecorations"
-                    );
+                    SwitchOption(groupDecorations, ref settings.DisableKillerDecorations, "Setting.ModifyLoadingLevel.KillerDecorations");
                     Separator();
-                    SwitchOption(
-                        groupDecorations,
-                        ref settings.DisableOtherDecorations,
-                        "Setting.ModifyLoadingLevel.OtherDecorations"
-                    );
+                    SwitchOption(groupDecorations, ref settings.DisableOtherDecorations, "Setting.ModifyLoadingLevel.OtherDecorations");
                     Separator();
-                    SwitchOption(
-                        groupDecorations,
-                        ref settings.DisableAddText,
-                        "Setting.ModifyLoadingLevel.AddText"
-                    );
+                    SwitchOption(groupDecorations, ref settings.DisableAddText, "Setting.ModifyLoadingLevel.AddText");
                     Separator();
-                    SwitchOption(
-                        groupDecorations,
-                        ref settings.DisableAddObjectFloor,
-                        "Setting.ModifyLoadingLevel.AddObjectFloor"
-                    );
+                    SwitchOption(groupDecorations, ref settings.DisableAddObjectFloor, "Setting.ModifyLoadingLevel.AddObjectFloor");
                     Separator();
-                    SwitchOption(
-                        groupDecorations,
-                        ref settings.DisableAddObjectPlanet,
-                        "Setting.ModifyLoadingLevel.AddObjectPlanet"
-                    );
+                    SwitchOption(groupDecorations, ref settings.DisableAddObjectPlanet, "Setting.ModifyLoadingLevel.AddObjectPlanet");
                     Separator();
-                    SwitchOption(
-                        groupDecorations,
-                        ref settings.DisableAddParticle,
-                        "Setting.ModifyLoadingLevel.AddParticle"
-                    );
+                    SwitchOption(groupDecorations, ref settings.DisableAddParticle, "Setting.ModifyLoadingLevel.AddParticle");
                 }
                 End();
             }
@@ -428,292 +205,119 @@ public static class EffectRemoverPage
                 Begin(ContainerDirection.Vertical, ContainerStyle.Background, options: WidthMax);
                 {
                     var groupEventAuditory = groupEvents.Group;
-                    if (
-                        Collapse(
-                            groupEventAuditory,
-                            ref _expandEventAuditory,
-                            "Gui.EffectRemover.AuditoryEvents",
-                            TextStyle.Subtitle
-                        )
-                    )
+                    if (Collapse(groupEventAuditory, ref _expandEventAuditory, "Gui.EffectRemover.AuditoryEvents", TextStyle.Subtitle))
                     {
                         Begin(ContainerDirection.Vertical, ContainerStyle.Background, options: WidthMax);
                         {
-                            SwitchOption(
-                                groupEventAuditory,
-                                ref settings.DisableSetHitsound,
-                                "Setting.ModifyLoadingLevel.SetHitsound"
-                            );
+                            SwitchOption(groupEventAuditory, ref settings.DisableSetHitsound, "Setting.ModifyLoadingLevel.SetHitsound");
                             Separator();
-                            SwitchOption(
-                                groupEventAuditory,
-                                ref settings.DisablePlaySound,
-                                "Setting.ModifyLoadingLevel.PlaySound"
-                            );
+                            SwitchOption(groupEventAuditory, ref settings.DisablePlaySound, "Setting.ModifyLoadingLevel.PlaySound");
                             Separator();
-                            SwitchOption(
-                                groupEventAuditory,
-                                ref settings.DisableSetHoldSound,
-                                "Setting.ModifyLoadingLevel.SetHoldSound"
-                            );
+                            SwitchOption(groupEventAuditory, ref settings.DisableSetHoldSound, "Setting.ModifyLoadingLevel.SetHoldSound");
                         }
                         End();
                     }
 
                     var groupEventPlanet = groupEvents.Group;
-                    if (
-                        Collapse(
-                            groupEventPlanet,
-                            ref _expandEventPlanet,
-                            "Gui.EffectRemover.PlanetEvents",
-                            TextStyle.Subtitle
-                        )
-                    )
+                    if (Collapse(groupEventPlanet, ref _expandEventPlanet, "Gui.EffectRemover.PlanetEvents", TextStyle.Subtitle))
                     {
                         Begin(ContainerDirection.Vertical, ContainerStyle.Background, options: WidthMax);
                         {
-                            SwitchOption(
-                                groupEventPlanet,
-                                ref settings.DisableSetPlanetRotation,
-                                "Setting.ModifyLoadingLevel.SetPlanetRotation"
-                            );
+                            SwitchOption(groupEventPlanet, ref settings.DisableSetPlanetRotation, "Setting.ModifyLoadingLevel.SetPlanetRotation");
                             Separator();
-                            SwitchOption(
-                                groupEventPlanet,
-                                ref settings.DisableScalePlanets,
-                                "Setting.ModifyLoadingLevel.ScalePlanets"
-                            );
+                            SwitchOption(groupEventPlanet, ref settings.DisableScalePlanets, "Setting.ModifyLoadingLevel.ScalePlanets");
                             Separator();
-                            SwitchOption(
-                                groupEventPlanet,
-                                ref settings.DisableScaleRadius,
-                                "Setting.ModifyLoadingLevel.ScaleRadius"
-                            );
+                            SwitchOption(groupEventPlanet, ref settings.DisableScaleRadius, "Setting.ModifyLoadingLevel.ScaleRadius");
                         }
                         End();
                     }
 
                     var groupEventTrack = groupEvents.Group;
-                    if (
-                        Collapse(
-                            groupEventTrack,
-                            ref _expandEventTrack,
-                            "Gui.EffectRemover.TrackEvents",
-                            TextStyle.Subtitle
-                        )
-                    )
+                    if (Collapse(groupEventTrack, ref _expandEventTrack, "Gui.EffectRemover.TrackEvents", TextStyle.Subtitle))
                     {
                         Begin(ContainerDirection.Vertical, ContainerStyle.Background, options: WidthMax);
                         {
-                            SwitchOption(
-                                groupEventTrack,
-                                ref settings.DisableHide,
-                                "Setting.ModifyLoadingLevel.Hide"
-                            );
+                            SwitchOption(groupEventTrack, ref settings.DisableHide, "Setting.ModifyLoadingLevel.Hide");
                             Separator();
-                            SwitchOption(
-                                groupEventTrack,
-                                ref settings.DisableMoveTrack,
-                                "Setting.ModifyLoadingLevel.MoveTrack"
-                            );
+                            SwitchOption(groupEventTrack, ref settings.DisableMoveTrack, "Setting.ModifyLoadingLevel.MoveTrack");
                             Separator();
-                            SwitchOption(
-                                groupEventTrack,
-                                ref settings.DisablePositionTrack,
-                                "Setting.ModifyLoadingLevel.PositionTrack"
-                            );
+                            SwitchOption(groupEventTrack, ref settings.DisablePositionTrack, "Setting.ModifyLoadingLevel.PositionTrack");
                             Separator();
-                            SwitchOption(
-                                groupEventTrack,
-                                ref settings.DisableColorTrack,
-                                "Setting.ModifyLoadingLevel.ColorTrack"
-                            );
+                            SwitchOption(groupEventTrack, ref settings.DisableColorTrack, "Setting.ModifyLoadingLevel.ColorTrack");
                             Separator();
-                            SwitchOption(
-                                groupEventTrack,
-                                ref settings.DisableAnimateTrack,
-                                "Setting.ModifyLoadingLevel.AnimateTrack"
-                            );
+                            SwitchOption(groupEventTrack, ref settings.DisableAnimateTrack, "Setting.ModifyLoadingLevel.AnimateTrack");
                             Separator();
-                            SwitchOption(
-                                groupEventTrack,
-                                ref settings.DisableRecolorTrack,
-                                "Setting.ModifyLoadingLevel.RecolorTrack"
-                            );
+                            SwitchOption(groupEventTrack, ref settings.DisableRecolorTrack, "Setting.ModifyLoadingLevel.RecolorTrack");
                         }
                         End();
                     }
 
                     var groupEventDecoration = groupEvents.Group;
-                    if (
-                        Collapse(
-                            groupEventDecoration,
-                            ref _expandEventDecoration,
-                            "Gui.EffectRemover.DecorationEvents",
-                            TextStyle.Subtitle
-                        )
-                    )
+                    if (Collapse(groupEventDecoration, ref _expandEventDecoration, "Gui.EffectRemover.DecorationEvents", TextStyle.Subtitle))
                     {
                         Begin(ContainerDirection.Vertical, ContainerStyle.Background, options: WidthMax);
                         {
-                            SwitchOption(
-                                groupEventDecoration,
-                                ref settings.DisableMoveDecorations,
-                                "Setting.ModifyLoadingLevel.MoveDecorations"
-                            );
+                            SwitchOption(groupEventDecoration, ref settings.DisableMoveDecorations, "Setting.ModifyLoadingLevel.MoveDecorations");
                             Separator();
-                            SwitchOption(
-                                groupEventDecoration,
-                                ref settings.DisableSetText,
-                                "Setting.ModifyLoadingLevel.SetText"
-                            );
+                            SwitchOption(groupEventDecoration, ref settings.DisableSetText, "Setting.ModifyLoadingLevel.SetText");
                             Separator();
-                            SwitchOption(
-                                groupEventDecoration,
-                                ref settings.DisableEmitParticle,
-                                "Setting.ModifyLoadingLevel.EmitParticle"
-                            );
+                            SwitchOption(groupEventDecoration, ref settings.DisableEmitParticle, "Setting.ModifyLoadingLevel.EmitParticle");
                             Separator();
-                            SwitchOption(
-                                groupEventDecoration,
-                                ref settings.DisableSetParticle,
-                                "Setting.ModifyLoadingLevel.SetParticle"
-                            );
+                            SwitchOption(groupEventDecoration, ref settings.DisableSetParticle, "Setting.ModifyLoadingLevel.SetParticle");
                             Separator();
-                            SwitchOption(
-                                groupEventDecoration,
-                                ref settings.DisableSetObject,
-                                "Setting.ModifyLoadingLevel.SetObject"
-                            );
+                            SwitchOption(groupEventDecoration, ref settings.DisableSetObject, "Setting.ModifyLoadingLevel.SetObject");
                             Separator();
-                            SwitchOption(
-                                groupEventDecoration,
-                                ref settings.DisableSetDefaultText,
-                                "Setting.ModifyLoadingLevel.SetDefaultText"
-                            );
+                            SwitchOption(groupEventDecoration, ref settings.DisableSetDefaultText, "Setting.ModifyLoadingLevel.SetDefaultText");
                         }
                         End();
                     }
 
                     var groupEventMiscVisual = groupEvents.Group;
-                    if (
-                        Collapse(
-                            groupEventMiscVisual,
-                            ref _expandEventMiscVisual,
-                            "Gui.EffectRemover.MiscVisualEvents",
-                            TextStyle.Subtitle
-                        )
-                    )
+                    if (Collapse(groupEventMiscVisual, ref _expandEventMiscVisual, "Gui.EffectRemover.MiscVisualEvents", TextStyle.Subtitle))
                     {
                         Begin(ContainerDirection.Vertical, ContainerStyle.Background, options: WidthMax);
                         {
-                            SwitchOption(
-                                groupEventMiscVisual,
-                                ref settings.DisableMoveCamera,
-                                "Setting.ModifyLoadingLevel.MoveCamera"
-                            );
+                            SwitchOption(groupEventMiscVisual, ref settings.DisableMoveCamera, "Setting.ModifyLoadingLevel.MoveCamera");
                             Separator();
-                            SwitchOption(
-                                groupEventMiscVisual,
-                                ref settings.DisableCustomBackground,
-                                "Setting.ModifyLoadingLevel.CustomBackground"
-                            );
+                            SwitchOption(groupEventMiscVisual, ref settings.DisableCustomBackground, "Setting.ModifyLoadingLevel.CustomBackground");
                         }
                         End();
                     }
 
                     var groupEventEffect = groupEvents.Group;
-                    if (
-                        Collapse(
-                            groupEventEffect,
-                            ref _expandEventEffect,
-                            "Gui.EffectRemover.EffectEvents",
-                            TextStyle.Subtitle
-                        )
-                    )
+                    if (Collapse(groupEventEffect, ref _expandEventEffect, "Gui.EffectRemover.EffectEvents", TextStyle.Subtitle))
                     {
                         Begin(ContainerDirection.Vertical, ContainerStyle.Background, options: WidthMax);
                         {
-                            SwitchOption(
-                                groupEventEffect,
-                                ref settings.DisableFlash,
-                                "Setting.ModifyLoadingLevel.Flash"
-                            );
+                            SwitchOption(groupEventEffect, ref settings.DisableFlash, "Setting.ModifyLoadingLevel.Flash");
                             Separator();
-                            SwitchOption(
-                                groupEventEffect,
-                                ref settings.DisableSetFilter,
-                                "Setting.ModifyLoadingLevel.SetFilter"
-                            );
+                            SwitchOption(groupEventEffect, ref settings.DisableSetFilter, "Setting.ModifyLoadingLevel.SetFilter");
                             Separator();
-                            SwitchOption(
-                                groupEventEffect,
-                                ref settings.DisableSetFilterAdvanced,
-                                "Setting.ModifyLoadingLevel.SetFilterAdvanced"
-                            );
+                            SwitchOption(groupEventEffect, ref settings.DisableSetFilterAdvanced, "Setting.ModifyLoadingLevel.SetFilterAdvanced");
                             Separator();
-                            SwitchOption(
-                                groupEventEffect,
-                                ref settings.DisableHallOfMirrors,
-                                "Setting.ModifyLoadingLevel.HallOfMirrors"
-                            );
+                            SwitchOption(groupEventEffect, ref settings.DisableHallOfMirrors, "Setting.ModifyLoadingLevel.HallOfMirrors");
                             Separator();
-                            SwitchOption(
-                                groupEventEffect,
-                                ref settings.DisableShakeScreen,
-                                "Setting.ModifyLoadingLevel.ShakeScreen"
-                            );
+                            SwitchOption(groupEventEffect, ref settings.DisableShakeScreen, "Setting.ModifyLoadingLevel.ShakeScreen");
                             Separator();
-                            SwitchOption(
-                                groupEventEffect,
-                                ref settings.DisableBloom,
-                                "Setting.ModifyLoadingLevel.Bloom"
-                            );
+                            SwitchOption(groupEventEffect, ref settings.DisableBloom, "Setting.ModifyLoadingLevel.Bloom");
                             Separator();
-                            SwitchOption(
-                                groupEventEffect,
-                                ref settings.DisableScreenTile,
-                                "Setting.ModifyLoadingLevel.ScreenTile"
-                            );
+                            SwitchOption(groupEventEffect, ref settings.DisableScreenTile, "Setting.ModifyLoadingLevel.ScreenTile");
                             Separator();
-                            SwitchOption(
-                                groupEventEffect,
-                                ref settings.DisableScreenScroll,
-                                "Setting.ModifyLoadingLevel.ScreenScroll"
-                            );
+                            SwitchOption(groupEventEffect, ref settings.DisableScreenScroll, "Setting.ModifyLoadingLevel.ScreenScroll");
                             Separator();
-                            SwitchOption(
-                                groupEventEffect,
-                                ref settings.DisableSetFrameRate,
-                                "Setting.ModifyLoadingLevel.SetFrameRate"
-                            );
+                            SwitchOption(groupEventEffect, ref settings.DisableSetFrameRate, "Setting.ModifyLoadingLevel.SetFrameRate");
                         }
                         End();
                     }
 
                     var groupEventMisc = groupEvents.Group;
-                    if (
-                        Collapse(
-                            groupEventMisc,
-                            ref _expandEventMisc,
-                            "Gui.EffectRemover.MiscEvents",
-                            TextStyle.Subtitle
-                        )
-                    )
+                    if (Collapse(groupEventMisc, ref _expandEventMisc, "Gui.EffectRemover.MiscEvents", TextStyle.Subtitle))
                     {
                         Begin(ContainerDirection.Vertical, ContainerStyle.Background, options: WidthMax);
                         {
-                            SwitchOption(
-                                groupEventMisc,
-                                ref settings.DisableEditorComment,
-                                "Setting.ModifyLoadingLevel.EditorComment"
-                            );
+                            SwitchOption(groupEventMisc, ref settings.DisableEditorComment, "Setting.ModifyLoadingLevel.EditorComment");
                             Separator();
-                            SwitchOption(
-                                groupEventMisc,
-                                ref settings.DisableBookmark,
-                                "Setting.ModifyLoadingLevel.Bookmark"
-                            );
+                            SwitchOption(groupEventMisc, ref settings.DisableBookmark, "Setting.ModifyLoadingLevel.Bookmark");
                         }
                         End();
                     }

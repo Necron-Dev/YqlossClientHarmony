@@ -151,8 +151,7 @@ public static class YCHLayout
                 if (maxSize is not null && size is not null)
                 {
                     var space = Math.Max(0, maxSize.Value - size.Value);
-                    var marginAddition =
-                        (int)Math.Floor(Math.Max(0, space * ratio + offset + sizes.MaxMargin - beginningMargin));
+                    var marginAddition = (int)Math.Floor(Math.Max(0, space * ratio + offset + sizes.MaxMargin - beginningMargin));
                     if (containerDirection == ContainerDirection.Horizontal) copied.margin.top += marginAddition;
                     else if (containerDirection == ContainerDirection.Vertical) copied.margin.left += marginAddition;
                 }
@@ -216,9 +215,7 @@ public static class YCHLayout
         var (_, sizes) = sizesElement.Value;
         var rect = GUILayoutUtility.GetLastRect();
         var containerDirection = ContainerStack[^1];
-        var size = containerDirection == ContainerDirection.Horizontal
-            ? rect.height
-            : rect.width;
+        var size = containerDirection == ContainerDirection.Horizontal ? rect.height : rect.width;
         sizes.Put(Math.Max(0, size));
     }
 
@@ -241,10 +238,8 @@ public static class YCHLayout
             _ => Resolution.Container
         });
 
-        if (direction == ContainerDirection.Horizontal)
-            GUILayout.BeginHorizontal(guiStyle, Options(options));
-        else if (direction == ContainerDirection.Vertical)
-            GUILayout.BeginVertical(guiStyle, Options(options));
+        if (direction == ContainerDirection.Horizontal) GUILayout.BeginHorizontal(guiStyle, Options(options));
+        else if (direction == ContainerDirection.Vertical) GUILayout.BeginVertical(guiStyle, Options(options));
 
         LastMargin = 0;
         ContainerStack.Add(direction);
@@ -553,11 +548,7 @@ public static class YCHLayout
     ) where T : class
     {
         var oldContent = format.Format(content);
-        var newContent = TextField(
-            oldContent,
-            null,
-            options
-        );
+        var newContent = TextField(oldContent, null, options);
         if (newContent is null) return null;
         var newValue = format.Parse(newContent);
         return newValue;
@@ -864,17 +855,9 @@ public static class YCHLayout
 
         private static readonly ColorGroup SeparatorColors = new(ARGB(0x20FFFFFF));
 
-        private static readonly ColorGroup PrimaryColors = new(
-            RGB(0x1452CC),
-            RGB(0x1247B2),
-            RGB(0x113C91)
-        );
+        private static readonly ColorGroup PrimaryColors = new(RGB(0x1452CC), RGB(0x1247B2), RGB(0x113C91));
 
-        private static readonly ColorGroup ElementColors = new(
-            RGB(0x313338),
-            RGB(0x373B45),
-            RGB(0x30333C)
-        );
+        private static readonly ColorGroup ElementColors = new(RGB(0x313338), RGB(0x373B45), RGB(0x30333C));
 
         private static readonly ColorGroup ElementBorderColors = new(RGB(0x494F5C));
 
@@ -910,12 +893,7 @@ public static class YCHLayout
 
         private static readonly ColorGroup TextFieldColors = new(RGB(0x151719));
 
-        private static readonly ColorGroup TextFieldBorderColors = new(
-            RGB(0x222326),
-            RGB(0x222326),
-            PrimaryColors.Normal,
-            PrimaryColors.Normal
-        );
+        private static readonly ColorGroup TextFieldBorderColors = new(RGB(0x222326), RGB(0x222326), PrimaryColors.Normal, PrimaryColors.Normal);
 
         private static readonly ColorGroup IconInformationColors = ElementBorderColors;
 
@@ -1072,8 +1050,7 @@ public static class YCHLayout
                 fixedHeight = squareIconSize
             };
 
-            SetupSquareIcon(CheckboxOff, CheckboxOffColors, CheckboxOffBorderColors, CheckboxCheckmarkColors,
-                DrawNothing);
+            SetupSquareIcon(CheckboxOff, CheckboxOffColors, CheckboxOffBorderColors, CheckboxCheckmarkColors, DrawNothing);
 
             CheckboxOn = new GUIStyle(Base)
             {
@@ -1082,8 +1059,7 @@ public static class YCHLayout
                 fixedHeight = squareIconSize
             };
 
-            SetupSquareIcon(CheckboxOn, CheckboxOnColors, CheckboxOnBorderColors, CheckboxCheckmarkColors,
-                DrawCheckmark);
+            SetupSquareIcon(CheckboxOn, CheckboxOnColors, CheckboxOnBorderColors, CheckboxCheckmarkColors, DrawCheckmark);
 
             ArrowButtonRight = new GUIStyle(Base)
             {
@@ -1092,8 +1068,7 @@ public static class YCHLayout
                 fixedHeight = squareIconSize
             };
 
-            SetupSquareIcon(ArrowButtonRight, ArrowButtonColors, ArrowButtonBorderColors, ArrowButtonArrowColors,
-                DrawRightArrow);
+            SetupSquareIcon(ArrowButtonRight, ArrowButtonColors, ArrowButtonBorderColors, ArrowButtonArrowColors, DrawRightArrow);
 
             ArrowButtonDown = new GUIStyle(Base)
             {
@@ -1102,8 +1077,7 @@ public static class YCHLayout
                 fixedHeight = squareIconSize
             };
 
-            SetupSquareIcon(ArrowButtonDown, ArrowButtonColors, ArrowButtonBorderColors, ArrowButtonArrowColors,
-                DrawDownArrow);
+            SetupSquareIcon(ArrowButtonDown, ArrowButtonColors, ArrowButtonBorderColors, ArrowButtonArrowColors, DrawDownArrow);
 
             ArrowButtonLeft = new GUIStyle(Base)
             {
@@ -1112,8 +1086,7 @@ public static class YCHLayout
                 fixedHeight = squareIconSize
             };
 
-            SetupSquareIcon(ArrowButtonLeft, ArrowButtonColors, ArrowButtonBorderColors, ArrowButtonArrowColors,
-                DrawLeftArrow);
+            SetupSquareIcon(ArrowButtonLeft, ArrowButtonColors, ArrowButtonBorderColors, ArrowButtonArrowColors, DrawLeftArrow);
 
             ArrowButtonUp = new GUIStyle(Base)
             {
@@ -1122,8 +1095,7 @@ public static class YCHLayout
                 fixedHeight = squareIconSize
             };
 
-            SetupSquareIcon(ArrowButtonUp, ArrowButtonColors, ArrowButtonBorderColors, ArrowButtonArrowColors,
-                DrawUpArrow);
+            SetupSquareIcon(ArrowButtonUp, ArrowButtonColors, ArrowButtonBorderColors, ArrowButtonArrowColors, DrawUpArrow);
 
             var switchWidth = ScaledInt(SwitchWidth);
             var switchHeight = ScaledInt(SwitchHeight);
@@ -1153,13 +1125,7 @@ public static class YCHLayout
             };
 
             SetupTextSize(TextField, ScaledInt(BaseTextSize), true);
-            SetupBorderedRoundedRectangleBackground(
-                TextField,
-                Scaled(TextFieldRadius),
-                Scaled(TextFieldBorder),
-                TextFieldColors,
-                TextFieldBorderColors
-            );
+            SetupBorderedRoundedRectangleBackground(TextField, Scaled(TextFieldRadius), Scaled(TextFieldBorder), TextFieldColors, TextFieldBorderColors);
 
             var iconSize = ScaledInt(IconSize);
 
@@ -1170,8 +1136,7 @@ public static class YCHLayout
                 fixedHeight = iconSize
             };
 
-            SetupIcon(IconInformation, IconInformationColors, IconInformationBorderColors, IconStrokeColors,
-                DrawInformation);
+            SetupIcon(IconInformation, IconInformationColors, IconInformationBorderColors, IconStrokeColors, DrawInformation);
 
             IconSuccess = new GUIStyle(Base)
             {
@@ -1865,14 +1830,10 @@ public static class YCHLayout
         {
             const int size = 256;
             style.padding = style.border = new RectOffset(0, 0, 0, 0);
-            style.onNormal.background = style.normal.background =
-                RenderRectangleImage(size, size, colors.Normal);
-            style.onHover.background = style.hover.background =
-                RenderRectangleImage(size, size, colors.Hovered);
-            style.onActive.background = style.active.background =
-                RenderRectangleImage(size, size, colors.Active);
-            style.onFocused.background = style.focused.background =
-                RenderRectangleImage(size, size, colors.Focused);
+            style.onNormal.background = style.normal.background = RenderRectangleImage(size, size, colors.Normal);
+            style.onHover.background = style.hover.background = RenderRectangleImage(size, size, colors.Hovered);
+            style.onActive.background = style.active.background = RenderRectangleImage(size, size, colors.Active);
+            style.onFocused.background = style.focused.background = RenderRectangleImage(size, size, colors.Focused);
         }
 
         private void SetupRoundedRectangleBackground(
@@ -1885,14 +1846,10 @@ public static class YCHLayout
             var size = borderSize + 256;
             style.padding = style.border =
                 new RectOffset(borderSize, borderSize, borderSize, borderSize);
-            style.onNormal.background = style.normal.background =
-                RenderRoundedRectangleImage(size, size, radius, colors.Normal);
-            style.onHover.background = style.hover.background =
-                RenderRoundedRectangleImage(size, size, radius, colors.Hovered);
-            style.onActive.background = style.active.background =
-                RenderRoundedRectangleImage(size, size, radius, colors.Active);
-            style.onFocused.background = style.focused.background =
-                RenderRoundedRectangleImage(size, size, radius, colors.Focused);
+            style.onNormal.background = style.normal.background = RenderRoundedRectangleImage(size, size, radius, colors.Normal);
+            style.onHover.background = style.hover.background = RenderRoundedRectangleImage(size, size, radius, colors.Hovered);
+            style.onActive.background = style.active.background = RenderRoundedRectangleImage(size, size, radius, colors.Active);
+            style.onFocused.background = style.focused.background = RenderRoundedRectangleImage(size, size, radius, colors.Focused);
         }
 
         private void SetupBorderedRoundedRectangleBackground(
@@ -1907,14 +1864,10 @@ public static class YCHLayout
             var size = borderSize + 256;
             style.padding = style.border =
                 new RectOffset(borderSize, borderSize, borderSize, borderSize);
-            style.onNormal.background = style.normal.background =
-                RenderBorderedRoundedRectangleImage(size, size, radius, border, colors.Normal, borderColors.Normal);
-            style.onHover.background = style.hover.background =
-                RenderBorderedRoundedRectangleImage(size, size, radius, border, colors.Hovered, borderColors.Hovered);
-            style.onActive.background = style.active.background =
-                RenderBorderedRoundedRectangleImage(size, size, radius, border, colors.Active, borderColors.Active);
-            style.onFocused.background = style.focused.background =
-                RenderBorderedRoundedRectangleImage(size, size, radius, border, colors.Focused, borderColors.Focused);
+            style.onNormal.background = style.normal.background = RenderBorderedRoundedRectangleImage(size, size, radius, border, colors.Normal, borderColors.Normal);
+            style.onHover.background = style.hover.background = RenderBorderedRoundedRectangleImage(size, size, radius, border, colors.Hovered, borderColors.Hovered);
+            style.onActive.background = style.active.background = RenderBorderedRoundedRectangleImage(size, size, radius, border, colors.Active, borderColors.Active);
+            style.onFocused.background = style.focused.background = RenderBorderedRoundedRectangleImage(size, size, radius, border, colors.Focused, borderColors.Focused);
         }
 
         private void SetupSquareIcon(
@@ -1925,14 +1878,10 @@ public static class YCHLayout
             Action<Graphics, int, Color> renderer
         )
         {
-            style.onNormal.background = style.normal.background =
-                RenderSquareIconImage(colors.Normal, borderColors.Normal, strokeColors.Normal, renderer);
-            style.onHover.background = style.hover.background =
-                RenderSquareIconImage(colors.Hovered, borderColors.Hovered, strokeColors.Hovered, renderer);
-            style.onActive.background = style.active.background =
-                RenderSquareIconImage(colors.Active, borderColors.Active, strokeColors.Active, renderer);
-            style.onFocused.background = style.focused.background =
-                RenderSquareIconImage(colors.Focused, borderColors.Focused, strokeColors.Focused, renderer);
+            style.onNormal.background = style.normal.background = RenderSquareIconImage(colors.Normal, borderColors.Normal, strokeColors.Normal, renderer);
+            style.onHover.background = style.hover.background = RenderSquareIconImage(colors.Hovered, borderColors.Hovered, strokeColors.Hovered, renderer);
+            style.onActive.background = style.active.background = RenderSquareIconImage(colors.Active, borderColors.Active, strokeColors.Active, renderer);
+            style.onFocused.background = style.focused.background = RenderSquareIconImage(colors.Focused, borderColors.Focused, strokeColors.Focused, renderer);
         }
 
         private void SetupSwitch(
@@ -1942,14 +1891,10 @@ public static class YCHLayout
             ColorGroup buttonColors
         )
         {
-            style.onNormal.background = style.normal.background =
-                RenderSwitchImage(on, colors.Normal, buttonColors.Normal);
-            style.onHover.background = style.hover.background =
-                RenderSwitchImage(on, colors.Hovered, buttonColors.Hovered);
-            style.onActive.background = style.active.background =
-                RenderSwitchImage(on, colors.Active, buttonColors.Active);
-            style.onFocused.background = style.focused.background =
-                RenderSwitchImage(on, colors.Focused, buttonColors.Focused);
+            style.onNormal.background = style.normal.background = RenderSwitchImage(on, colors.Normal, buttonColors.Normal);
+            style.onHover.background = style.hover.background = RenderSwitchImage(on, colors.Hovered, buttonColors.Hovered);
+            style.onActive.background = style.active.background = RenderSwitchImage(on, colors.Active, buttonColors.Active);
+            style.onFocused.background = style.focused.background = RenderSwitchImage(on, colors.Focused, buttonColors.Focused);
         }
 
         private void SetupIcon(
@@ -1960,14 +1905,10 @@ public static class YCHLayout
             Action<Graphics, int, Color> renderer
         )
         {
-            style.onNormal.background = style.normal.background =
-                RenderIconImage(colors.Normal, borderColors.Normal, strokeColors.Normal, renderer);
-            style.onHover.background = style.hover.background =
-                RenderIconImage(colors.Hovered, borderColors.Hovered, strokeColors.Hovered, renderer);
-            style.onActive.background = style.active.background =
-                RenderIconImage(colors.Active, borderColors.Active, strokeColors.Active, renderer);
-            style.onFocused.background = style.focused.background =
-                RenderIconImage(colors.Focused, borderColors.Focused, strokeColors.Focused, renderer);
+            style.onNormal.background = style.normal.background = RenderIconImage(colors.Normal, borderColors.Normal, strokeColors.Normal, renderer);
+            style.onHover.background = style.hover.background = RenderIconImage(colors.Hovered, borderColors.Hovered, strokeColors.Hovered, renderer);
+            style.onActive.background = style.active.background = RenderIconImage(colors.Active, borderColors.Active, strokeColors.Active, renderer);
+            style.onFocused.background = style.focused.background = RenderIconImage(colors.Focused, borderColors.Focused, strokeColors.Focused, renderer);
         }
 
         private static System.Drawing.Color DrawingColor(Color color)

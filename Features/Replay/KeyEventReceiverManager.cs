@@ -27,9 +27,7 @@ public class KeyEventReceiverManager : IKeyEventReceiver
                     }
                     catch (Exception exception)
                     {
-                        Main.Mod.Logger.Warning(
-                            $"found ReplayInput class that does not follow protocol: {type} in {modEntry.Info.Id}"
-                        );
+                        Main.Mod.Logger.Warning($"found ReplayInput class that does not follow protocol: {type} in {modEntry.Info.Id}");
                         Main.Mod.Logger.Warning($"{exception}");
                     }
             }

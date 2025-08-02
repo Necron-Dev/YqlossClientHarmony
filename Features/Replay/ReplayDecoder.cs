@@ -15,10 +15,7 @@ public static class ReplayDecoder
     private static int CheckVersion(int version, int currentVersion)
     {
         if (version <= 0) throw new InvalidDataException("version must be positive");
-        if (version > currentVersion)
-            throw new InvalidDataException(
-                "the replay is created by newer versions of YCH. please update your mod!"
-            );
+        if (version > currentVersion) throw new InvalidDataException("the replay is created by newer versions of YCH. please update your mod!");
         return version;
     }
 

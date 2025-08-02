@@ -11,8 +11,7 @@ public class SettingsReplay
 
     public bool Enabled => Main.Enabled && Main.Settings.EnableReplay;
 
-    public string ReplayStorageLocation =
-        Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments), "YCH ADOFAI Replays");
+    public string ReplayStorageLocation = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments), "YCH ADOFAI Replays");
 
     public double SyncRecordingOffset = 0.0;
 

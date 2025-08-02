@@ -82,7 +82,6 @@ public class EventType(
 
     public bool Matches(Dictionary<string, object?> actionOrDecoration)
     {
-        return settingSelector(SettingsModifyLoadingLevel.Instance) && MatchesName(actionOrDecoration) &&
-               MatchesFilter(actionOrDecoration);
+        return settingSelector(SettingsModifyLoadingLevel.Instance) && MatchesName(actionOrDecoration) && MatchesFilter(actionOrDecoration);
     }
 }

@@ -85,9 +85,7 @@ public static class ReplayRecorder
         if (Adofai.Controller.midspinInfiniteMargin)
         {
             if (ErrorMeterValue is not null)
-                Main.Mod.Logger.Warning(
-                    $"[Floor {floorId}] error meter already has a value on a midspin, overwriting to NaN"
-                );
+                Main.Mod.Logger.Warning($"[Floor {floorId}] error meter already has a value on a midspin, overwriting to NaN");
 
             ErrorMeterValue = double.NaN;
         }
@@ -188,8 +186,7 @@ public static class ReplayRecorder
         ++KeysWithoutAngleCorrection;
 
         if (SettingsReplay.Instance.Verbose)
-            Main.Mod.Logger.Log(
-                $"key: {keyCode} up: {isKeyUp} dseq: {floorId - lastFloorId} pos: {songSeconds} auto: {autoFloor} locked: {inputLocked}");
+            Main.Mod.Logger.Log($"key: {keyCode} up: {isKeyUp} dseq: {floorId - lastFloorId} pos: {songSeconds} auto: {autoFloor} locked: {inputLocked}");
     }
 
     public static void OnAngleCorrection(double angle)
@@ -201,7 +198,8 @@ public static class ReplayRecorder
         {
             replay.AngleCorrections.Add(angle);
 
-            if (SettingsReplay.Instance.Verbose) Main.Mod.Logger.Log($"angle: {angle}");
+            if (SettingsReplay.Instance.Verbose)
+                Main.Mod.Logger.Log($"angle: {angle}");
         }
     }
 
@@ -221,8 +219,7 @@ public static class ReplayRecorder
         CurrentIterationFirstKeyIndex = Math.Min(CurrentIterationFirstKeyIndex + count, replay.KeyEvents.Count);
 
         if (SettingsReplay.Instance.Verbose)
-            Main.Mod.Logger.Log(
-                $"iteration advance: +{count} {CurrentIterationFirstKeyIndex} total: {replay.KeyEvents.Count}");
+            Main.Mod.Logger.Log($"iteration advance: +{count} {CurrentIterationFirstKeyIndex} total: {replay.KeyEvents.Count}");
     }
 
     public static void OnMarkKeyEvent(bool auto, bool responsive)

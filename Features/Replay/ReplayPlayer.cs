@@ -42,8 +42,7 @@ public static class ReplayPlayer
 
     private static double? TrailEndTime { get; set; }
 
-    private static double SongSeconds =>
-        Injections.DspToSong(Adofai.Conductor.dspTime, SettingsReplay.Instance.PlayingOffset / 1000.0);
+    private static double SongSeconds => Injections.DspToSong(Adofai.Conductor.dspTime, SettingsReplay.Instance.PlayingOffset / 1000.0);
 
     public static void StartPlaying(int floorId)
     {
@@ -171,8 +170,7 @@ public static class ReplayPlayer
         var (hitMargin, eventFloorId) = hitMargins.Dequeue();
 
         if (floorId != eventFloorId)
-            Main.Mod.Logger.Warning(
-                $"[Floor {floorId}] hit margin floor id mismatch {eventFloorId}. judgements may be incorrect");
+            Main.Mod.Logger.Warning($"[Floor {floorId}] hit margin floor id mismatch {eventFloorId}. judgements may be incorrect");
 
         if (SettingsReplay.Instance.Verbose)
             Main.Mod.Logger.Log($"[Floor {floorId}] acc: {eventFloorId} margin: {hitMargin}");
@@ -197,12 +195,10 @@ public static class ReplayPlayer
             Main.Mod.Logger.Log($"[Floor {floorId}] acc: {eventFloorId} midspin meter");
 
         if (floorId != nextMeterFloor)
-            Main.Mod.Logger.Warning(
-                $"[Floor {floorId}] midspin error meter floor id mismatch {eventFloorId}. judgements may be incorrect");
+            Main.Mod.Logger.Warning($"[Floor {floorId}] midspin error meter floor id mismatch {eventFloorId}. judgements may be incorrect");
 
         if (!double.IsNaN(nextMeter))
-            Main.Mod.Logger.Warning(
-                $"[Floor {floorId}] midspin error meter has value {nextMeter}. judgements may be incorrect");
+            Main.Mod.Logger.Warning($"[Floor {floorId}] midspin error meter has value {nextMeter}. judgements may be incorrect");
 
         result = hitMargin;
     }
@@ -226,14 +222,12 @@ public static class ReplayPlayer
 
         if (!double.IsFinite(errorMeter))
         {
-            Main.Mod.Logger.Warning(
-                $"[Floor {floorId}] error meter is not finite {errorMeter}. judgements may be incorrect");
+            Main.Mod.Logger.Warning($"[Floor {floorId}] error meter is not finite {errorMeter}. judgements may be incorrect");
             return;
         }
 
         if (floorId != eventFloorId)
-            Main.Mod.Logger.Warning(
-                $"[Floor {floorId}] error meter floor id mismatch {eventFloorId}. judgements may be incorrect");
+            Main.Mod.Logger.Warning($"[Floor {floorId}] error meter floor id mismatch {eventFloorId}. judgements may be incorrect");
 
         if (SettingsReplay.Instance.Verbose)
             Main.Mod.Logger.Log($"[Floor {floorId}] acc: {eventFloorId} meter: {errorMeter}");
@@ -259,8 +253,7 @@ public static class ReplayPlayer
         var (hitMargin, eventFloorId) = hitMargins.Peek();
 
         if (floorId != eventFloorId)
-            Main.Mod.Logger.Warning(
-                $"[Floor {floorId}] get hit margin floor id mismatch {eventFloorId}. judgements may be incorrect");
+            Main.Mod.Logger.Warning($"[Floor {floorId}] get hit margin floor id mismatch {eventFloorId}. judgements may be incorrect");
 
         if (SettingsReplay.Instance.Verbose)
             Main.Mod.Logger.Log($"[Floor {floorId}] get acc: {eventFloorId} margin: {hitMargin}");
@@ -464,9 +457,7 @@ public static class ReplayPlayer
                 if (key.SongSeconds > songSeconds) break;
 
                 if (SettingsReplay.Instance.Verbose)
-                    Main.Mod.Logger.Log(
-                        $"[Floor {floorId}] simulate key: {syncKeyCode}({key.KeyCode}) up: {key.IsKeyUp} dseq: {key.FloorIdIncrement} pos: {key.SongSeconds} auto: {key.IsAutoFloor} locked: {key.IsInputLocked}"
-                    );
+                    Main.Mod.Logger.Log($"[Floor {floorId}] simulate key: {syncKeyCode}({key.KeyCode}) up: {key.IsKeyUp} dseq: {key.FloorIdIncrement} pos: {key.SongSeconds} auto: {key.IsAutoFloor} locked: {key.IsInputLocked}");
 
                 var keyStates = KeyStates = new Dictionary<int, bool>(lastKeyStates)
                 {
@@ -496,7 +487,8 @@ public static class ReplayPlayer
                 NextCheckFailMiss = false;
                 AllowAuto = false;
 
-                if (SettingsReplay.Instance.Verbose) Main.Mod.Logger.Log("begin simulation");
+                if (SettingsReplay.Instance.Verbose)
+                    Main.Mod.Logger.Log("begin simulation");
 
                 if (key is { IsAutoFloor: false, IsInputLocked: false })
                 {
@@ -523,7 +515,8 @@ public static class ReplayPlayer
                         Adofai.Controller.Simulated_PlayerControl_Update(1);
                     }
 
-                    if (SettingsReplay.Instance.Verbose) Main.Mod.Logger.Log("end simulation");
+                    if (SettingsReplay.Instance.Verbose)
+                        Main.Mod.Logger.Log("end simulation");
                 }
                 else
                 {
@@ -532,10 +525,12 @@ public static class ReplayPlayer
                     if (angleCorrections is not null && angleCorrections.Count != 0)
                     {
                         angleCorrections.Dequeue();
-                        if (SettingsReplay.Instance.Verbose) Main.Mod.Logger.Log("consume angle correction");
+                        if (SettingsReplay.Instance.Verbose)
+                            Main.Mod.Logger.Log("consume angle correction");
                     }
 
-                    if (SettingsReplay.Instance.Verbose) Main.Mod.Logger.Log("skip simulation");
+                    if (SettingsReplay.Instance.Verbose)
+                        Main.Mod.Logger.Log("skip simulation");
                 }
 
                 isKeyDown.Clear();
@@ -589,8 +584,7 @@ public static class ReplayPlayer
 
         if (!double.IsFinite(angleCorrection))
         {
-            Main.Mod.Logger.Warning(
-                $"[Floor {floorId}] angle correction is not finite {angleCorrection}. judgements may be incorrect");
+            Main.Mod.Logger.Warning($"[Floor {floorId}] angle correction is not finite {angleCorrection}. judgements may be incorrect");
             return true;
         }
 

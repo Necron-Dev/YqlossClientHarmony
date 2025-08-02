@@ -6,17 +6,13 @@ namespace YqlossClientHarmony.Features.Replay;
 
 public class ReplayInputKeyEventReceiver(Type type) : IKeyEventReceiver
 {
-    private Action OnStartInputs { get; } = AccessTools.MethodDelegate<Action>(
-        AccessTools.DeclaredMethod(type, "OnStartInputs"));
+    private Action OnStartInputs { get; } = AccessTools.MethodDelegate<Action>(AccessTools.DeclaredMethod(type, "OnStartInputs"));
 
-    private Action OnEndInputs { get; } = AccessTools.MethodDelegate<Action>(
-        AccessTools.DeclaredMethod(type, "OnEndInputs"));
+    private Action OnEndInputs { get; } = AccessTools.MethodDelegate<Action>(AccessTools.DeclaredMethod(type, "OnEndInputs"));
 
-    private Action<KeyCode> OnKeyPressed { get; } = AccessTools.MethodDelegate<Action<KeyCode>>(
-        AccessTools.DeclaredMethod(type, "OnKeyPressed"));
+    private Action<KeyCode> OnKeyPressed { get; } = AccessTools.MethodDelegate<Action<KeyCode>>(AccessTools.DeclaredMethod(type, "OnKeyPressed"));
 
-    private Action<KeyCode> OnKeyReleased { get; } = AccessTools.MethodDelegate<Action<KeyCode>>(
-        AccessTools.DeclaredMethod(type, "OnKeyReleased"));
+    private Action<KeyCode> OnKeyReleased { get; } = AccessTools.MethodDelegate<Action<KeyCode>>(AccessTools.DeclaredMethod(type, "OnKeyReleased"));
 
     public void Begin()
     {

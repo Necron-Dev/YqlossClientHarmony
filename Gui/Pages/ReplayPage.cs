@@ -179,10 +179,8 @@ public static class ReplayPage
             I18N.Translate("Gui.Replay.ReplayInformation.Song.Value", filteredSong),
             I18N.Translate("Gui.Replay.ReplayInformation.Author.Value", filteredAuthor),
             I18N.Translate("Gui.Replay.ReplayInformation.XAccuracy.Value", xAccuracy),
-            I18N.Translate("Gui.Replay.ReplayInformation.Progress.Value",
-                startProgress, startFloor, endProgress, endFloor),
-            I18N.Translate("Gui.Replay.ReplayInformation.Judgements.Value",
-                overload, te, e, ep, pp, auto, lp, l, tl, miss),
+            I18N.Translate("Gui.Replay.ReplayInformation.Progress.Value", startProgress, startFloor, endProgress, endFloor),
+            I18N.Translate("Gui.Replay.ReplayInformation.Judgements.Value", overload, te, e, ep, pp, auto, lp, l, tl, miss),
             I18N.Translate($"Gui.Replay.ReplayInformation.Difficulty.{difficulty}"),
             I18N.Translate($"Gui.Replay.ReplayInformation.AsyncInput.{asyncInput}"),
             I18N.Translate($"Gui.Replay.ReplayInformation.NoFail.{noFail}"),
@@ -290,45 +288,21 @@ public static class ReplayPage
                 End();
 
                 Separator();
-                SwitchOption(
-                    settingsGroup,
-                    ref settings.StoreSyncKeyCode,
-                    "Setting.Replay.StoreSyncKeyCode"
-                );
+                SwitchOption(settingsGroup, ref settings.StoreSyncKeyCode, "Setting.Replay.StoreSyncKeyCode");
                 Separator();
-                SwitchOption(
-                    settingsGroup,
-                    ref settings.OnlyStoreLastInMultiReleases,
-                    "Setting.Replay.OnlyStoreLastInMultiReleases", true
-                );
+                SwitchOption(settingsGroup, ref settings.OnlyStoreLastInMultiReleases, "Setting.Replay.OnlyStoreLastInMultiReleases", true);
                 Separator();
-                DoubleOption(
-                    settingsGroup,
-                    ref settings.TrailLength,
-                    "Setting.Replay.TrailLength", description: true
-                );
+                DoubleOption(settingsGroup, ref settings.TrailLength, "Setting.Replay.TrailLength", description: true);
                 Separator();
 
                 IconText(settingsGroup, IconStyle.Warning, "Gui.Replay.Settings.OffsetZeroWarning");
 
                 Separator();
-                DoubleOption(
-                    settingsGroup,
-                    ref settings.SyncRecordingOffset,
-                    "Setting.Replay.SyncRecordingOffset"
-                );
+                DoubleOption(settingsGroup, ref settings.SyncRecordingOffset, "Setting.Replay.SyncRecordingOffset");
                 Separator();
-                DoubleOption(
-                    settingsGroup,
-                    ref settings.AsyncRecordingOffset,
-                    "Setting.Replay.AsyncRecordingOffset"
-                );
+                DoubleOption(settingsGroup, ref settings.AsyncRecordingOffset, "Setting.Replay.AsyncRecordingOffset");
                 Separator();
-                DoubleOption(
-                    settingsGroup,
-                    ref settings.PlayingOffset,
-                    "Setting.Replay.PlayingOffset"
-                );
+                DoubleOption(settingsGroup, ref settings.PlayingOffset, "Setting.Replay.PlayingOffset");
             }
             End();
 
@@ -339,11 +313,7 @@ public static class ReplayPage
             {
                 IconText(debugGroup, IconStyle.Warning, "Gui.Replay.DebugOptions.Warning");
                 Separator();
-                SwitchOption(
-                    debugGroup,
-                    ref settings.Verbose,
-                    "Setting.Replay.Verbose"
-                );
+                SwitchOption(debugGroup, ref settings.Verbose, "Setting.Replay.Verbose");
             }
             End();
         }

@@ -262,10 +262,7 @@ public static class Injections
             AccessTools.FieldRefAccess<StateEngine, StateMapping>("destinationState");
 
         private static AccessTools.FieldRef<KeyCode[]> MainKeysField { get; } =
-            AccessTools.StaticFieldRefAccess<KeyCode[]>(AccessTools.DeclaredField(
-                typeof(RDInputType_Keyboard),
-                "mainKeys")
-            );
+            AccessTools.StaticFieldRefAccess<KeyCode[]>(AccessTools.DeclaredField(typeof(RDInputType_Keyboard), "mainKeys"));
 
         public static void Prefix()
         {
@@ -534,12 +531,10 @@ public static class Injections
     public static class Inject_scrController_UpdateHoldKeys
     {
         private static readonly Func<scrController, bool> NextTileIsHoldGetter =
-            AccessTools.MethodDelegate<Func<scrController, bool>>(
-                AccessTools.DeclaredPropertyGetter(typeof(scrController), "_nextTileIsHold"));
+            AccessTools.MethodDelegate<Func<scrController, bool>>(AccessTools.DeclaredPropertyGetter(typeof(scrController), "_nextTileIsHold"));
 
         private static readonly Func<scrController, double> HoldMarginGetter =
-            AccessTools.MethodDelegate<Func<scrController, double>>(
-                AccessTools.DeclaredPropertyGetter(typeof(scrController), "_holdMargin"));
+            AccessTools.MethodDelegate<Func<scrController, double>>(AccessTools.DeclaredPropertyGetter(typeof(scrController), "_holdMargin"));
 
         public static void Prefix(
             scrController __instance
@@ -547,7 +542,8 @@ public static class Injections
         {
             if (ReplayRecorder.Replay is null) return;
 
-            if (__instance.keyTimes.Count <= 0 ||
+            if (
+                __instance.keyTimes.Count <= 0 ||
                 GCS.d_stationary ||
                 GCS.d_freeroam ||
                 (!((__instance.currFloor.holdLength > -1 && !__instance.strictHolds) ||
@@ -556,7 +552,7 @@ public static class Injections
                  __instance.currFloor.holdCompletion >= HoldMarginGetter(__instance)) ||
                 (__instance.gameworld &&
                  __instance.currFloor.seqID >= ADOBase.lm.listFloors.Count - 1)
-               ) return;
+            ) return;
 
             var nextFloor = Adofai.Controller.currFloor.nextfloor;
             var autoFloor = nextFloor != null && nextFloor.auto;
