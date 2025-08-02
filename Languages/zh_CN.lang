@@ -178,6 +178,10 @@ Gui.Replay.ReplayInformation.EndTime.Name=<b>结束时间：</b>
 Gui.Replay.ReplayInformation.EndTime.Unknown=未知
 Gui.Replay.ReplayInformation.RecordingOffset.Name=<b>录制偏移：</b>
 Gui.Replay.ReplayInformation.RecordingOffset.Unknown=未知
+Gui.Replay.ReplayInformation.InputOffset.Name=<b>输入偏移：</b>
+Gui.Replay.ReplayInformation.InputOffset.Unknown=未知
+Gui.Replay.ReplayInformation.AudioBufferSize.Name=<b>音频缓存长度：</b>
+Gui.Replay.ReplayInformation.AudioBufferSize.Unknown=未知
 Gui.Replay.ReplayInformation.ModList.Name=<b>模组列表：</b>
 Gui.Replay.ReplayInformation.ModList.Unknown=未知
 

@@ -14,4 +14,6 @@ Gui.Replay.ReplayInformation.YchVersion.Value={0}
 Gui.Replay.ReplayInformation.StartTime.Value={0}
 Gui.Replay.ReplayInformation.EndTime.Value={0}
 Gui.Replay.ReplayInformation.RecordingOffset.Value={0}
+Gui.Replay.ReplayInformation.InputOffset.Value={0}
+Gui.Replay.ReplayInformation.AudioBufferSize.Value={0}
 Gui.Replay.ReplayInformation.ModList.Value={0}

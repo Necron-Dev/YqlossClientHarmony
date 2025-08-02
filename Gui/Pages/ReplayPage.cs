@@ -136,6 +136,8 @@ public static class ReplayPage
             I18N.Translate("Gui.Replay.ReplayInformation.StartTime.Name"),
             I18N.Translate("Gui.Replay.ReplayInformation.EndTime.Name"),
             I18N.Translate("Gui.Replay.ReplayInformation.RecordingOffset.Name"),
+            I18N.Translate("Gui.Replay.ReplayInformation.InputOffset.Name"),
+            I18N.Translate("Gui.Replay.ReplayInformation.AudioBufferSize.Name"),
             I18N.Translate("Gui.Replay.ReplayInformation.ModList.Name")
         ];
     }
@@ -202,6 +204,8 @@ public static class ReplayPage
         var endTimeKey = replay.EndTime is null ? "Unknown" : "Value";
         var recordingOffsetKey = replay.Metadata.RecordingOffset is null ? "Unknown" : "Value";
         var modListKey = replay.Metadata.ModList is null ? "Unknown" : "Value";
+        var inputOffsetKey = replay.Metadata.InputOffset is null ? "Unknown" : "Value";
+        var audioBufferSizeKey = replay.Metadata.AudioBufferSize is null ? "Unknown" : "Value";
         var (uniqueKeys, keyCounts) = GetKeyCountInfo(replay);
         return
         [
@@ -224,6 +228,8 @@ public static class ReplayPage
             I18N.Translate($"Gui.Replay.ReplayInformation.StartTime.{startTimeKey}", replay.Metadata.StartTime?.ToLocalTime()),
             I18N.Translate($"Gui.Replay.ReplayInformation.EndTime.{endTimeKey}", replay.EndTime?.ToLocalTime()),
             I18N.Translate($"Gui.Replay.ReplayInformation.RecordingOffset.{recordingOffsetKey}", replay.Metadata.RecordingOffset),
+            I18N.Translate($"Gui.Replay.ReplayInformation.InputOffset.{inputOffsetKey}", replay.Metadata.InputOffset),
+            I18N.Translate($"Gui.Replay.ReplayInformation.AudioBufferSize.{audioBufferSizeKey}", replay.Metadata.AudioBufferSize),
             I18N.Translate($"Gui.Replay.ReplayInformation.ModList.{modListKey}", replay.Metadata.ModList)
         ];
     }

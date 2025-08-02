@@ -87,7 +87,9 @@ public static class ReplayRecorder
             Persistence.GetChosenAsynchronousInput() ? SettingsReplay.Instance.AsyncRecordingOffset : SettingsReplay.Instance.SyncRecordingOffset,
             string.IsNullOrEmpty(ADOBase.levelPath) ? null : ADOBase.levelPath,
             Main.Mod.Info.Version,
-            GetModList()
+            GetModList(),
+            (double)scrConductor.calibration_i * 1000,
+            Persistence.audioBufferSize
         ));
 
         ErrorMeterValue = null;

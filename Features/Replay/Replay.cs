@@ -27,7 +27,9 @@ public class Replay(Replay.MetadataType metadata)
         double? recordingOffset,
         string? levelPath,
         string? ychVersion,
-        string? modList
+        string? modList,
+        double? inputOffset,
+        int? audioBufferSize
     )
     {
         public readonly int StartingFloorId = startingFloorId;
@@ -45,6 +47,8 @@ public class Replay(Replay.MetadataType metadata)
         public readonly string? LevelPath = levelPath;
         public readonly string? YchVersion = ychVersion;
         public readonly string? ModList = modList;
+        public readonly double? InputOffset = inputOffset;
+        public readonly int? AudioBufferSize = audioBufferSize;
     }
 
     public readonly struct KeyEventType(

@@ -34,6 +34,8 @@ public static class ReplayEncoder
         writer.Write(metadata.LevelPath ?? "");
         writer.Write(metadata.YchVersion ?? "");
         writer.Write(metadata.ModList ?? "");
+        writer.Write(metadata.InputOffset ?? double.NaN);
+        writer.Write(metadata.AudioBufferSize ?? 0);
 
         writer.Close();
         return stream.ToArray();

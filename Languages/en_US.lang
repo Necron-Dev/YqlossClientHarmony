@@ -178,6 +178,10 @@ Gui.Replay.ReplayInformation.EndTime.Name=<b>End Time:</b>
 Gui.Replay.ReplayInformation.EndTime.Unknown=Unknown
 Gui.Replay.ReplayInformation.RecordingOffset.Name=<b>Recording Offset:</b>
 Gui.Replay.ReplayInformation.RecordingOffset.Unknown=Unknown
+Gui.Replay.ReplayInformation.InputOffset.Name=<b>Input Offset:</b>
+Gui.Replay.ReplayInformation.InputOffset.Unknown=Unknown
+Gui.Replay.ReplayInformation.AudioBufferSize.Name=<b>Audio Buffer Size:</b>
+Gui.Replay.ReplayInformation.AudioBufferSize.Unknown=Unknown
 Gui.Replay.ReplayInformation.ModList.Name=<b>Mod List:</b>
 Gui.Replay.ReplayInformation.ModList.Unknown=Unknown
 

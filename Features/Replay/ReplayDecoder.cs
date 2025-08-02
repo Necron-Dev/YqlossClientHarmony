@@ -41,6 +41,8 @@ public static class ReplayDecoder
             null,
             null,
             null,
+            null,
+            null,
             null
         );
 
@@ -79,7 +81,9 @@ public static class ReplayDecoder
             FiniteDouble(),
             NonEmptyString(),
             NonEmptyString(),
-            NonEmptyString()
+            NonEmptyString(),
+            FiniteDouble(),
+            NonZeroInt()
         );
 
         return false;
@@ -105,6 +109,12 @@ public static class ReplayDecoder
         {
             var value = reader.ReadString();
             return value.IsNullOrEmpty() ? null : value;
+        }
+
+        int? NonZeroInt()
+        {
+            var value = reader.ReadInt32();
+            return value == 0 ? null : value;
         }
     }
 
