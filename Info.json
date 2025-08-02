@@ -2,7 +2,10 @@
   "Id": "YCH",
   "DisplayName": "Yqloss Client Harmony",
   "Author": "Yqloss",
-  "Version": "0.10.0",
+  "Version": "1.0.0",
   "AssemblyName": "YCH.dll",
-  "EntryMethod": "YqlossClientHarmony.Main.Load"
+  "EntryMethod": "YqlossClientHarmony.Main.Load",
+  "ManagerVersion": "0.32.4",
+  "HomePage": "https://ych.yqloss.net",
+  "Repository": "https://ychrepo.yqloss.net/repository.json"
 }
