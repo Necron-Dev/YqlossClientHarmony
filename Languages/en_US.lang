@@ -9,6 +9,7 @@ Page.OtherFeatures.Name=Other Features
 Setting.FixKillerDecorationsInNoFail.Enabled=Fix killer decorations failing the game in no fail mode (count as "Overload!" if enabled)
 Setting.FixSetInputEventCrash.Enabled=Fix Set Input Event making levels unplayable
 Setting.RevertCounterclockwiseUTurnPause.Enabled=Revert changes to Pause on counterclockwise U-Turns in 2.9.4
+Setting.FixSavedJsonFormat.Enabled=Fix malformed JSON format in saved .adofai files
 
 Setting.ModifyLoadingLevel.Enabled=Enable Effect Remover
 

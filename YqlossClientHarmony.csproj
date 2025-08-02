@@ -505,6 +505,8 @@
         <Compile Include="Adofai.cs"/>
         <Compile Include="Features\FixKillerDecorationsInNoFail\Injections.cs"/>
         <Compile Include="Features\FixKillerDecorationsInNoFail\SettingsFixKillerDecorationsInNoFail.cs"/>
+        <Compile Include="Features\FixSavedJsonFormat\Injections.cs"/>
+        <Compile Include="Features\FixSavedJsonFormat\SettingsFixSavedJsonFormat.cs"/>
         <Compile Include="Features\FixSetInputEventCrash\Injections.cs"/>
         <Compile Include="Features\FixSetInputEventCrash\SettingsFixSetInputEventCrash.cs"/>
         <Compile Include="Features\Interoperation.cs"/>

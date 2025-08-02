@@ -32,6 +32,12 @@ public static class OtherFeaturesPage
                 ref Main.Settings.EnableRevertCounterclockwiseUTurnPause,
                 "Setting.RevertCounterclockwiseUTurnPause.Enabled"
             );
+            Separator();
+            SwitchOption(
+                group,
+                ref Main.Settings.EnableFixSavedJsonFormat,
+                "Setting.FixSavedJsonFormat.Enabled"
+            );
         }
         End();
     }

@@ -25,6 +25,8 @@ public class Settings : UnityModManager.ModSettings
 
     public SettingsReplay ReplaySettings = new();
 
+    public bool EnableFixSavedJsonFormat = false;
+
     public void OnChange()
     {
         OnSettingChange?.Invoke();
