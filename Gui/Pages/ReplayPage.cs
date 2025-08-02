@@ -61,7 +61,7 @@ public static class ReplayPage
         string[] levelPaths = StandaloneFileBrowser.OpenFilePanel(
             I18N.Translate("Dialog.Replay.SelectReplay.Title"),
             SettingsReplay.Instance.ReplayStorageLocation,
-            [new ExtensionFilter(I18N.Translate("Dialog.Replay.SelectReplay.FileTypeName"), "ychreplay.gz")],
+            [new ExtensionFilter(I18N.Translate("Dialog.Replay.SelectReplay.FileTypeName"), "ychreplaygz", "ychreplay.gz")],
             false
         );
 

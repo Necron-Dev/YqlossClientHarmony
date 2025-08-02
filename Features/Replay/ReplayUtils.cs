@@ -77,7 +77,7 @@ public static class ReplayUtils
         var startingProgress = replay.Metadata.StartingFloorId * 100 / replay.Metadata.TotalFloorCount;
         if (replay.Metadata.StartingFloorId != 0 && startingProgress == 0) startingProgress = 1;
         var endingProgress = (GetEndingFloorId(replay) + 1) * 100 / replay.Metadata.TotalFloorCount;
-        var fileName = $"{time}-{xAccuracy:0.00}-{startingProgress}-{endingProgress}.ychreplay.gz";
+        var fileName = $"{time}-{xAccuracy:0.00}-{startingProgress}-{endingProgress}.ychreplaygz";
         // return Path.Combine(Settings.Instance.ReplayStorageLocation, folderName, fileName);
         return Path.Combine(SettingsReplay.Instance.ReplayStorageLocation, fileName);
     }
