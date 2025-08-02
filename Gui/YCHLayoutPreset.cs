@@ -66,6 +66,26 @@ public static class YCHLayoutPreset
         End();
     }
 
+    public static void TextOption(
+        Sizes sizes,
+        ref string option,
+        string name,
+        bool description = false,
+        bool save = true
+    )
+    {
+        Begin(ContainerDirection.Horizontal, sizes: sizes, options: WidthMax);
+        PushAlign(0.5);
+        {
+            OptionNameDescription(name, description);
+            Fill();
+            var result = TextField(ref option, options: WidthMin);
+            if (save) Save |= result;
+        }
+        PopAlign();
+        End();
+    }
+
     public static void CheckboxTextOption(
         Sizes sizes,
         ref bool enabled,

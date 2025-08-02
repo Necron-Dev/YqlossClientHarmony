@@ -1,5 +1,6 @@
 using System;
 using YqlossClientHarmony.Features.BlockUnintentionalEscape;
+using YqlossClientHarmony.Features.PlaySoundOnGameEnd;
 using static YqlossClientHarmony.Gui.YCHLayout;
 using static YqlossClientHarmony.Gui.YCHLayoutPreset;
 using static YqlossClientHarmony.Gui.SettingUtil;
@@ -59,6 +60,13 @@ public static class OtherFeaturesPage
             }
             PopAlign();
             End();
+
+            Separator();
+            SwitchOption(group, ref Main.Settings.EnablePlaySoundOnGameEnd, "Setting.PlaySoundOnGameEnd.Enabled");
+            Separator();
+            TextOption(group, ref SettingsPlaySoundOnGameEnd.Instance.OnWin, "Setting.PlaySoundOnGameEnd.OnWin");
+            Separator();
+            TextOption(group, ref SettingsPlaySoundOnGameEnd.Instance.OnDeath, "Setting.PlaySoundOnGameEnd.OnDeath");
         }
         End();
     }

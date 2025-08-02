@@ -3,6 +3,7 @@ using JetBrains.Annotations;
 using UnityModManagerNet;
 using YqlossClientHarmony.Features.BlockUnintentionalEscape;
 using YqlossClientHarmony.Features.ModifyLoadingLevel;
+using YqlossClientHarmony.Features.PlaySoundOnGameEnd;
 using YqlossClientHarmony.Features.Replay;
 
 namespace YqlossClientHarmony;
@@ -31,6 +32,10 @@ public class Settings : UnityModManager.ModSettings
     public bool EnableBlockUnintentionalEscape = false;
 
     public SettingsBlockUnintentionalEscape BlockUnintentionalEscapeSettings = new();
+
+    public bool EnablePlaySoundOnGameEnd = false;
+
+    public SettingsPlaySoundOnGameEnd PlaySoundOnGameEndSettings = new();
 
     public void OnChange()
     {
