@@ -191,6 +191,7 @@ Gui.Replay.Important.OnlySupportKeyboard=只支持键盘输入！
 Gui.Replay.Important.DLCCompatibility=兼容多行星。\n不兼容自由移动。\n兼容“标准”长按方块行为下成功完成的长按。
 Gui.Replay.Important.KeyboardChatterBlockerCompatibility=兼容 KeyboardChatterBlocker v0.0.10，可能兼容其他版本。\n播放时请关闭 KeyboardChatterBlocker。
 Gui.Replay.Important.OverlayerCompatibility=可能不兼容 Overlayer 的某些功能。
+Gui.Replay.Important.KeyLimiterCompatibility=可能不兼容某些按键限制模组。\n请尽量使用 KeyboardChatterBlocker 的按键限制，或者暂时使用下方的“在播放时只处理按下次数最多的指定数量个按键”选项。
 
 Gui.Replay.Settings=设置
 Setting.Replay.ReplayStorageLocation=回放存储位置

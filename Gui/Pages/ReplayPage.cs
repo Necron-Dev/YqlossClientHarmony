@@ -29,7 +29,8 @@ public static class ReplayPage
         "Gui.Replay.Important.OnlySupportKeyboard",
         "Gui.Replay.Important.DLCCompatibility",
         "Gui.Replay.Important.KeyboardChatterBlockerCompatibility",
-        "Gui.Replay.Important.OverlayerCompatibility"
+        "Gui.Replay.Important.OverlayerCompatibility",
+        "Gui.Replay.Important.KeyLimiterCompatibility"
     ];
 
     private static string LoadedReplayFileName { get; set; } = "";
