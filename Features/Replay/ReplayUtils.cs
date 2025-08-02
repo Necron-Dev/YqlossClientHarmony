@@ -81,4 +81,28 @@ public static class ReplayUtils
         // return Path.Combine(Settings.Instance.ReplayStorageLocation, folderName, fileName);
         return Path.Combine(SettingsReplay.Instance.ReplayStorageLocation, fileName);
     }
+
+    public static void HandleMultiReleases(List<Replay.KeyEventType> keyEvents)
+    {
+        if (!SettingsReplay.Instance.OnlyStoreLastInMultiReleases) return;
+
+        List<Replay.KeyEventType> filtered = [];
+        Dictionary<int, bool> isKeyDown = [];
+
+        foreach (var keyEvent in Enumerable.Reverse(keyEvents))
+            if (keyEvent.IsKeyUp)
+            {
+                if (!isKeyDown.GetValueOrDefault(keyEvent.KeyCode, true)) continue;
+                isKeyDown[keyEvent.KeyCode] = false;
+                filtered.Add(keyEvent);
+            }
+            else
+            {
+                isKeyDown[keyEvent.KeyCode] = true;
+                filtered.Add(keyEvent);
+            }
+
+        keyEvents.Clear();
+        keyEvents.AddRange(Enumerable.Reverse(filtered));
+    }
 }
