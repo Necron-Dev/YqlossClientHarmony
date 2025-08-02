@@ -18,7 +18,7 @@ public static class Main
     public static UnityModManager.ModEntry Mod
     {
         get => _mod ?? throw new NullReferenceException("use Main.Mod before the mod is initialized");
-        set
+        private set
         {
             if (ReferenceEquals(_mod, value)) return;
             _mod = value;
@@ -40,7 +40,7 @@ public static class Main
     public static Settings Settings
     {
         get => _settings ?? throw new NullReferenceException("use Main.Settings before the mod is initialized");
-        set
+        private set
         {
             if (ReferenceEquals(_settings, value)) return;
             _settings = value;
@@ -62,17 +62,31 @@ public static class Main
 
     public static Harmony Harmony { get; } = new("YCH");
 
-    public static bool Load(UnityModManager.ModEntry mod)
+    private static void InitializeMod(UnityModManager.ModEntry mod)
     {
+        if (_mod is not null) return;
         Mod = mod;
-        Harmony.PatchAll(Assembly.GetExecutingAssembly());
         Settings = UnityModManager.ModSettings.Load<Settings>(Mod);
-        Enabled = true;
-        return true;
+        Enabled = mod.Enabled;
+    }
+
+    public static void Load(UnityModManager.ModEntry mod)
+    {
+        InitializeMod(mod);
     }
 
     private static void OnToggle(bool enabled)
     {
+        if (enabled)
+        {
+            Harmony.PatchAll(Assembly.GetExecutingAssembly());
+            Mod.Logger.Log("patching");
+        }
+        else
+        {
+            Harmony.UnpatchAll(Harmony.Id);
+            Mod.Logger.Log("unpatching");
+        }
     }
 
     private static void OnSettingChange()
