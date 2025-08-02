@@ -19,6 +19,8 @@ public class SettingsReplay
 
     public bool StoreSyncKeyCode = false;
 
+    // this applies to both loading and storing now
+    // the name is preserved for backward compatibility
     public bool OnlyStoreLastInMultiReleases = true;
 
     public double PlayingOffset = 0.0;
