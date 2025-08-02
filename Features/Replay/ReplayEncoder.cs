@@ -28,6 +28,12 @@ public static class ReplayEncoder
         writer.Write(metadata.UseAsyncInput);
         writer.Write((byte)metadata.HoldBehavior);
         writer.Write((byte)metadata.HitMarginLimit);
+        writer.Write((metadata.StartTime ?? DateTimeOffset.FromUnixTimeMilliseconds(0)).ToUnixTimeMilliseconds());
+        writer.Write((replay.EndTime ?? DateTimeOffset.FromUnixTimeMilliseconds(0)).ToUnixTimeMilliseconds());
+        writer.Write(metadata.RecordingOffset ?? double.NaN);
+        writer.Write(metadata.LevelPath ?? "");
+        writer.Write(metadata.YchVersion ?? "");
+        writer.Write(metadata.ModList ?? "");
 
         writer.Close();
         return stream.ToArray();

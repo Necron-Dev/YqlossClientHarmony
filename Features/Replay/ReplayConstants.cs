@@ -8,7 +8,7 @@ public static class ReplayConstants
     public const ulong JudgementMagicNumber = 0x6E656D656764754A;
     public const ulong AngleCorrectionMagicNumber = 0x726F43656C676E41;
     public const int FormatVersion = 1;
-    public const int MetadataFormatVersion = 1;
+    public const int MetadataFormatVersion = 2;
     public const int KeyEventFormatVersion = 2;
     public const int JudgementFormatVersion = 1;
     public const int AngleCorrectionFormatVersion = 1;

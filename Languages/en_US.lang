@@ -137,6 +137,8 @@ Gui.Replay.Error.UnloadInGame=You cannot unload a replay mid-game!
 
 Gui.Replay.ReplayInformation=Replay Information
 Gui.Replay.ReplayInformation.ReplayFile.Name=<b>Replay File:</b>
+Gui.Replay.ReplayInformation.LevelPath.Name=<b>Level File:</b>
+Gui.Replay.ReplayInformation.LevelPath.Unknown=Unknown
 Gui.Replay.ReplayInformation.Artist.Name=<b>Artist:</b>
 Gui.Replay.ReplayInformation.Song.Name=<b>Song:</b>
 Gui.Replay.ReplayInformation.Author.Name=<b>Author:</b>
@@ -161,6 +163,18 @@ Gui.Replay.ReplayInformation.LimitJudgements.Name=<b>Limit Judgements:</b>
 Gui.Replay.ReplayInformation.LimitJudgements.None=None
 Gui.Replay.ReplayInformation.LimitJudgements.PerfectsOnly=Perfects Only
 Gui.Replay.ReplayInformation.LimitJudgements.PurePerfectOnly=Pure Perfects Only
+Gui.Replay.ReplayInformation.KeyCount.Name=<b>Keys Used:</b>
+Gui.Replay.ReplayInformation.KeyPressCounts.Name=<b>Key Press Counts:</b>
+Gui.Replay.ReplayInformation.YchVersion.Name=<b>YCH Version:</b>
+Gui.Replay.ReplayInformation.YchVersion.Unknown=Unknown
+Gui.Replay.ReplayInformation.StartTime.Name=<b>Start Time:</b>
+Gui.Replay.ReplayInformation.StartTime.Unknown=Unknown
+Gui.Replay.ReplayInformation.EndTime.Name=<b>End Time:</b>
+Gui.Replay.ReplayInformation.EndTime.Unknown=Unknown
+Gui.Replay.ReplayInformation.RecordingOffset.Name=<b>Recording Offset:</b>
+Gui.Replay.ReplayInformation.RecordingOffset.Unknown=Unknown
+Gui.Replay.ReplayInformation.ModList.Name=<b>Mod List:</b>
+Gui.Replay.ReplayInformation.ModList.Unknown=Unknown
 
 Gui.Replay.Important=Important
 Gui.Replay.Important.RecordInAsync=Record replays in asynchronous input mode!

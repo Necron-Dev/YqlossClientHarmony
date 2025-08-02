@@ -19,14 +19,12 @@ public static class ReplayDecoder
         return version;
     }
 
-    private static bool ProcessMetadata(
+    private static bool ProcessMetadata1(
         BinaryReader reader,
         ref Replay.MetadataType? metadata
     )
     {
         if (metadata is not null) throw new InvalidDataException("multiple metadata blocks");
-
-        var version = CheckVersion(reader.ReadInt32(), ReplayConstants.MetadataFormatVersion);
 
         metadata = new Replay.MetadataType(
             reader.ReadInt32(),
@@ -38,10 +36,76 @@ public static class ReplayDecoder
             reader.ReadBoolean(),
             reader.ReadBoolean(),
             (HoldBehavior)reader.ReadByte(),
-            (HitMarginLimit)reader.ReadByte()
+            (HitMarginLimit)reader.ReadByte(),
+            null,
+            null,
+            null,
+            null,
+            null
         );
 
         return false;
+    }
+
+    private static bool ProcessMetadata(
+        BinaryReader reader,
+        ref DateTimeOffset? endTime,
+        ref Replay.MetadataType? metadata
+    )
+    {
+        if (metadata is not null) throw new InvalidDataException("multiple metadata blocks");
+
+        var version = CheckVersion(reader.ReadInt32(), ReplayConstants.MetadataFormatVersion);
+
+        if (version < ReplayConstants.MetadataFormatVersion)
+            return version switch
+            {
+                1 => ProcessMetadata1(reader, ref metadata),
+                _ => throw new InvalidDataException($"illegal metadata format version {version}")
+            };
+
+        metadata = new Replay.MetadataType(
+            reader.ReadInt32(),
+            reader.ReadInt32(),
+            reader.ReadString(),
+            reader.ReadString(),
+            reader.ReadString(),
+            (Difficulty)reader.ReadByte(),
+            reader.ReadBoolean(),
+            reader.ReadBoolean(),
+            (HoldBehavior)reader.ReadByte(),
+            (HitMarginLimit)reader.ReadByte(),
+            TakeFirst(ValidTime(), endTime = ValidTime()),
+            FiniteDouble(),
+            NonEmptyString(),
+            NonEmptyString(),
+            NonEmptyString()
+        );
+
+        return false;
+
+        T TakeFirst<T>(T first, params object?[] _)
+        {
+            return first;
+        }
+
+        DateTimeOffset? ValidTime()
+        {
+            var value = reader.ReadInt64();
+            return value == 0 ? null : DateTimeOffset.FromUnixTimeMilliseconds(value);
+        }
+
+        double? FiniteDouble()
+        {
+            var value = reader.ReadDouble();
+            return double.IsFinite(value) ? value : null;
+        }
+
+        string? NonEmptyString()
+        {
+            var value = reader.ReadString();
+            return value.IsNullOrEmpty() ? null : value;
+        }
     }
 
     private static bool ProcessKeyEvents1(
@@ -145,6 +209,7 @@ public static class ReplayDecoder
     private static void ProcessBlock(
         byte[] block,
         ref Replay.MetadataType? metadata,
+        ref DateTimeOffset? endTime,
         ref List<Replay.KeyEventType>? keyEvents,
         ref List<Replay.JudgementType>? judgements,
         ref List<double>? angleCorrections
@@ -156,7 +221,7 @@ public static class ReplayDecoder
         var magicNumber = reader.ReadUInt64();
         _ = magicNumber switch
         {
-            ReplayConstants.MetadataMagicNumber => ProcessMetadata(reader, ref metadata),
+            ReplayConstants.MetadataMagicNumber => ProcessMetadata(reader, ref endTime, ref metadata),
             ReplayConstants.KeyEventMagicNumber => ProcessKeyEvents(reader, ref keyEvents),
             ReplayConstants.JudgementMagicNumber => ProcessJudgements(reader, ref judgements),
             ReplayConstants.AngleCorrectionMagicNumber => ProcessAngleCorrections(reader, ref angleCorrections),
@@ -174,6 +239,7 @@ public static class ReplayDecoder
 
         var blockCount = reader.ReadUInt32();
         Replay.MetadataType? metadata = null;
+        DateTimeOffset? endTime = null;
         List<Replay.KeyEventType>? keyEvents = null;
         List<Replay.JudgementType>? judgements = null;
         List<double>? angleCorrections = null;
@@ -184,6 +250,7 @@ public static class ReplayDecoder
             ProcessBlock(
                 reader.ReadBytes((int)blockSize),
                 ref metadata,
+                ref endTime,
                 ref keyEvents,
                 ref judgements,
                 ref angleCorrections
@@ -193,7 +260,10 @@ public static class ReplayDecoder
         if (metadata is null) throw new InvalidDataException("missing metadata");
         if (keyEvents is null) throw new InvalidDataException("missing key events");
 
-        var replay = new Replay(metadata.Value);
+        var replay = new Replay(metadata.Value)
+        {
+            EndTime = endTime
+        };
         replay.KeyEvents.AddRange(keyEvents);
         replay.Judgements.AddRange(judgements ?? []);
         replay.AngleCorrections.AddRange(angleCorrections ?? []);

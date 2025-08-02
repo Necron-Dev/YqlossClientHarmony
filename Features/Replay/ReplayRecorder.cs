@@ -1,5 +1,7 @@
 using System;
 using System.IO;
+using System.Text;
+using UnityModManagerNet;
 
 namespace YqlossClientHarmony.Features.Replay;
 
@@ -31,6 +33,7 @@ public static class ReplayRecorder
         }
         else
         {
+            replay.EndTime = DateTimeOffset.Now;
             var fileName = ReplayUtils.ReplayFileName(replay);
             Main.Mod.Logger.Log($"saving replay as {fileName}");
             Directory.CreateDirectory(SettingsReplay.Instance.ReplayStorageLocation);
@@ -38,6 +41,33 @@ public static class ReplayRecorder
         }
 
         Replay = null;
+    }
+
+    private static string? GetModList()
+    {
+        try
+        {
+            var builder = new StringBuilder();
+
+            foreach (var modEntry in UnityModManager.modEntries)
+            {
+                builder.Append("[");
+                builder.Append(modEntry.Active ? "O" : "X");
+                builder.Append("] ");
+                builder.Append(modEntry.Info.Id);
+                builder.Append(" v");
+                builder.Append(modEntry.Info.Version);
+                builder.Append(", ");
+            }
+
+            builder.Remove(builder.Length - 2, 2);
+            return builder.ToString();
+        }
+        catch (Exception exception)
+        {
+            Main.Mod.Logger.Warning($"failed to fetch mod list: {exception}");
+            return null;
+        }
     }
 
     private static void NewReplay(int floorId)
@@ -52,7 +82,12 @@ public static class ReplayRecorder
             Adofai.Controller.noFail,
             Persistence.GetChosenAsynchronousInput(),
             Persistence.holdBehavior,
-            Persistence.hitMarginLimit
+            Persistence.hitMarginLimit,
+            DateTimeOffset.Now,
+            Persistence.GetChosenAsynchronousInput() ? SettingsReplay.Instance.AsyncRecordingOffset : SettingsReplay.Instance.SyncRecordingOffset,
+            string.IsNullOrEmpty(ADOBase.levelPath) ? null : ADOBase.levelPath,
+            Main.Mod.Info.Version,
+            GetModList()
         ));
 
         ErrorMeterValue = null;

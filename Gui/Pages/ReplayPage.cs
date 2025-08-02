@@ -1,4 +1,6 @@
+using System;
 using System.Collections.Generic;
+using System.Linq;
 using SFB;
 using YqlossClientHarmony.Features.Replay;
 using static YqlossClientHarmony.Gui.YCHLayout;
@@ -31,6 +33,8 @@ public static class ReplayPage
     ];
 
     private static string LoadedReplayFileName { get; set; } = "";
+
+    private static Trigger<ReplayInformationCacheKey, string[]> CachedReplayInformation { get; } = new();
 
     private static SizesGroup.Holder Group { get; } = new();
 
@@ -114,6 +118,7 @@ public static class ReplayPage
         return
         [
             I18N.Translate("Gui.Replay.ReplayInformation.ReplayFile.Name"),
+            I18N.Translate("Gui.Replay.ReplayInformation.LevelPath.Name"),
             I18N.Translate("Gui.Replay.ReplayInformation.Artist.Name"),
             I18N.Translate("Gui.Replay.ReplayInformation.Song.Name"),
             I18N.Translate("Gui.Replay.ReplayInformation.Author.Name"),
@@ -124,8 +129,27 @@ public static class ReplayPage
             I18N.Translate("Gui.Replay.ReplayInformation.AsyncInput.Name"),
             I18N.Translate("Gui.Replay.ReplayInformation.NoFail.Name"),
             I18N.Translate("Gui.Replay.ReplayInformation.HoldTileBehavior.Name"),
-            I18N.Translate("Gui.Replay.ReplayInformation.LimitJudgements.Name")
+            I18N.Translate("Gui.Replay.ReplayInformation.LimitJudgements.Name"),
+            I18N.Translate("Gui.Replay.ReplayInformation.KeyCount.Name"),
+            I18N.Translate("Gui.Replay.ReplayInformation.KeyPressCounts.Name"),
+            I18N.Translate("Gui.Replay.ReplayInformation.YchVersion.Name"),
+            I18N.Translate("Gui.Replay.ReplayInformation.StartTime.Name"),
+            I18N.Translate("Gui.Replay.ReplayInformation.EndTime.Name"),
+            I18N.Translate("Gui.Replay.ReplayInformation.RecordingOffset.Name"),
+            I18N.Translate("Gui.Replay.ReplayInformation.ModList.Name")
         ];
+    }
+
+    private static (int, List<int>) GetKeyCountInfo(Replay replay)
+    {
+        Dictionary<int, int> keyCount = [];
+
+        foreach (var keyEvent in replay.KeyEvents.Where(keyEvent => !keyEvent.IsKeyUp))
+            keyCount[keyEvent.KeyCode] = keyCount.GetValueOrDefault(keyEvent.KeyCode, 0) + 1;
+
+        var values = keyCount.Values.ToList();
+        values.Sort((x, y) => y.CompareTo(x));
+        return (keyCount.Count, values);
     }
 
     private static string[] ReplayInformationValues(string replayFileName, Replay replay)
@@ -172,20 +196,35 @@ public static class ReplayPage
             HitMarginLimit.PurePerfectOnly => "PurePerfectOnly",
             _ => $"{replay.Metadata.HitMarginLimit}"
         };
+        var levelPathKey = replay.Metadata.LevelPath is null ? "Unknown" : "Value";
+        var ychVersionKey = replay.Metadata.YchVersion is null ? "Unknown" : "Value";
+        var startTimeKey = replay.Metadata.StartTime is null ? "Unknown" : "Value";
+        var endTimeKey = replay.EndTime is null ? "Unknown" : "Value";
+        var recordingOffsetKey = replay.Metadata.RecordingOffset is null ? "Unknown" : "Value";
+        var modListKey = replay.Metadata.ModList is null ? "Unknown" : "Value";
+        var (uniqueKeys, keyCounts) = GetKeyCountInfo(replay);
         return
         [
             I18N.Translate("Gui.Replay.ReplayInformation.ReplayFile.Value", replayFileName),
+            I18N.Translate($"Gui.Replay.ReplayInformation.LevelPath.{levelPathKey}", replay.Metadata.LevelPath),
             I18N.Translate("Gui.Replay.ReplayInformation.Artist.Value", filteredArtist),
             I18N.Translate("Gui.Replay.ReplayInformation.Song.Value", filteredSong),
             I18N.Translate("Gui.Replay.ReplayInformation.Author.Value", filteredAuthor),
             I18N.Translate("Gui.Replay.ReplayInformation.XAccuracy.Value", xAccuracy),
-            I18N.Translate("Gui.Replay.ReplayInformation.Progress.Value", startProgress, startFloor, endProgress, endFloor),
+            I18N.Translate("Gui.Replay.ReplayInformation.Progress.Value", startProgress, startFloor, endProgress, endFloor, replay.Metadata.TotalFloorCount),
             I18N.Translate("Gui.Replay.ReplayInformation.Judgements.Value", overload, te, e, ep, pp, auto, lp, l, tl, miss),
             I18N.Translate($"Gui.Replay.ReplayInformation.Difficulty.{difficulty}"),
             I18N.Translate($"Gui.Replay.ReplayInformation.AsyncInput.{asyncInput}"),
             I18N.Translate($"Gui.Replay.ReplayInformation.NoFail.{noFail}"),
             I18N.Translate($"Gui.Replay.ReplayInformation.HoldTileBehavior.{holdBehavior}"),
-            I18N.Translate($"Gui.Replay.ReplayInformation.LimitJudgements.{hitMarginLimit}")
+            I18N.Translate($"Gui.Replay.ReplayInformation.LimitJudgements.{hitMarginLimit}"),
+            I18N.Translate("Gui.Replay.ReplayInformation.KeyCount.Value", uniqueKeys),
+            I18N.Translate("Gui.Replay.ReplayInformation.KeyPressCounts.Value", string.Join(", ", keyCounts)),
+            I18N.Translate($"Gui.Replay.ReplayInformation.YchVersion.{ychVersionKey}", replay.Metadata.YchVersion),
+            I18N.Translate($"Gui.Replay.ReplayInformation.StartTime.{startTimeKey}", replay.Metadata.StartTime?.ToLocalTime()),
+            I18N.Translate($"Gui.Replay.ReplayInformation.EndTime.{endTimeKey}", replay.EndTime?.ToLocalTime()),
+            I18N.Translate($"Gui.Replay.ReplayInformation.RecordingOffset.{recordingOffsetKey}", replay.Metadata.RecordingOffset),
+            I18N.Translate($"Gui.Replay.ReplayInformation.ModList.{modListKey}", replay.Metadata.ModList)
         ];
     }
 
@@ -233,12 +272,16 @@ public static class ReplayPage
                 if (clearError) LastError = null;
             }
 
-            if (ReplayPlayer.Replay is not null)
+            var replay = ReplayPlayer.Replay;
+            if (replay is not null)
             {
                 Text(I18N.Translate("Gui.Replay.ReplayInformation"), TextStyle.Subtitle);
 
                 var keys = ReplayInformationKeys();
-                var values = ReplayInformationValues(LoadedReplayFileName, ReplayPlayer.Replay);
+                var values = CachedReplayInformation.Get(
+                    new ReplayInformationCacheKey(I18N.SelectedLanguage.Code, replay),
+                    _ => ReplayInformationValues(LoadedReplayFileName, replay)
+                );
 
                 Begin(ContainerDirection.Vertical, ContainerStyle.Background, options: WidthMax);
                 {
@@ -320,5 +363,23 @@ public static class ReplayPage
             End();
         }
         End();
+    }
+
+    public class ReplayInformationCacheKey(string language, Replay replay)
+    {
+        private string Language { get; } = language;
+
+        private Replay Replay { get; } = replay;
+
+        public override bool Equals(object? obj)
+        {
+            if (obj is not ReplayInformationCacheKey key) return false;
+            return key.Language == Language && ReferenceEquals(key.Replay, Replay);
+        }
+
+        public override int GetHashCode()
+        {
+            return HashCode.Combine(Language, Replay);
+        }
     }
 }

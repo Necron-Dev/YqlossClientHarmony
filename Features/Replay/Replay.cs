@@ -1,9 +1,11 @@
+using System;
 using System.Collections.Generic;
 
 namespace YqlossClientHarmony.Features.Replay;
 
 public class Replay(Replay.MetadataType metadata)
 {
+    public DateTimeOffset? EndTime = null;
     public MetadataType Metadata { get; } = metadata;
     public List<KeyEventType> KeyEvents { get; } = [];
     public List<JudgementType> Judgements { get; } = [];
@@ -20,7 +22,12 @@ public class Replay(Replay.MetadataType metadata)
         bool noFailMode,
         bool useAsyncInput,
         HoldBehavior holdBehavior,
-        HitMarginLimit hitMarginLimit
+        HitMarginLimit hitMarginLimit,
+        DateTimeOffset? startTime,
+        double? recordingOffset,
+        string? levelPath,
+        string? ychVersion,
+        string? modList
     )
     {
         public readonly int StartingFloorId = startingFloorId;
@@ -33,6 +40,11 @@ public class Replay(Replay.MetadataType metadata)
         public readonly bool UseAsyncInput = useAsyncInput;
         public readonly HoldBehavior HoldBehavior = holdBehavior;
         public readonly HitMarginLimit HitMarginLimit = hitMarginLimit;
+        public readonly DateTimeOffset? StartTime = startTime;
+        public readonly double? RecordingOffset = recordingOffset;
+        public readonly string? LevelPath = levelPath;
+        public readonly string? YchVersion = ychVersion;
+        public readonly string? ModList = modList;
     }
 
     public readonly struct KeyEventType(

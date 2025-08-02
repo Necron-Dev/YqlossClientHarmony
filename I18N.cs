@@ -27,7 +27,7 @@ public static class I18N
 
     public static Dictionary<string, Language> LanguageMap { get; } = [];
 
-    private static Language SelectedLanguage
+    public static Language SelectedLanguage
     {
         get
         {

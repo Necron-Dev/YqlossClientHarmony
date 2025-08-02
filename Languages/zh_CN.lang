@@ -137,6 +137,8 @@ Gui.Replay.Error.UnloadInGame=无法在游戏中途取消加载回放！
 
 Gui.Replay.ReplayInformation=回放信息
 Gui.Replay.ReplayInformation.ReplayFile.Name=<b>回放文件：</b>
+Gui.Replay.ReplayInformation.LevelPath.Name=<b>关卡文件：</b>
+Gui.Replay.ReplayInformation.LevelPath.Unknown=未知
 Gui.Replay.ReplayInformation.Artist.Name=<b>音乐作者：</b>
 Gui.Replay.ReplayInformation.Song.Name=<b>歌曲：</b>
 Gui.Replay.ReplayInformation.Author.Name=<b>关卡作者：</b>
@@ -161,6 +163,18 @@ Gui.Replay.ReplayInformation.LimitJudgements.Name=<b>限制判定：</b>
 Gui.Replay.ReplayInformation.LimitJudgements.None=关闭
 Gui.Replay.ReplayInformation.LimitJudgements.PerfectsOnly=仅限完美
 Gui.Replay.ReplayInformation.LimitJudgements.PurePerfectOnly=仅限完美无瑕
+Gui.Replay.ReplayInformation.KeyCount.Name=<b>使用的按键数：</b>
+Gui.Replay.ReplayInformation.KeyPressCounts.Name=<b>每个按键按下次数：</b>
+Gui.Replay.ReplayInformation.YchVersion.Name=<b>YCH 版本：</b>
+Gui.Replay.ReplayInformation.YchVersion.Unknown=未知
+Gui.Replay.ReplayInformation.StartTime.Name=<b>开始时间：</b>
+Gui.Replay.ReplayInformation.StartTime.Unknown=未知
+Gui.Replay.ReplayInformation.EndTime.Name=<b>结束时间：</b>
+Gui.Replay.ReplayInformation.EndTime.Unknown=未知
+Gui.Replay.ReplayInformation.RecordingOffset.Name=<b>录制偏移：</b>
+Gui.Replay.ReplayInformation.RecordingOffset.Unknown=未知
+Gui.Replay.ReplayInformation.ModList.Name=<b>模组列表：</b>
+Gui.Replay.ReplayInformation.ModList.Unknown=未知
 
 Gui.Replay.Important=注意事项
 Gui.Replay.Important.RecordInAsync=录制时请使用异步输入系统！
