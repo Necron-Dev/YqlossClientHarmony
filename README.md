@@ -8,13 +8,19 @@
 
 ## ✨ Features
 
-* Fix Killer Decorations Failing The Game In No Fail Mode
+* Fix killer decorations failing the game in no fail mode (count as "Overload!" if enabled)
 
-* Fix Set Input Event Crashing Levels (Making Them Unplayable)
+* Fix Set Input Event making levels unplayable
 
-* Revert Changes To Pause Events On Counterclockwise U-Turns In 2.9.4
+* Revert changes to Pause on counterclockwise U-Turns in 2.9.4
 
-* Modify Loading Level (basically an effect remover)
+* Fix malformed JSON format in saved .adofai files
+
+* Prevent unintentionally exiting playing
+
+* Play sound on game end
+
+* Effect Remover
 
   > The level is modified when it's read from file, so the game doesn't even
   > know what it looks like before modifications. Thus, you cannot save a
@@ -67,9 +73,9 @@
 
 * **How do I play a replay?**
 
-  Enable YCH and enable Replay in YCH settings. Open the level in level editor, click the "Select"
+  Enable YCH and enable Replay in YCH settings. Open the level in level editor, click the "Load Replay"
   button and select the replay file (.ychreplay.gz). Then adjust your game settings to match the
-  recorder's game settings (except Async Input). Click "Jump To Start" and start playing the level.
+  recorder's game settings (except Async Input). Click "Jump to Start" and start playing the level.
 
   Disable KeyboardChatterBlocker while playing replays.
 
