@@ -10,6 +10,8 @@ Setting.FixKillerDecorationsInNoFail.Enabled=修复死亡装饰物在不会失�
 Setting.FixSetInputEventCrash.Enabled=修复设置输入事件使谱面无法播放
 Setting.RevertCounterclockwiseUTurnPause.Enabled=撤销 2.9.4 中对逆时针发卡弯上的暂停的修改
 Setting.FixSavedJsonFormat.Enabled=修复保存的 .adofai 文件中错误的 JSON 格式
+Setting.BlockUnintentionalEscape.Enabled=阻止意外退出游玩
+Setting.BlockUnintentionalEscape.Options=在[InSeconds]秒内按下[EscapesRequired]次 Esc 以退出
 
 Setting.ModifyLoadingLevel.Enabled=开启去特效功能
 

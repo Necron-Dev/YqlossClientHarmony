@@ -1,6 +1,7 @@
 using System;
 using JetBrains.Annotations;
 using UnityModManagerNet;
+using YqlossClientHarmony.Features.BlockUnintentionalEscape;
 using YqlossClientHarmony.Features.ModifyLoadingLevel;
 using YqlossClientHarmony.Features.Replay;
 
@@ -26,6 +27,10 @@ public class Settings : UnityModManager.ModSettings
     public SettingsReplay ReplaySettings = new();
 
     public bool EnableFixSavedJsonFormat = false;
+
+    public bool EnableBlockUnintentionalEscape = false;
+
+    public SettingsBlockUnintentionalEscape BlockUnintentionalEscapeSettings = new();
 
     public void OnChange()
     {

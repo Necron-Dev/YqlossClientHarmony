@@ -503,6 +503,8 @@
     </ItemGroup>
     <ItemGroup>
         <Compile Include="Adofai.cs"/>
+        <Compile Include="Features\BlockUnintentionalEscape\Injections.cs"/>
+        <Compile Include="Features\BlockUnintentionalEscape\SettingsBlockUnintentionalEscape.cs"/>
         <Compile Include="Features\FixKillerDecorationsInNoFail\Injections.cs"/>
         <Compile Include="Features\FixKillerDecorationsInNoFail\SettingsFixKillerDecorationsInNoFail.cs"/>
         <Compile Include="Features\FixSavedJsonFormat\Injections.cs"/>
