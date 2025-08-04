@@ -421,7 +421,6 @@ public static class ReplayPlayer
             isKeyDown.Clear();
             isKeyUp.Clear();
             AnyKeyDown = false;
-            Adofai.Controller.keyTimes.Clear();
 
             var keyEventsForReceivers = KeyEventsForReceivers;
 
@@ -453,7 +452,6 @@ public static class ReplayPlayer
             isKeyDown.Clear();
             isKeyUp.Clear();
             AnyKeyDown = false;
-            Adofai.Controller.keyTimes.Clear();
             KeyStatesForReceivers = lastKeyStatesForReceivers;
         }
     }
@@ -475,7 +473,6 @@ public static class ReplayPlayer
         isKeyDown.Clear();
         isKeyUp.Clear();
         AnyKeyDown = false;
-        Adofai.Controller.keyTimes.Clear();
 
         try
         {
@@ -547,7 +544,6 @@ public static class ReplayPlayer
                     if (!state && last) isKeyUp.Add(keyCode);
                 }
 
-                Adofai.Controller.keyTimes.Clear();
                 NextCheckFailMiss = false;
                 AllowAuto = false;
 
@@ -600,7 +596,6 @@ public static class ReplayPlayer
                 isKeyDown.Clear();
                 isKeyUp.Clear();
                 AnyKeyDown = false;
-                Adofai.Controller.keyTimes.Clear();
                 AllowGameToUpdateInput = false;
                 ConsumeSingleAngleCorrection = false;
                 CachedAngleCorrection = null;
@@ -613,7 +608,6 @@ public static class ReplayPlayer
         {
             isKeyDown.Clear();
             isKeyUp.Clear();
-            Adofai.Controller.keyTimes.Clear();
             AnyKeyDown = false;
             KeyStates = lastKeyStates;
             KeyStatesForReceivers = lastKeyStatesForReceivers;
