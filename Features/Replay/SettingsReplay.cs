@@ -19,7 +19,7 @@ public class SettingsReplay
 
     public bool StoreSyncKeyCode = false;
 
-    // this applies to both loading and storing now
+    // this applies to only loading now
     // the name is preserved for backward compatibility
     public bool OnlyStoreLastInMultiReleases = true;
 
