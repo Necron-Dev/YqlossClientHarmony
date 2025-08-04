@@ -1,8 +1,6 @@
 using System;
-using System.Collections.Generic;
 using System.IO;
 using System.IO.Compression;
-using System.Linq;
 using System.Threading;
 using System.Windows.Forms;
 
@@ -139,7 +137,6 @@ public static class ReplayEncoder
 
     public static void CompressAndSaveAs(Replay replay, string path)
     {
-        ReplayUtils.HandleMultiReleases(replay.KeyEvents);
         var data = Encode(replay);
         try
         {

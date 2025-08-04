@@ -171,9 +171,6 @@ public static class ReplayDecoder
                 reader.ReadBoolean()
             ));
 
-        if (SettingsReplay.Instance.DecoderSortKeyEvents)
-            keyEvents.Sort((x, y) => x.SongSeconds.CompareTo(y.SongSeconds));
-
         return false;
     }
 
@@ -277,8 +274,6 @@ public static class ReplayDecoder
         replay.KeyEvents.AddRange(keyEvents);
         replay.Judgements.AddRange(judgements ?? []);
         replay.AngleCorrections.AddRange(angleCorrections ?? []);
-        ReplayUtils.HandleMultiReleases(replay.KeyEvents);
-        ReplayUtils.HandleLimitKeyCount(replay.KeyEvents);
         return replay;
     }
 

@@ -44,6 +44,63 @@ public static class ReplayPlayer
 
     private static double SongSeconds => Injections.DspToSong(Adofai.Conductor.dspTime, SettingsReplay.Instance.PlayingOffset / 1000.0);
 
+    private static void SortKeyEvents(List<(Replay.KeyEventType, double?, int)> keyEvents)
+    {
+        if (!SettingsReplay.Instance.DecoderSortKeyEvents) return;
+
+        keyEvents.Sort((x, y) => x.Item1.SongSeconds.CompareTo(y.Item1.SongSeconds));
+    }
+
+    private static void HandleMultiReleases(List<(Replay.KeyEventType, double?, int)> keyEvents)
+    {
+        if (!SettingsReplay.Instance.OnlyStoreLastInMultiReleases) return;
+
+        List<(Replay.KeyEventType, double?, int)> filtered = [];
+        Dictionary<int, bool> isKeyDown = [];
+
+        foreach (var (keyEvent, angleCorrection, floorId) in Enumerable.Reverse(keyEvents))
+            if (keyEvent.IsKeyUp)
+            {
+                if (!isKeyDown.GetValueOrDefault(keyEvent.KeyCode, true)) continue;
+                isKeyDown[keyEvent.KeyCode] = false;
+                filtered.Add((keyEvent, angleCorrection, floorId));
+            }
+            else
+            {
+                isKeyDown[keyEvent.KeyCode] = true;
+                filtered.Add((keyEvent, angleCorrection, floorId));
+            }
+
+        keyEvents.Clear();
+        keyEvents.AddRange(Enumerable.Reverse(filtered));
+    }
+
+    private static void HandleLimitKeyCount(List<(Replay.KeyEventType, double?, int)> keyEvents)
+    {
+        if (!SettingsReplay.Instance.EnableDecoderLimitKeyCount) return;
+
+        List<(Replay.KeyEventType, double?, int)> filtered = [];
+        Dictionary<int, int> keyDownCount = [];
+
+        foreach (var (keyEvent, _, _) in keyEvents)
+            if (!keyEvent.IsKeyUp)
+                keyDownCount[keyEvent.KeyCode] = keyDownCount.GetValueOrDefault(keyEvent.KeyCode, 0) + 1;
+
+        var entries = keyDownCount.Select(pair => (pair.Key, pair.Value)).ToList();
+        entries.Sort((pair1, pair2) => pair2.Value.CompareTo(pair1.Value));
+        var limitedCount = SettingsReplay.Instance.DecoderLimitKeyCount;
+        if (entries.Count > limitedCount)
+            entries.RemoveRange(limitedCount, entries.Count - limitedCount);
+        var allowedKeys = entries.Select(pair => pair.Key).ToHashSet();
+
+        foreach (var (keyEvent, angleCorrection, floorId) in keyEvents)
+            if (allowedKeys.Contains(keyEvent.KeyCode))
+                filtered.Add((keyEvent, angleCorrection, floorId));
+
+        keyEvents.Clear();
+        keyEvents.AddRange(filtered);
+    }
+
     public static void StartPlaying(int floorId)
     {
         _ = KeyEventReceiverManager.Instance;
@@ -65,30 +122,36 @@ public static class ReplayPlayer
         ReplayKeyboardInputType.Instance.MarkUpdate();
 
         {
-            var accumulatedFloorId = replay.Metadata.StartingFloorId;
             MyQueue<Replay.KeyEventType> keyEvents = new();
             MyQueue<Replay.KeyEventType> keyEventsForReceivers = new();
             MyQueue<(double, int)> angleCorrections = new();
             KeyEvents = keyEvents;
             KeyEventsForReceivers = keyEventsForReceivers;
             AngleCorrections = angleCorrections;
-            var keyIndex = 0;
+            var accumulatedFloorId = 0;
 
-            foreach (var keyEvent in replay.KeyEvents)
+            List<(Replay.KeyEventType, double?, int)> replayKeyEvents = [];
+            for (var i = 0; i < replay.KeyEvents.Count; i++)
             {
+                double? angleCorrection = i < replay.AngleCorrections.Count ? replay.AngleCorrections[i] : null;
+                var keyEvent = replay.KeyEvents[i];
                 accumulatedFloorId += keyEvent.FloorIdIncrement;
+                replayKeyEvents.Add((keyEvent, angleCorrection, accumulatedFloorId));
+            }
 
-                if (accumulatedFloorId < floorId)
-                {
-                    ++keyIndex;
-                    continue;
-                }
+            HandleLimitKeyCount(replayKeyEvents);
+            HandleMultiReleases(replayKeyEvents);
+            SortKeyEvents(replayKeyEvents);
+
+            foreach (var keyEventAngle in replayKeyEvents)
+            {
+                var (keyEvent, angleCorrection, keyEventFloorId) = keyEventAngle;
+
+                if (keyEventFloorId < floorId) continue;
 
                 keyEvents.Enqueue(keyEvent);
                 keyEventsForReceivers.Enqueue(keyEvent);
-                if (keyIndex < replay.AngleCorrections.Count)
-                    angleCorrections.Enqueue((replay.AngleCorrections[keyIndex], accumulatedFloorId));
-                ++keyIndex;
+                if (angleCorrection is not null) angleCorrections.Enqueue((angleCorrection.Value, keyEventFloorId));
             }
         }
 
