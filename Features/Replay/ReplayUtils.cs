@@ -129,6 +129,6 @@ public static class ReplayUtils
                 filtered.Add(keyEvent);
 
         keyEvents.Clear();
-        keyEvents.AddRange(Enumerable.Reverse(filtered));
+        keyEvents.AddRange(filtered);
     }
 }
