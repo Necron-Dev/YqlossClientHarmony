@@ -30,23 +30,15 @@ public static class Injections
         }
     }
 
-    [HarmonyPatch]
+    [HarmonyPatch(typeof(scnGame), nameof(scnGame.ApplyCoreEventsToFloors),
+        typeof(List<scrFloor>),
+        typeof(LevelData),
+        typeof(scrLevelMaker),
+        typeof(List<LevelEvent>),
+        typeof(List<LevelEvent>[])
+    )]
     public static class Inject_scnGame_ApplyCoreEventsToFloors
     {
-        public static MethodBase TargetMethod()
-        {
-            return typeof(scnGame).GetMethod(
-                "ApplyCoreEventsToFloors",
-                [
-                    typeof(List<scrFloor>),
-                    typeof(LevelData),
-                    typeof(scrLevelMaker),
-                    typeof(List<LevelEvent>),
-                    typeof(List<LevelEvent>[])
-                ]
-            )!;
-        }
-
         public static void Prefix(
             List<scrFloor> floors,
             List<LevelEvent> events,

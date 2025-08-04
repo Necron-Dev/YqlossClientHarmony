@@ -328,14 +328,9 @@ public static class Injections
         }
     }
 
-    [HarmonyPatch]
+    [HarmonyPatch(typeof(Input), nameof(Input.GetKey), typeof(KeyCode))]
     public static class Inject_Input_GetKey
     {
-        public static MethodInfo TargetMethod()
-        {
-            return AccessTools.DeclaredMethod(typeof(Input), "GetKey", [typeof(KeyCode)]);
-        }
-
         public static bool Prefix(
             ref bool __result,
             KeyCode key
@@ -345,14 +340,9 @@ public static class Injections
         }
     }
 
-    [HarmonyPatch]
+    [HarmonyPatch(typeof(Input), nameof(Input.GetKeyDown), typeof(KeyCode))]
     public static class Inject_Input_GetKeyDown
     {
-        public static MethodInfo TargetMethod()
-        {
-            return AccessTools.DeclaredMethod(typeof(Input), "GetKeyDown", [typeof(KeyCode)]);
-        }
-
         public static bool Prefix(
             ref bool __result,
             KeyCode key
@@ -362,14 +352,9 @@ public static class Injections
         }
     }
 
-    [HarmonyPatch]
+    [HarmonyPatch(typeof(Input), nameof(Input.GetKeyUp), typeof(KeyCode))]
     public static class Inject_Input_GetKeyUp
     {
-        public static MethodInfo TargetMethod()
-        {
-            return AccessTools.DeclaredMethod(typeof(Input), "GetKeyUp", [typeof(KeyCode)]);
-        }
-
         public static bool Prefix(
             ref bool __result,
             KeyCode key
