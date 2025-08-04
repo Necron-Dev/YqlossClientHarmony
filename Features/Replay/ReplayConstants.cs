@@ -12,4 +12,5 @@ public static class ReplayConstants
     public const int KeyEventFormatVersion = 2;
     public const int JudgementFormatVersion = 1;
     public const int AngleCorrectionFormatVersion = 1;
+    public const HitMargin HoldPreMiss = (HitMargin)127;
 }

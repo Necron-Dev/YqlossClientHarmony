@@ -177,7 +177,7 @@ public static class ReplayPlayer
 
         if (!Adofai.Controller.midspinInfiniteMargin)
         {
-            result = hitMargin;
+            result = hitMargin == ReplayConstants.HoldPreMiss ? HitMargin.FailMiss : hitMargin;
             return;
         }
 
@@ -185,7 +185,7 @@ public static class ReplayPlayer
 
         if (errorMeters is null || errorMeters.Count == 0)
         {
-            result = hitMargin;
+            result = hitMargin == ReplayConstants.HoldPreMiss ? HitMargin.FailMiss : hitMargin;
             return;
         }
 
@@ -200,7 +200,7 @@ public static class ReplayPlayer
         if (!double.IsNaN(nextMeter))
             Main.Mod.Logger.Warning($"[Floor {floorId}] midspin error meter has value {nextMeter}. judgements may be incorrect");
 
-        result = hitMargin;
+        result = hitMargin == ReplayConstants.HoldPreMiss ? HitMargin.FailMiss : hitMargin;
     }
 
     public static void OnErrorMeter(ref double result)
@@ -263,6 +263,7 @@ public static class ReplayPlayer
             HitMargin.FailMiss => HitMargin.TooLate,
             HitMargin.FailOverload => HitMargin.TooEarly,
             HitMargin.Auto => HitMargin.Perfect,
+            ReplayConstants.HoldPreMiss => HitMargin.TooEarly,
             _ => hitMargin
         };
     }

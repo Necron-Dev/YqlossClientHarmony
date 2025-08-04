@@ -58,6 +58,7 @@ public class Replay(Replay.MetadataType metadata)
         int floorIdIncrement,
         bool isAutoFloor,
         bool isInputLocked,
+        // data below are not serialized
         bool version1 = false
     )
     {

@@ -1,7 +1,6 @@
 using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
-using System.Reflection;
 using ADOFAI;
 using HarmonyLib;
 using MonsterLove.StateMachine;
@@ -20,6 +19,8 @@ public static class Injections
     private static long? TickToDspOffset { get; set; }
 
     private static bool IsInSwitchChosen { get; set; }
+
+    private static bool IsInUpdateHoldBehavior { get; set; }
 
     private static ConcurrentQueue<SkyHookEvent> KeyQueue { get; } = [];
 
@@ -176,7 +177,10 @@ public static class Injections
         )
         {
             if (Interoperation.ReplayIgnoreJudgement) return;
-            if (ReplayRecorder.Replay is not null) ReplayRecorder.OnHitMargin(hit);
+
+            if (ReplayRecorder.Replay is not null)
+                ReplayRecorder.OnHitMargin(IsInUpdateHoldBehavior && hit == HitMargin.FailMiss ? ReplayConstants.HoldPreMiss : hit);
+
             if (ReplayPlayer.PlayingReplay) ReplayPlayer.OnHitMargin(ref hit);
         }
     }
@@ -639,6 +643,23 @@ public static class Injections
             ReplayPlayer.UnloadReplay();
             ReplayRecorder.EndRecording();
             ReplayPlayer.EndPlaying();
+        }
+    }
+
+    [HarmonyPatch(typeof(scrController), "UpdateHoldBehavior")]
+    public static class Inject_scrController_UpdateHoldBehavior
+    {
+        public static void Prefix()
+        {
+            IsInUpdateHoldBehavior = true;
+        }
+
+        public static Exception? Finalizer(
+            Exception? __exception
+        )
+        {
+            IsInUpdateHoldBehavior = false;
+            return __exception;
         }
     }
 }
