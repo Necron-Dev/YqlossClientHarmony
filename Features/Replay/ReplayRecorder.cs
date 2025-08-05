@@ -288,6 +288,42 @@ public static class ReplayRecorder
             Main.Mod.Logger.Log($"mark input locked: index: {i} {auto} {!responsive}");
     }
 
+    public static void OnPostHit()
+    {
+        var replay = Replay;
+        if (replay is null) return;
+
+        var floorId = Adofai.CurrentFloorId;
+
+        var errorMeter = ErrorMeterValue;
+        ErrorMeterValue = null;
+
+        if (errorMeter is null) return;
+
+        var lastFloorIdNullable = LastFloorIdJudgement;
+        LastFloorIdJudgement = floorId;
+        int lastFloorId;
+
+        if (lastFloorIdNullable is null)
+        {
+            Main.Mod.Logger.Warning($"[Floor {floorId}] judgement last floor id is null, defaulting to {floorId}");
+            lastFloorId = floorId;
+        }
+        else
+        {
+            lastFloorId = lastFloorIdNullable.Value;
+        }
+
+        replay.Judgements.Add(new Replay.JudgementType(
+            errorMeter.Value,
+            ReplayConstants.HoldExtraPress,
+            floorId - lastFloorId
+        ));
+
+        if (SettingsReplay.Instance.Verbose)
+            Main.Mod.Logger.Log($"hold extra meter: {errorMeter} dseq: {floorId - lastFloorId}");
+    }
+
     private static Replay.KeyEventType MarkKeyEvent(Replay.KeyEventType keyEvent, bool auto, bool responsive)
     {
         return new Replay.KeyEventType(

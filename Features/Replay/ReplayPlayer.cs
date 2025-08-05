@@ -238,9 +238,16 @@ public static class ReplayPlayer
         if (SettingsReplay.Instance.Verbose)
             Main.Mod.Logger.Log($"[Floor {floorId}] acc: {eventFloorId} margin: {hitMargin}");
 
+        hitMargin = hitMargin switch
+        {
+            ReplayConstants.HoldPreMiss => HitMargin.FailMiss,
+            ReplayConstants.HoldExtraPress => HitMargin.TooEarly,
+            _ => hitMargin
+        };
+
         if (!Adofai.Controller.midspinInfiniteMargin)
         {
-            result = hitMargin == ReplayConstants.HoldPreMiss ? HitMargin.FailMiss : hitMargin;
+            result = hitMargin;
             return;
         }
 
@@ -248,7 +255,7 @@ public static class ReplayPlayer
 
         if (errorMeters is null || errorMeters.Count == 0)
         {
-            result = hitMargin == ReplayConstants.HoldPreMiss ? HitMargin.FailMiss : hitMargin;
+            result = hitMargin;
             return;
         }
 
@@ -263,7 +270,7 @@ public static class ReplayPlayer
         if (!double.IsNaN(nextMeter))
             Main.Mod.Logger.Warning($"[Floor {floorId}] midspin error meter has value {nextMeter}. judgements may be incorrect");
 
-        result = hitMargin == ReplayConstants.HoldPreMiss ? HitMargin.FailMiss : hitMargin;
+        result = hitMargin;
     }
 
     public static void OnErrorMeter(ref double result)
@@ -321,12 +328,20 @@ public static class ReplayPlayer
         if (SettingsReplay.Instance.Verbose)
             Main.Mod.Logger.Log($"[Floor {floorId}] get acc: {eventFloorId} margin: {hitMargin}");
 
+        if (hitMargin == ReplayConstants.HoldExtraPress)
+        {
+            hitMargins.Dequeue();
+            if (SettingsReplay.Instance.Verbose)
+                Main.Mod.Logger.Log($"[Floor {floorId}] hold extra press");
+        }
+
         result = hitMargin switch
         {
             HitMargin.FailMiss => HitMargin.TooLate,
             HitMargin.FailOverload => HitMargin.TooEarly,
             HitMargin.Auto => HitMargin.Perfect,
             ReplayConstants.HoldPreMiss => HitMargin.TooEarly,
+            ReplayConstants.HoldExtraPress => HitMargin.TooEarly,
             _ => hitMargin
         };
     }

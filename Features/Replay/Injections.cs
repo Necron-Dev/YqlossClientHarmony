@@ -486,6 +486,12 @@ public static class Injections
             if (!__instance.noFailInfiniteMargin) return;
             ReplayPlayer.NextCheckFailMiss = false;
         }
+
+        public static void Postfix()
+        {
+            if (ReplayRecorder.Replay is null) return;
+            ReplayRecorder.OnPostHit();
+        }
     }
 
     [HarmonyPatch(typeof(AsyncInputManager), "Setup")]

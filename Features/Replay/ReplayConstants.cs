@@ -13,4 +13,5 @@ public static class ReplayConstants
     public const int JudgementFormatVersion = 1;
     public const int AngleCorrectionFormatVersion = 1;
     public const HitMargin HoldPreMiss = (HitMargin)127;
+    public const HitMargin HoldExtraPress = (HitMargin)126;
 }
