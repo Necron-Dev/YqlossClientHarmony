@@ -540,7 +540,6 @@ public static class Injections
             var autoFloor = nextFloor != null && nextFloor.auto;
 
             ReplayRecorder.OnMarkKeyEvent(autoFloor, __instance.responsive);
-            ReplayRecorder.OnKeysProcessed(1);
         }
     }
 

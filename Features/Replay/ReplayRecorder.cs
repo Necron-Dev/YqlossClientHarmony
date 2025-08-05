@@ -18,7 +18,7 @@ public static class ReplayRecorder
 
     private static int? LastFloorIdKeyEvent { get; set; }
 
-    private static int CurrentIterationFirstKeyIndex { get; set; }
+    private static int CurrentIterationKeyIndex { get; set; }
 
     public static void SaveAndResetReplay()
     {
@@ -159,7 +159,7 @@ public static class ReplayRecorder
         ));
 
         if (SettingsReplay.Instance.Verbose)
-            Main.Mod.Logger.Log($"meter: {errorMeter} margin: {hitMargin} dseq: {floorId - lastFloorId}");
+            Main.Mod.Logger.Log($"[Floor {floorId}] meter: {errorMeter} margin: {hitMargin} dseq: {floorId - lastFloorId}");
     }
 
     public static void OnErrorMeter(double errorMeter)
@@ -218,7 +218,7 @@ public static class ReplayRecorder
         ));
 
         if (SettingsReplay.Instance.Verbose)
-            Main.Mod.Logger.Log($"key: {keyCode} up: {isKeyUp} dseq: {floorId - lastFloorId} pos: {songSeconds} auto: {autoFloor} locked: {inputLocked}");
+            Main.Mod.Logger.Log($"[Floor {floorId}] key: {keyCode} up: {isKeyUp} dseq: {floorId - lastFloorId} pos: {songSeconds} auto: {autoFloor} locked: {inputLocked}");
     }
 
     public static void OnIterationStart(int stacked)
@@ -226,18 +226,18 @@ public static class ReplayRecorder
         var replay = Replay;
         if (replay is null) return;
 
-        CurrentIterationFirstKeyIndex = Math.Max(0, replay.KeyEvents.Count - stacked);
-    }
+        var keyEvents = replay.KeyEvents;
+        var firstKey = keyEvents.Count;
+        var stackedRemaining = stacked;
 
-    public static void OnKeysProcessed(int count)
-    {
-        var replay = Replay;
-        if (replay is null) return;
+        while (firstKey > 0 && stackedRemaining > 0)
+        {
+            --firstKey;
+            if (keyEvents[firstKey].IsKeyUp) continue;
+            --stackedRemaining;
+        }
 
-        CurrentIterationFirstKeyIndex = Math.Min(CurrentIterationFirstKeyIndex + count, replay.KeyEvents.Count);
-
-        if (SettingsReplay.Instance.Verbose)
-            Main.Mod.Logger.Log($"iteration advance: +{count} {CurrentIterationFirstKeyIndex} total: {replay.KeyEvents.Count}");
+        CurrentIterationKeyIndex = firstKey;
     }
 
     public static void OnMarkKeyEvent(bool auto, bool responsive)
@@ -245,11 +245,23 @@ public static class ReplayRecorder
         var replay = Replay;
         if (replay is null) return;
 
-        var i = CurrentIterationFirstKeyIndex;
-        if (i >= replay.KeyEvents.Count) return;
-        replay.KeyEvents[i] = MarkKeyEvent(replay.KeyEvents[i], auto, !responsive);
-        if (SettingsReplay.Instance.Verbose)
-            Main.Mod.Logger.Log($"mark input locked: index: {i} {auto} {!responsive}");
+        var floorId = Adofai.CurrentFloorId;
+
+        var keyEvents = replay.KeyEvents;
+        var i = CurrentIterationKeyIndex;
+        if (i >= keyEvents.Count) return;
+
+        do
+        {
+            keyEvents[i] = MarkKeyEvent(keyEvents[i], auto, !responsive);
+
+            if (SettingsReplay.Instance.Verbose)
+                Main.Mod.Logger.Log($"[Floor {floorId}] mark input locked: index: {i} {auto} {!responsive}");
+
+            ++i;
+        } while (i < keyEvents.Count && keyEvents[i].IsKeyUp);
+
+        CurrentIterationKeyIndex = i;
     }
 
     public static void OnPostHit()
@@ -285,7 +297,7 @@ public static class ReplayRecorder
         ));
 
         if (SettingsReplay.Instance.Verbose)
-            Main.Mod.Logger.Log($"hold extra meter: {errorMeter} dseq: {floorId - lastFloorId}");
+            Main.Mod.Logger.Log($"[Floor {floorId}] hold extra meter: {errorMeter} dseq: {floorId - lastFloorId}");
     }
 
     private static Replay.KeyEventType MarkKeyEvent(Replay.KeyEventType keyEvent, bool auto, bool responsive)
