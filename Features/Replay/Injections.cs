@@ -410,17 +410,6 @@ public static class Injections
         }
     }
 
-    [HarmonyPatch(typeof(AsyncInputUtils), nameof(AsyncInputUtils.AdjustAngle))]
-    public static class Inject_AsyncInputUtils_AdjustAngle
-    {
-        public static bool Prefix()
-        {
-            if (!ReplayPlayer.PlayingReplay) return true;
-            Adofai.Controller.chosenPlanet.AsyncRefreshAngles();
-            return false;
-        }
-    }
-
     [HarmonyPatch(typeof(scrController), nameof(scrController.Simulated_PlayerControl_Update))]
     public static class Inject_scrController_Simulated_PlayerControl_Update
     {
