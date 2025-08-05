@@ -9,7 +9,6 @@ public class Replay(Replay.MetadataType metadata)
     public MetadataType Metadata { get; } = metadata;
     public List<KeyEventType> KeyEvents { get; } = [];
     public List<JudgementType> Judgements { get; } = [];
-    public List<double> AngleCorrections { get; } = [];
 
     public readonly struct MetadataType(
         int startingFloorId,

@@ -410,26 +410,6 @@ public static class Injections
         }
     }
 
-    [HarmonyPatch(typeof(scrPlanet), nameof(scrPlanet.AsyncRefreshAngles))]
-    public static class Inject_scrPlanet_AsyncRefreshAngles
-    {
-        public static bool Prefix(
-            scrPlanet __instance
-        )
-        {
-            return !ReplayPlayer.PlayingReplay || ReplayPlayer.OnAngleCorrection(ref __instance.angle);
-        }
-
-        public static void Postfix(
-            scrPlanet __instance
-        )
-        {
-            if (ReplayRecorder.Replay is null) return;
-            if (!Persistence.GetChosenAsynchronousInput()) return;
-            ReplayRecorder.OnAngleCorrection(__instance.angle);
-        }
-    }
-
     [HarmonyPatch(typeof(AsyncInputUtils), nameof(AsyncInputUtils.AdjustAngle))]
     public static class Inject_AsyncInputUtils_AdjustAngle
     {
@@ -448,8 +428,6 @@ public static class Injections
         {
             if (!ConditionPlayingCustom) return true;
             using var _ = ConditionPlayingCustom;
-            if (ReplayRecorder.Replay is not null && !Persistence.GetChosenAsynchronousInput())
-                ReplayRecorder.OnAngleCorrection(Adofai.Controller.chosenPlanet.angle);
             if (!ReplayPlayer.PlayingReplay) return true;
             return !ReplayPlayer.PlayingReplay || ReplayPlayer.AllowGameToUpdateInput;
         }

@@ -18,8 +18,6 @@ public static class ReplayPlayer
 
     private static MyQueue<Replay.KeyEventType>? KeyEventsForReceivers { get; set; }
 
-    private static MyQueue<(double, int)>? AngleCorrections { get; set; }
-
     private static Dictionary<int, bool> KeyStates { get; set; } = [];
 
     private static Dictionary<int, bool> KeyStatesForReceivers { get; set; } = [];
@@ -29,10 +27,6 @@ public static class ReplayPlayer
     private static HashSet<int> IsKeyUp { get; } = [];
 
     private static bool AnyKeyDown { get; set; }
-
-    private static bool ConsumeSingleAngleCorrection { get; set; }
-
-    private static double? CachedAngleCorrection { get; set; }
 
     public static bool AllowGameToUpdateInput { get; set; }
 
@@ -44,45 +38,45 @@ public static class ReplayPlayer
 
     private static double SongSeconds => Injections.DspToSong(Adofai.Conductor.dspTime, SettingsReplay.Instance.PlayingOffset / 1000.0);
 
-    private static void SortKeyEvents(List<(Replay.KeyEventType, double?, int)> keyEvents)
+    private static void SortKeyEvents(List<(Replay.KeyEventType, int)> keyEvents)
     {
         if (!SettingsReplay.Instance.DecoderSortKeyEvents) return;
 
         keyEvents.Sort((x, y) => x.Item1.SongSeconds.CompareTo(y.Item1.SongSeconds));
     }
 
-    private static void HandleMultiReleases(List<(Replay.KeyEventType, double?, int)> keyEvents)
+    private static void HandleMultiReleases(List<(Replay.KeyEventType, int)> keyEvents)
     {
         if (!SettingsReplay.Instance.OnlyStoreLastInMultiReleases) return;
 
-        List<(Replay.KeyEventType, double?, int)> filtered = [];
+        List<(Replay.KeyEventType, int)> filtered = [];
         Dictionary<int, bool> isKeyDown = [];
 
-        foreach (var (keyEvent, angleCorrection, floorId) in Enumerable.Reverse(keyEvents))
+        foreach (var (keyEvent, floorId) in Enumerable.Reverse(keyEvents))
             if (keyEvent.IsKeyUp)
             {
                 if (!isKeyDown.GetValueOrDefault(keyEvent.KeyCode, true)) continue;
                 isKeyDown[keyEvent.KeyCode] = false;
-                filtered.Add((keyEvent, angleCorrection, floorId));
+                filtered.Add((keyEvent, floorId));
             }
             else
             {
                 isKeyDown[keyEvent.KeyCode] = true;
-                filtered.Add((keyEvent, angleCorrection, floorId));
+                filtered.Add((keyEvent, floorId));
             }
 
         keyEvents.Clear();
         keyEvents.AddRange(Enumerable.Reverse(filtered));
     }
 
-    private static void HandleLimitKeyCount(List<(Replay.KeyEventType, double?, int)> keyEvents)
+    private static void HandleLimitKeyCount(List<(Replay.KeyEventType, int)> keyEvents)
     {
         if (!SettingsReplay.Instance.EnableDecoderLimitKeyCount) return;
 
-        List<(Replay.KeyEventType, double?, int)> filtered = [];
+        List<(Replay.KeyEventType, int)> filtered = [];
         Dictionary<int, int> keyDownCount = [];
 
-        foreach (var (keyEvent, _, _) in keyEvents)
+        foreach (var (keyEvent, _) in keyEvents)
             if (!keyEvent.IsKeyUp)
                 keyDownCount[keyEvent.KeyCode] = keyDownCount.GetValueOrDefault(keyEvent.KeyCode, 0) + 1;
 
@@ -93,9 +87,9 @@ public static class ReplayPlayer
             entries.RemoveRange(limitedCount, entries.Count - limitedCount);
         var allowedKeys = entries.Select(pair => pair.Key).ToHashSet();
 
-        foreach (var (keyEvent, angleCorrection, floorId) in keyEvents)
+        foreach (var (keyEvent, floorId) in keyEvents)
             if (allowedKeys.Contains(keyEvent.KeyCode))
-                filtered.Add((keyEvent, angleCorrection, floorId));
+                filtered.Add((keyEvent, floorId));
 
         keyEvents.Clear();
         keyEvents.AddRange(filtered);
@@ -113,7 +107,6 @@ public static class ReplayPlayer
 
         KeyStates = [];
         KeyStatesForReceivers = [];
-        ConsumeSingleAngleCorrection = false;
         AllowGameToUpdateInput = false;
         NextCheckFailMiss = false;
         AllowAuto = false;
@@ -124,19 +117,16 @@ public static class ReplayPlayer
         {
             MyQueue<Replay.KeyEventType> keyEvents = new();
             MyQueue<Replay.KeyEventType> keyEventsForReceivers = new();
-            MyQueue<(double, int)> angleCorrections = new();
             KeyEvents = keyEvents;
             KeyEventsForReceivers = keyEventsForReceivers;
-            AngleCorrections = angleCorrections;
             var accumulatedFloorId = 0;
 
-            List<(Replay.KeyEventType, double?, int)> replayKeyEvents = [];
+            List<(Replay.KeyEventType, int)> replayKeyEvents = [];
             for (var i = 0; i < replay.KeyEvents.Count; i++)
             {
-                double? angleCorrection = i < replay.AngleCorrections.Count ? replay.AngleCorrections[i] : null;
                 var keyEvent = replay.KeyEvents[i];
                 accumulatedFloorId += keyEvent.FloorIdIncrement;
-                replayKeyEvents.Add((keyEvent, angleCorrection, accumulatedFloorId));
+                replayKeyEvents.Add((keyEvent, accumulatedFloorId));
             }
 
             HandleLimitKeyCount(replayKeyEvents);
@@ -145,13 +135,12 @@ public static class ReplayPlayer
 
             foreach (var keyEventAngle in replayKeyEvents)
             {
-                var (keyEvent, angleCorrection, keyEventFloorId) = keyEventAngle;
+                var (keyEvent, keyEventFloorId) = keyEventAngle;
 
                 if (keyEventFloorId < floorId) continue;
 
                 keyEvents.Enqueue(keyEvent);
                 keyEventsForReceivers.Enqueue(keyEvent);
-                if (angleCorrection is not null) angleCorrections.Enqueue((angleCorrection.Value, keyEventFloorId));
             }
         }
 
@@ -357,8 +346,6 @@ public static class ReplayPlayer
             {
                 var floorId = Adofai.CurrentFloorId;
                 NextCheckFailMiss = false;
-                ConsumeSingleAngleCorrection = false;
-                CachedAngleCorrection = null;
                 AllowGameToUpdateInput = true;
                 AllowAuto = true;
                 ReplayKeyboardInputType.Instance.MarkUpdate();
@@ -382,8 +369,6 @@ public static class ReplayPlayer
                 if (hitMargin is HitMargin.FailMiss)
                 {
                     NextCheckFailMiss = true;
-                    ConsumeSingleAngleCorrection = false;
-                    CachedAngleCorrection = null;
                     AllowGameToUpdateInput = true;
                     AllowAuto = false;
                     ReplayKeyboardInputType.Instance.MarkUpdate();
@@ -504,8 +489,6 @@ public static class ReplayPlayer
             if (keyEvents is null)
             {
                 NextCheckFailMiss = true;
-                ConsumeSingleAngleCorrection = false;
-                CachedAngleCorrection = null;
                 AllowGameToUpdateInput = true;
                 AllowAuto = true;
                 ReplayKeyboardInputType.Instance.MarkUpdate();
@@ -569,41 +552,14 @@ public static class ReplayPlayer
                 {
                     AllowGameToUpdateInput = true;
                     ReplayKeyboardInputType.Instance.MarkUpdate();
-                    var angleCorrections = AngleCorrections;
 
-                    if (angleCorrections is null || angleCorrections.Count == 0)
-                    {
-                        if (angleCorrections?.Count == 0)
-                        {
-                            Main.Mod.Logger.Warning($"[Floor {floorId}] angle corrections are drained");
-                            AngleCorrections = null;
-                        }
-
-                        ConsumeSingleAngleCorrection = false;
-                        CachedAngleCorrection = null;
-                        Adofai.Controller.Simulated_PlayerControl_Update();
-                    }
-                    else
-                    {
-                        ConsumeSingleAngleCorrection = true;
-                        CachedAngleCorrection = null;
-                        Adofai.Controller.Simulated_PlayerControl_Update(1);
-                    }
+                    Adofai.Controller.Simulated_PlayerControl_Update();
 
                     if (SettingsReplay.Instance.Verbose)
                         Main.Mod.Logger.Log("end simulation");
                 }
                 else
                 {
-                    var angleCorrections = AngleCorrections;
-
-                    if (angleCorrections is not null && angleCorrections.Count != 0)
-                    {
-                        angleCorrections.Dequeue();
-                        if (SettingsReplay.Instance.Verbose)
-                            Main.Mod.Logger.Log("consume angle correction");
-                    }
-
                     if (SettingsReplay.Instance.Verbose)
                         Main.Mod.Logger.Log("skip simulation");
                 }
@@ -612,8 +568,6 @@ public static class ReplayPlayer
                 isKeyUp.Clear();
                 AnyKeyDown = false;
                 AllowGameToUpdateInput = false;
-                ConsumeSingleAngleCorrection = false;
-                CachedAngleCorrection = null;
                 lastKeyStates = keyStates;
 
                 if (ProcessAutoFloorAndFailMiss()) return;
@@ -627,46 +581,6 @@ public static class ReplayPlayer
             KeyStates = lastKeyStates;
             KeyStatesForReceivers = lastKeyStatesForReceivers;
         }
-    }
-
-    public static bool OnAngleCorrection(ref double result)
-    {
-        if (!PlayingReplay) return true;
-
-        if (!ConsumeSingleAngleCorrection)
-        {
-            var cached = CachedAngleCorrection;
-            if (cached is not null) result = cached.Value;
-            return cached is null;
-        }
-
-        ConsumeSingleAngleCorrection = false;
-
-        var floorId = Adofai.CurrentFloorId;
-        var angleCorrections = AngleCorrections;
-
-        if (angleCorrections?.Count == 0)
-        {
-            Main.Mod.Logger.Warning($"[Floor {floorId}] angle corrections are drained");
-            angleCorrections = AngleCorrections = null;
-        }
-
-        if (angleCorrections is null) return true;
-
-        var (angleCorrection, eventFloorId) = angleCorrections.Dequeue();
-
-        if (!double.IsFinite(angleCorrection))
-        {
-            Main.Mod.Logger.Warning($"[Floor {floorId}] angle correction is not finite {angleCorrection}. judgements may be incorrect");
-            return true;
-        }
-
-        if (SettingsReplay.Instance.Verbose)
-            Main.Mod.Logger.Log($"[Floor {floorId}] acc: {eventFloorId} angle: {angleCorrection}");
-
-        CachedAngleCorrection = angleCorrection;
-        result = angleCorrection;
-        return false;
     }
 
     public static bool OnGetKeyDown(KeyCode keyCode, ref bool result)

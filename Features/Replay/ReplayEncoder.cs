@@ -91,23 +91,6 @@ public static class ReplayEncoder
         return stream.ToArray();
     }
 
-    private static byte[] EncodeAngleCorrections(Replay replay)
-    {
-        using var stream = new MemoryStream();
-        var writer = new BinaryWriter(stream);
-
-        writer.Write(ReplayConstants.AngleCorrectionMagicNumber);
-        writer.Write(ReplayConstants.AngleCorrectionFormatVersion);
-        writer.Write(replay.AngleCorrections.Count);
-
-        foreach (var angle in replay.AngleCorrections)
-            // 0-8
-            writer.Write(angle);
-
-        writer.Close();
-        return stream.ToArray();
-    }
-
     public static byte[] Encode(Replay replay)
     {
         using var stream = new MemoryStream();
@@ -119,8 +102,7 @@ public static class ReplayEncoder
         [
             EncodeMetadata(replay),
             EncodeKeyEvents(replay),
-            EncodeJudgements(replay),
-            EncodeAngleCorrections(replay)
+            EncodeJudgements(replay)
         ];
         writer.Write(blocks.Length);
         blocks.ForEach(WriteBlock);

@@ -18,8 +18,6 @@ public static class ReplayRecorder
 
     private static int? LastFloorIdKeyEvent { get; set; }
 
-    private static int KeysWithoutAngleCorrection { get; set; }
-
     private static int CurrentIterationFirstKeyIndex { get; set; }
 
     public static void SaveAndResetReplay()
@@ -33,7 +31,6 @@ public static class ReplayRecorder
         }
         else
         {
-            FillAngleCorrections();
             replay.EndTime = DateTimeOffset.Now;
             var fileName = ReplayUtils.ReplayFileName(replay);
             Main.Mod.Logger.Log($"saving replay as {fileName}");
@@ -96,7 +93,6 @@ public static class ReplayRecorder
         ErrorMeterValue = null;
         LastFloorIdJudgement = floorId;
         LastFloorIdKeyEvent = floorId;
-        KeysWithoutAngleCorrection = 0;
 
         Main.Mod.Logger.Log("starting to record replay");
     }
@@ -182,8 +178,6 @@ public static class ReplayRecorder
         var replay = Replay;
         if (replay is null) return;
 
-        FillAngleCorrections();
-
         if (keyCode is KeyCodeEsc or KeyCodeEscAsync) return;
 
         var floorId = Adofai.CurrentFloorId;
@@ -223,38 +217,8 @@ public static class ReplayRecorder
             inputLocked
         ));
 
-        ++KeysWithoutAngleCorrection;
-
         if (SettingsReplay.Instance.Verbose)
             Main.Mod.Logger.Log($"key: {keyCode} up: {isKeyUp} dseq: {floorId - lastFloorId} pos: {songSeconds} auto: {autoFloor} locked: {inputLocked}");
-    }
-
-    public static void OnAngleCorrection(double angle)
-    {
-        var replay = Replay;
-        if (replay is null) return;
-
-        if (KeysWithoutAngleCorrection <= 0) return;
-        --KeysWithoutAngleCorrection;
-        replay.AngleCorrections.Add(angle);
-
-        if (SettingsReplay.Instance.Verbose)
-            Main.Mod.Logger.Log($"angle: {angle}");
-    }
-
-    private static void FillAngleCorrections()
-    {
-        var replay = Replay;
-        if (replay is null) return;
-
-        var angleCorrections = replay.AngleCorrections;
-        var last = angleCorrections.Count == 0 ? double.NaN : angleCorrections[^1];
-
-        while (KeysWithoutAngleCorrection > 0)
-        {
-            --KeysWithoutAngleCorrection;
-            angleCorrections.Add(last);
-        }
     }
 
     public static void OnIterationStart(int stacked)

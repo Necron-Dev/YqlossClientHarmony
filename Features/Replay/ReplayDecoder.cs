@@ -196,20 +196,9 @@ public static class ReplayDecoder
         return false;
     }
 
-    private static bool ProcessAngleCorrections(
-        BinaryReader reader,
-        ref List<double>? angleCorrections
-    )
+    private static bool WarnInvalidDataBlock(ulong magicNumber)
     {
-        if (angleCorrections is not null) throw new InvalidDataException("multiple angle correction blocks");
-
-        var version = CheckVersion(reader.ReadInt32(), ReplayConstants.JudgementFormatVersion);
-
-        var count = reader.ReadInt32();
-        angleCorrections = [];
-
-        for (var i = 0; i < count; i++) angleCorrections.Add(reader.ReadDouble());
-
+        Main.Mod.Logger.Warning($"invalid data block magic number: {magicNumber}");
         return false;
     }
 
@@ -218,8 +207,7 @@ public static class ReplayDecoder
         ref Replay.MetadataType? metadata,
         ref DateTimeOffset? endTime,
         ref List<Replay.KeyEventType>? keyEvents,
-        ref List<Replay.JudgementType>? judgements,
-        ref List<double>? angleCorrections
+        ref List<Replay.JudgementType>? judgements
     )
     {
         using var stream = new MemoryStream(block);
@@ -231,8 +219,7 @@ public static class ReplayDecoder
             ReplayConstants.MetadataMagicNumber => ProcessMetadata(reader, ref endTime, ref metadata),
             ReplayConstants.KeyEventMagicNumber => ProcessKeyEvents(reader, ref keyEvents),
             ReplayConstants.JudgementMagicNumber => ProcessJudgements(reader, ref judgements),
-            ReplayConstants.AngleCorrectionMagicNumber => ProcessAngleCorrections(reader, ref angleCorrections),
-            _ => throw new InvalidDataException($"invalid data block magic number: {magicNumber}")
+            _ => WarnInvalidDataBlock(magicNumber)
         };
     }
 
@@ -249,7 +236,6 @@ public static class ReplayDecoder
         DateTimeOffset? endTime = null;
         List<Replay.KeyEventType>? keyEvents = null;
         List<Replay.JudgementType>? judgements = null;
-        List<double>? angleCorrections = null;
 
         for (var i = 0u; i < blockCount; i++)
         {
@@ -259,8 +245,7 @@ public static class ReplayDecoder
                 ref metadata,
                 ref endTime,
                 ref keyEvents,
-                ref judgements,
-                ref angleCorrections
+                ref judgements
             );
         }
 
@@ -273,7 +258,6 @@ public static class ReplayDecoder
         };
         replay.KeyEvents.AddRange(keyEvents);
         replay.Judgements.AddRange(judgements ?? []);
-        replay.AngleCorrections.AddRange(angleCorrections ?? []);
         return replay;
     }
 
