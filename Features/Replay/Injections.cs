@@ -12,10 +12,6 @@ namespace YqlossClientHarmony.Features.Replay;
 
 public static class Injections
 {
-    private static ConcurrentCondition ConditionPlayingCustom { get; } = new(() =>
-        Adofai.Controller.gameworld && !ADOBase.isOfficialLevel && !Adofai.Controller.paused
-    );
-
     private static long? TickToDspOffset { get; set; }
 
     private static bool IsInSwitchChosen { get; set; }
@@ -279,17 +275,19 @@ public static class Injections
 
         public static void Prefix()
         {
-            if (!ConditionPlayingCustom)
+            if (Adofai.Controller.paused)
             {
                 KeyQueue.Clear();
                 return;
             }
 
-            using var _ = ConditionPlayingCustom;
-
             if (ReplayPlayer.PlayingReplay) ReplayPlayer.UpdateReplayKeyStates();
 
-            if (AsyncInputManager.isActive || Persistence.GetChosenAsynchronousInput()) return;
+            if (AsyncInputManager.isActive || Persistence.GetChosenAsynchronousInput())
+            {
+                KeyQueue.Clear();
+                return;
+            }
 
             KeyQueue.Clear();
 
@@ -302,7 +300,11 @@ public static class Injections
                     (States)DestinationStateField(Adofai.Controller.stateMachine).state != States.PlayerControl ||
                     !Adofai.Controller.responsive
                 ))
-            ) return;
+            )
+            {
+                KeyQueue.Clear();
+                return;
+            }
 
             ReplayRecorder.OnIterationStart(Adofai.Controller.keyTimes.Count);
 
@@ -415,8 +417,6 @@ public static class Injections
     {
         public static bool Prefix()
         {
-            if (!ConditionPlayingCustom) return true;
-            using var _ = ConditionPlayingCustom;
             if (!ReplayPlayer.PlayingReplay) return true;
             return !ReplayPlayer.PlayingReplay || ReplayPlayer.AllowGameToUpdateInput;
         }

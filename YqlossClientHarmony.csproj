@@ -519,8 +519,6 @@
         <Compile Include="Features\PlaySoundOnGameEnd\Injections.cs"/>
         <Compile Include="Features\PlaySoundOnGameEnd\SettingsPlaySoundOnGameEnd.cs"/>
         <Compile Include="Features\Replay\CompatibilityOverlayer.cs"/>
-        <Compile Include="Features\Replay\ConcurrentCondition.cs"/>
-        <Compile Include="Features\Replay\Condition.cs"/>
         <Compile Include="Features\Replay\IKeyEventReceiver.cs"/>
         <Compile Include="Features\Replay\Injections.cs"/>
         <Compile Include="Features\Replay\KeyCodeMapping.cs"/>
