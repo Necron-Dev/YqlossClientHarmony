@@ -283,11 +283,7 @@ public static class Injections
 
             if (ReplayPlayer.PlayingReplay) ReplayPlayer.UpdateReplayKeyStates();
 
-            if (AsyncInputManager.isActive || Persistence.GetChosenAsynchronousInput())
-            {
-                KeyQueue.Clear();
-                return;
-            }
+            if (AsyncInputManager.isActive || Persistence.GetChosenAsynchronousInput()) return;
 
             KeyQueue.Clear();
 
