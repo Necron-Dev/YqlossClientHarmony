@@ -1,6 +1,7 @@
 using System;
 using System.IO;
 using System.Text;
+using UnityEngine;
 using UnityModManagerNet;
 
 namespace YqlossClientHarmony.Features.Replay;
@@ -84,7 +85,7 @@ public static class ReplayRecorder
             DateTimeOffset.Now,
             Persistence.GetChosenAsynchronousInput() ? SettingsReplay.Instance.AsyncRecordingOffset : SettingsReplay.Instance.SyncRecordingOffset,
             string.IsNullOrEmpty(ADOBase.levelPath) ? null : ADOBase.levelPath,
-            Main.Mod.Info.Version,
+            $"YCH:{Main.Mod.Info.Version} ADOFAI:{Application.version} UMM:{UnityModManager.version}",
             GetModList(),
             (double)scrConductor.calibration_i * 1000,
             Persistence.audioBufferSize
