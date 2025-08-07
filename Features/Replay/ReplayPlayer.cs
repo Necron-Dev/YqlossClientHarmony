@@ -122,24 +122,32 @@ public static class ReplayPlayer
             var accumulatedFloorId = 0;
 
             List<(Replay.KeyEventType, int)> replayKeyEvents = [];
+            List<(Replay.KeyEventType, int)> replayKeyEventsForReceivers = [];
             for (var i = 0; i < replay.KeyEvents.Count; i++)
             {
                 var keyEvent = replay.KeyEvents[i];
                 accumulatedFloorId += keyEvent.FloorIdIncrement;
                 replayKeyEvents.Add((keyEvent, accumulatedFloorId));
+                replayKeyEventsForReceivers.Add((keyEvent, accumulatedFloorId));
             }
 
             HandleLimitKeyCount(replayKeyEvents);
-            HandleMultiReleases(replayKeyEvents);
+            HandleLimitKeyCount(replayKeyEventsForReceivers);
+            HandleMultiReleases(replayKeyEventsForReceivers);
             SortKeyEvents(replayKeyEvents);
+            SortKeyEvents(replayKeyEventsForReceivers);
 
-            foreach (var keyEventAngle in replayKeyEvents)
+            foreach (var keyEventWithFloorId in replayKeyEvents)
             {
-                var (keyEvent, keyEventFloorId) = keyEventAngle;
-
+                var (keyEvent, keyEventFloorId) = keyEventWithFloorId;
                 if (keyEventFloorId < floorId) continue;
-
                 keyEvents.Enqueue(keyEvent);
+            }
+
+            foreach (var keyEventWithFloorId in replayKeyEventsForReceivers)
+            {
+                var (keyEvent, keyEventFloorId) = keyEventWithFloorId;
+                if (keyEventFloorId < floorId) continue;
                 keyEventsForReceivers.Enqueue(keyEvent);
             }
         }
