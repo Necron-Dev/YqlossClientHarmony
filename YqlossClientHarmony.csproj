@@ -521,6 +521,7 @@
         <Compile Include="Features\Replay\CompatibilityOverlayer.cs"/>
         <Compile Include="Features\Replay\IKeyEventReceiver.cs"/>
         <Compile Include="Features\Replay\Injections.cs"/>
+        <Compile Include="Features\Replay\KeyboardSimulation.cs"/>
         <Compile Include="Features\Replay\KeyCodeMapping.cs"/>
         <Compile Include="Features\Replay\KeyEventReceiverManager.cs"/>
         <Compile Include="Features\Replay\MyQueue.cs"/>

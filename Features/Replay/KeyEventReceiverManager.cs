@@ -9,6 +9,8 @@ public class KeyEventReceiverManager : IKeyEventReceiver
 {
     private KeyEventReceiverManager()
     {
+        Receivers.Add(new KeyboardSimulation());
+
         Main.Mod.Logger.Log("looking for ReplayInput classes");
 
         foreach (var modEntry in UnityModManager.modEntries)

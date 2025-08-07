@@ -1,11 +1,12 @@
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 namespace YqlossClientHarmony.Features.Replay;
 
 public static class KeyCodeMapping
 {
-    private static Dictionary<int, KeyCode> AsyncKeyCodeMapping { get; } = new()
+    private static Dictionary<int, KeyCode> AsyncToSync { get; } = new()
     {
         { 4288, KeyCode.BackQuote }, // Grave
         { 4123, KeyCode.Escape }, // Escape
@@ -111,8 +112,21 @@ public static class KeyCodeMapping
         { 4206, KeyCode.KeypadPeriod } // KeypadDot
     };
 
+    private static Dictionary<KeyCode, int> SyncToAsync { get; } =
+        AsyncToSync
+            .Keys
+            .ToDictionary(
+                it => AsyncToSync[it],
+                it => it
+            );
+
     public static int GetSyncKeyCode(int keyCode)
     {
-        return (int)AsyncKeyCodeMapping.GetValueOrDefault(keyCode, (KeyCode)keyCode);
+        return (int)AsyncToSync.GetValueOrDefault(keyCode, (KeyCode)keyCode);
+    }
+
+    public static int GetAsyncKeyCode(KeyCode keyCode)
+    {
+        return SyncToAsync.GetValueOrDefault(keyCode, (int)keyCode);
     }
 }
