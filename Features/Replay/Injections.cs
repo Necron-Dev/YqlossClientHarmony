@@ -184,9 +184,22 @@ public static class Injections
     [HarmonyPatch(typeof(scrPlanet), nameof(scrPlanet.SwitchChosen))]
     public static class Inject_scrPlanet_SwitchChosen
     {
-        public static void Prefix()
+        public static void Prefix(
+            scrPlanet __instance
+        )
         {
             IsInSwitchChosen = true;
+            if (!Adofai.Controller.gameworld) return;
+            if (ReplayRecorder.Replay is null || Adofai.Controller.midspinInfiniteMargin) return;
+
+            var nextFloorAuto = __instance.currfloor.nextfloor != null && __instance.currfloor.nextfloor.auto;
+
+            var angleDiff = __instance.cachedAngle - __instance.targetExitAngle;
+            
+            if (!Adofai.Controller.isCW) angleDiff *= -1f;
+            if (RDC.auto || nextFloorAuto && !RDC.useOldAuto) angleDiff = 0;
+
+            ReplayRecorder.OnErrorMeter(angleDiff);
         }
     }
 
@@ -213,7 +226,6 @@ public static class Injections
         )
         {
             if (Interoperation.ReplayIgnoreJudgement) return;
-            if (ReplayRecorder.Replay is not null) ReplayRecorder.OnErrorMeter(angleDiff);
             if (!ReplayPlayer.PlayingReplay) return;
             double result = angleDiff;
             ReplayPlayer.OnErrorMeter(ref result);
