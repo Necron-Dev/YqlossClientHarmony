@@ -12,8 +12,6 @@ namespace YqlossClientHarmony.Features.Replay;
 
 public static class Injections
 {
-    private static long? TickToDspOffset { get; set; }
-
     private static bool IsInSwitchChosen { get; set; }
 
     private static bool IsInUpdateHoldBehavior { get; set; }
@@ -22,41 +20,7 @@ public static class Injections
 
     public static double TickToDsp(long ticks)
     {
-        long tickToDspOffset;
-
-        if (SettingsReplay.Instance.NoTickToDspCache)
-        {
-            TickToDspOffset = null;
-            tickToDspOffset = (long)(AudioSettings.dspTime * 10000000.0) - DateTime.Now.Ticks;
-        }
-        else
-        {
-            var tickToDspOffsetNullable = TickToDspOffset;
-
-            if (tickToDspOffsetNullable is null)
-            {
-                List<long> samples = [];
-
-                for (var i = 0; i < 10; i++)
-                    samples.Add((long)(AudioSettings.dspTime * 10000000.0) - DateTime.Now.Ticks);
-
-                samples.Sort();
-                samples.RemoveRange(8, 2);
-                samples.RemoveRange(0, 2);
-
-                var total = (long)0;
-
-                foreach (var sample in samples) total += sample;
-
-                TickToDspOffset = tickToDspOffset = total / samples.Count;
-            }
-            else
-            {
-                tickToDspOffset = tickToDspOffsetNullable.Value;
-            }
-        }
-
-        return (ticks + tickToDspOffset) / 10000000.0;
+        return (ticks + ((long)(AudioSettings.dspTime * 10000000.0) - DateTime.Now.Ticks)) / 10000000.0;
     }
 
     public static double DspToSong(double dsp, double offset)
@@ -87,7 +51,6 @@ public static class Injections
                 return;
             }
 
-            TickToDspOffset = null;
             ReplayPlayer.StartPlaying(seqID);
             if (!SettingsReplay.Instance.Enabled) return;
             ReplayRecorder.StartRecording(seqID);

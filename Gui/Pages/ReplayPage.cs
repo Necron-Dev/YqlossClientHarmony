@@ -344,8 +344,6 @@ public static class ReplayPage
                 Separator();
                 DoubleOption(settingsGroup, ref settings.TrailLength, "Setting.Replay.TrailLength", description: true);
                 Separator();
-                SwitchOption(settingsGroup, ref settings.NoTickToDspCache, "Setting.Replay.NoTickToDspCache", true);
-                Separator();
                 SwitchOption(settingsGroup, ref settings.DecoderSortKeyEvents, "Setting.Replay.DecoderSortKeyEvents", true);
                 Separator();
                 CheckboxIntOption(settingsGroup, ref settings.EnableDecoderLimitKeyCount, ref settings.DecoderLimitKeyCount, "Setting.Replay.DecoderLimitKeyCount", true);
