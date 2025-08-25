@@ -22,6 +22,7 @@ public class KeyboardSimulation : IKeyEventReceiver
 
     public void OnKey(KeyCode code, bool isKeyDown)
     {
+        if (SettingsReplay.Instance.DisableKeyboardSimulation) return;
         var key = (byte)(KeyCodeMapping.GetAsyncKeyCode(code) - 0x1000);
         keybd_event(key, 0, isKeyDown ? 0u : 2u, 0);
         if (isKeyDown) PressedKeys.Add(key);

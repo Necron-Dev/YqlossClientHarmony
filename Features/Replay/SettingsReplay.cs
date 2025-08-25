@@ -33,5 +33,7 @@ public class SettingsReplay
 
     public int DecoderLimitKeyCount = 16;
 
+    public bool DisableKeyboardSimulation = false;
+
     public bool Verbose = false;
 }
