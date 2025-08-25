@@ -202,7 +202,6 @@ Setting.Replay.OnlyStoreLastInMultiReleases.Description=与 KeyboardChatterBlock
 Setting.Replay.TrailLength=播放结束时按住的按键拖尾长度（毫秒）
 Setting.Replay.TrailLength.Description=请设置一个正值以延长播放结束时的键雨，否则最后一条键雨会瞬间结束，不会显示出来。
 Setting.Replay.DecoderSortKeyEvents=读取回放时按时间排序键盘事件
-Setting.Replay.DecoderSortKeyEvents.Description=配合上一个选项使用。如果开启了上一个选项，播放时出现异常，尝试打开此选项。
 Setting.Replay.DecoderLimitKeyCount=在播放时只处理按下次数最多的指定数量个按键
 Setting.Replay.DecoderLimitKeyCount.Description=在播放时如果 YCH 与某个按键限制模组不兼容导致球与轨道分离，请调整此选项。
 Setting.Replay.DisableKeyboardSimulation=禁用键盘模拟
