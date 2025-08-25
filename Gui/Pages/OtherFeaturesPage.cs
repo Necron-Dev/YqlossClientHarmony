@@ -28,7 +28,7 @@ public static class OtherFeaturesPage
             SwitchOption(group, ref Main.Settings.EnableFixSavedJsonFormat, "Setting.FixSavedJsonFormat.Enabled");
             Separator();
 
-            var groupBlock = Group.Begin();
+            var groupBlock = group.Group;
             Begin(ContainerDirection.Horizontal, sizes: groupBlock);
             PushAlign(0.5);
             {
