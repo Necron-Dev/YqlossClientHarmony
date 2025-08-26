@@ -12,6 +12,7 @@ Setting.RevertCounterclockwiseUTurnPause.Enabled=撤销 2.9.4 中对逆时针发
 Setting.FixSavedJsonFormat.Enabled=修复保存的 .adofai 文件中错误的 JSON 格式
 Setting.BlockUnintentionalEscape.Enabled=阻止意外退出游玩
 Setting.BlockUnintentionalEscape.Options=在[InSeconds]秒内按下[EscapesRequired]次 Esc 以退出
+Setting.BlockUnintentionalEscape.OnlyInGame=只在游戏中途阻止意外退出
 Setting.PlaySoundOnGameEnd.Enabled=在游戏结束时播放声音
 Setting.PlaySoundOnGameEnd.OnWin=游戏胜利时播放的声音文件
 Setting.PlaySoundOnGameEnd.OnDeath=游戏失败时播放的声音文件
@@ -223,4 +224,3 @@ Dialog.Replay.SaveFailure.Text=回放保存失败！\n请保存你的游戏日�
 
 Dialog.Replay.EncodeFailure.Title=回放编码失败
 Dialog.Replay.EncodeFailure.Text=回放编码失败，且无法被恢复！\n请保存你的游戏日志（在 Unity Mod Manager 的 Logs 页面中点击 Open detailed log）并寻求帮助！
-

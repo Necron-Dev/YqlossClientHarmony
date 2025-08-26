@@ -62,6 +62,8 @@ public static class OtherFeaturesPage
             End();
 
             Separator();
+            SwitchOption(group, ref SettingsBlockUnintentionalEscape.Instance.OnlyInGame, "Setting.BlockUnintentionalEscape.OnlyInGame");
+            Separator();
             SwitchOption(group, ref Main.Settings.EnablePlaySoundOnGameEnd, "Setting.PlaySoundOnGameEnd.Enabled");
             Separator();
             TextOption(group, ref SettingsPlaySoundOnGameEnd.Instance.OnWin, "Setting.PlaySoundOnGameEnd.OnWin");

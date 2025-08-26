@@ -15,6 +15,8 @@ public static class Injections
         {
             if (!SettingsBlockUnintentionalEscape.Instance.Enabled) return true;
 
+            if (SettingsBlockUnintentionalEscape.Instance.OnlyInGame && Adofai.Controller.state != States.PlayerControl) return true;
+
             var time = DateTimeOffset.Now.ToUnixTimeMilliseconds();
 
             var escapesRequired = SettingsBlockUnintentionalEscape.Instance.EscapesRequired;

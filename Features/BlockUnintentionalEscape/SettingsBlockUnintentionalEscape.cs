@@ -12,4 +12,6 @@ public class SettingsBlockUnintentionalEscape
     public int EscapesRequired = 2;
 
     public double InSeconds = 0.5;
+
+    public bool OnlyInGame = true;
 }

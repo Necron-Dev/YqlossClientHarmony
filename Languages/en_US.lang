@@ -12,6 +12,7 @@ Setting.RevertCounterclockwiseUTurnPause.Enabled=Revert changes to Pause on coun
 Setting.FixSavedJsonFormat.Enabled=Fix malformed JSON format in saved .adofai files
 Setting.BlockUnintentionalEscape.Enabled=Prevent unintentionally exiting playing
 Setting.BlockUnintentionalEscape.Options=Press Esc[EscapesRequired]times in[InSeconds]seconds to exit
+Setting.BlockUnintentionalEscape.OnlyInGame=Only prevent unintentionally exiting mid-game
 Setting.PlaySoundOnGameEnd.Enabled=Play sound on game end
 Setting.PlaySoundOnGameEnd.OnWin=Sound file to play on win
 Setting.PlaySoundOnGameEnd.OnDeath=Sound file to play on death
