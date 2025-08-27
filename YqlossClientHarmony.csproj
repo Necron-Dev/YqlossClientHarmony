@@ -543,14 +543,16 @@
         <Compile Include="Gui\Pages\LanguagePage.cs"/>
         <Compile Include="Gui\Pages\OtherFeaturesPage.cs"/>
         <Compile Include="Gui\Pages\ReplayPage.cs"/>
-        <Compile Include="Gui\SettingUtil.cs"/>
-        <Compile Include="Gui\Trigger.cs"/>
         <Compile Include="Gui\YCHLayout.cs"/>
         <Compile Include="Gui\YCHLayoutPreset.cs"/>
         <Compile Include="I18N.cs"/>
         <Compile Include="Properties\AssemblyInfo.cs"/>
         <Compile Include="Settings.cs"/>
         <Compile Include="Main.cs"/>
+        <Compile Include="Utilities\Reflections.cs"/>
+        <Compile Include="Utilities\SettingUtil.cs"/>
+        <Compile Include="Utilities\Trigger.cs"/>
+        <Compile Include="Utilities\WTFException.cs"/>
     </ItemGroup>
     <ItemGroup>
         <Content Include="Languages\Common.lang"/>

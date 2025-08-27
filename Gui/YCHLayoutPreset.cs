@@ -1,5 +1,5 @@
 using static YqlossClientHarmony.Gui.YCHLayout;
-using static YqlossClientHarmony.Gui.SettingUtil;
+using static YqlossClientHarmony.Utilities.SettingUtil;
 
 namespace YqlossClientHarmony.Gui;
 

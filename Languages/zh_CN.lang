@@ -19,6 +19,18 @@ Setting.PlaySoundOnGameEnd.OnDeath=游戏失败时播放的声音文件
 
 Setting.ModifyLoadingLevel.Enabled=开启去特效功能
 
+Gui.EffectRemover.SelectProfile=配置文件
+Gui.EffectRemover.DuplicateProfile=复制当前配置文件
+Gui.EffectRemover.DeleteProfile=删除当前配置文件
+Gui.EffectRemover.ShowRename=重命名当前配置文件
+Gui.EffectRemover.HideRename=取消重命名
+Gui.EffectRemover.RenameProfile=重命名
+
+Gui.EffectRemover.DefaultProfileName=默认配置文件
+Gui.EffectRemover.Error.CannotDeleteDefaultProfile=禁止删除默认配置文件！
+Gui.EffectRemover.Error.CannotRenameDefaultProfile=禁止重命名默认配置文件！
+Gui.EffectRemover.Error.CannotRenameAsExistingName=此名称“{0}”已存在！
+
 Gui.EffectRemover.LevelSettingsValueWarning=关卡设置页面中所有对应游戏中下拉菜单选项的文本框均只能填写代码内部名称，也就是 .adofai 文件里的值！如果不确定应该填写什么，可以创建一张谱面，把想要的选项设置好，保存后使用文本编辑器查看 .adofai 文件中对应的值。
 
 Gui.EffectRemover.LevelSettings=关卡设置

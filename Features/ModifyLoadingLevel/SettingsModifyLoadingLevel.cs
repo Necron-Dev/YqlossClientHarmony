@@ -1,13 +1,97 @@
+using System.Linq;
 using JetBrains.Annotations;
+using YqlossClientHarmony.Utilities;
 
 namespace YqlossClientHarmony.Features.ModifyLoadingLevel;
 
+// this is the data structure for each single profile now
+// the name is preserved for backward compatibility
 [NoReorder]
 public class SettingsModifyLoadingLevel
 {
-    public static SettingsModifyLoadingLevel Instance => Main.Settings.ModifyLoadingLevelSettings;
+    public static SettingsModifyLoadingLevel? GetProfile(string name)
+    {
+        return name == ""
+            ? (SettingsModifyLoadingLevel?)Main.Settings.ModifyLoadingLevelSettings
+            : Main.Settings.ModifyLoadingLevelProfiles.FirstOrDefault(it => it.Id == name);
+    }
+
+    public static SettingsModifyLoadingLevel GetCurrentProfile()
+    {
+        var current = Main.Settings.SelectedModifyLoadingLevelProfile;
+        var profile = GetProfile(current);
+        if (profile is not null) return profile;
+
+        Main.Mod.Logger.Warning($"current ModifyLoadingLevel profile \"{current}\" does not exist, defaulting to the default profile");
+        Main.Settings.SelectedModifyLoadingLevelProfile = "";
+        Main.Settings.Save(Main.Mod);
+        return Main.Settings.ModifyLoadingLevelSettings;
+    }
+
+    public static string? RenameCurrentProfile(string newName)
+    {
+        var current = Main.Settings.SelectedModifyLoadingLevelProfile;
+        if (current == "") return I18N.Translate("Gui.EffectRemover.Error.CannotRenameDefaultProfile");
+
+        var profile = GetProfile(current);
+        if (profile is null) throw new WTFException("profile is null???");
+
+        if (GetProfile(newName) is not null) return I18N.Translate("Gui.EffectRemover.Error.CannotRenameAsExistingName", newName);
+
+        profile.Id = newName;
+        Main.Settings.SelectedModifyLoadingLevelProfile = newName;
+        Main.Settings.Save(Main.Mod);
+        return null;
+    }
+
+    public static string? DeleteCurrentProfile()
+    {
+        var current = Main.Settings.SelectedModifyLoadingLevelProfile;
+        if (current == "") return I18N.Translate("Gui.EffectRemover.Error.CannotDeleteDefaultProfile");
+
+        Main.Settings.SelectedModifyLoadingLevelProfile = "";
+        Main.Settings.ModifyLoadingLevelProfiles.RemoveAll(it => it.Id == current);
+        Main.Settings.Save(Main.Mod);
+        return null;
+    }
+
+    public static string? DuplicateCurrentProfile()
+    {
+        var profile = GetProfile(Main.Settings.SelectedModifyLoadingLevelProfile);
+        if (profile is null) throw new WTFException("profile is null???");
+
+        var newProfileId = GetAvailableProfileName(profile.Name);
+        var newProfile = new SettingsModifyLoadingLevel();
+        Reflections.CopyFields(newProfile, profile);
+        newProfile.Id = newProfileId;
+        Main.Settings.ModifyLoadingLevelProfiles.Add(newProfile);
+        Main.Settings.Save(Main.Mod);
+        return null;
+    }
+
+    public static string GetAvailableProfileName(string name, bool checkOriginal = false)
+    {
+        if (checkOriginal && GetProfile(name) is null) return name;
+
+        for (var i = 2; i > 0; ++i)
+        {
+            // I don't want to optimize this
+            var profileName = $"{name} ({i})";
+            if (GetProfile(profileName) is null) return profileName;
+        }
+
+        throw new WTFException("don't create 2147483646 profiles. please.");
+    }
+
+    private static Trigger<string, SettingsModifyLoadingLevel> InstanceTrigger { get; } = new(_ => GetCurrentProfile());
+
+    public static SettingsModifyLoadingLevel Instance => InstanceTrigger.Get(Main.Settings.SelectedModifyLoadingLevelProfile);
 
     public bool Enabled => Main.Enabled && Main.Settings.EnableModifyLoadingLevel;
+
+    public string Id = "";
+
+    public string Name => Id == "" ? I18N.Translate("Gui.EffectRemover.DefaultProfileName") : Id;
 
     public bool EnableHitsound = false;
 

@@ -1,6 +1,6 @@
 using System;
 
-namespace YqlossClientHarmony.Gui;
+namespace YqlossClientHarmony.Utilities;
 
 public class Trigger<TK, TV>
 {

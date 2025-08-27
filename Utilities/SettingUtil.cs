@@ -1,4 +1,4 @@
-namespace YqlossClientHarmony.Gui;
+namespace YqlossClientHarmony.Utilities;
 
 public static class SettingUtil
 {

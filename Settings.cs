@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using JetBrains.Annotations;
 using UnityModManagerNet;
 using YqlossClientHarmony.Features.BlockUnintentionalEscape;
@@ -21,7 +22,14 @@ public class Settings : UnityModManager.ModSettings
 
     public bool EnableModifyLoadingLevel = false;
 
+    public string SelectedModifyLoadingLevelProfile = "";
+
+    // the default profile stored apart from other profiles
+    // the name is preserved for backward compatibility
     public SettingsModifyLoadingLevel ModifyLoadingLevelSettings = new();
+
+    // all other profiles than the default one
+    public List<SettingsModifyLoadingLevel> ModifyLoadingLevelProfiles = [];
 
     public bool EnableReplay = false;
 

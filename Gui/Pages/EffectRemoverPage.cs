@@ -1,7 +1,9 @@
+using System.Collections.Generic;
+using System.Linq;
 using YqlossClientHarmony.Features.ModifyLoadingLevel;
 using static YqlossClientHarmony.Gui.YCHLayout;
 using static YqlossClientHarmony.Gui.YCHLayoutPreset;
-using static YqlossClientHarmony.Gui.SettingUtil;
+using static YqlossClientHarmony.Utilities.SettingUtil;
 
 namespace YqlossClientHarmony.Gui.Pages;
 
@@ -23,7 +25,20 @@ public static class EffectRemoverPage
     private static bool _expandEventEffect;
     private static bool _expandEventMisc;
 
+    private static string _newName = "";
+
+    private static string? LastSelectedProfile;
+
+    private static bool ShowRename { get; set; }
+
+    private static string? LastError { get; set; }
+
     private static SizesGroup.Holder Group { get; } = new();
+
+    private static IReadOnlyList<(string, string)> ProfileEntries => Main.Settings.ModifyLoadingLevelProfiles
+        .Select(it => (it.Id, it.Name))
+        .Prepend(("", Main.Settings.ModifyLoadingLevelSettings.Name))
+        .ToList();
 
     public static void Draw()
     {
@@ -35,7 +50,65 @@ public static class EffectRemoverPage
             Text(I18N.Translate("Page.EffectRemover.Name"), TextStyle.Title);
             Separator();
             SwitchOption(group, ref Main.Settings.EnableModifyLoadingLevel, "Setting.ModifyLoadingLevel.Enabled");
-            Separator();
+            Text(I18N.Translate("Gui.EffectRemover.SelectProfile"), TextStyle.Subtitle);
+
+            var groupProfileActions = group.Group;
+            Begin(ContainerDirection.Horizontal, sizes: groupProfileActions, options: WidthMin);
+            PushAlign(0.5);
+            {
+                if (Button(I18N.Translate("Gui.EffectRemover.DuplicateProfile"), options: WidthMin))
+                    LastError = SettingsModifyLoadingLevel.DuplicateCurrentProfile();
+                if (Button(I18N.Translate("Gui.EffectRemover.DeleteProfile"), options: WidthMin))
+                    LastError = SettingsModifyLoadingLevel.DeleteCurrentProfile();
+
+                if (
+                    Main.Settings.SelectedModifyLoadingLevelProfile != "" &&
+                    Button(I18N.Translate(ShowRename ? "Gui.EffectRemover.HideRename" : "Gui.EffectRemover.ShowRename"), options: WidthMin)
+                )
+                {
+                    ShowRename = !ShowRename;
+                    _newName = SettingsModifyLoadingLevel.Instance.Name;
+                }
+            }
+            PopAlign();
+            End();
+
+            if ((LastSelectedProfile, LastSelectedProfile = Main.Settings.SelectedModifyLoadingLevelProfile).Item1 != LastSelectedProfile)
+            {
+                ShowRename = false;
+                _newName = SettingsModifyLoadingLevel.Instance.Name;
+            }
+
+            var groupRename = group.Group;
+            if (Main.Settings.SelectedModifyLoadingLevelProfile != "" && ShowRename)
+            {
+                Begin(ContainerDirection.Horizontal, sizes: groupRename, options: WidthMin);
+                PushAlign(0.5);
+                {
+                    TextField(ref _newName, options: WidthMin);
+                    if (Button(I18N.Translate("Gui.EffectRemover.RenameProfile"), options: WidthMin))
+                        if ((LastError = SettingsModifyLoadingLevel.RenameCurrentProfile(_newName)) is null)
+                            ShowRename = false;
+                }
+                PopAlign();
+                End();
+            }
+
+            var errorGroup = group.Group;
+            if (LastError is not null)
+                if (IconText(errorGroup, IconStyle.Error, LastError))
+                    LastError = null;
+
+            Begin(ContainerDirection.Vertical, ContainerStyle.Background, options: WidthMax);
+            {
+                Begin(ContainerDirection.Vertical, options: WidthMin);
+                {
+                    Save |= Selector(ref Main.Settings.SelectedModifyLoadingLevelProfile, ProfileEntries, options: WidthMin);
+                }
+                End();
+            }
+            End();
+
             IconText(group, IconStyle.Warning, "Gui.EffectRemover.LevelSettingsValueWarning");
 
             var groupLevel = group.Group;

@@ -3,9 +3,10 @@ using System.Collections.Generic;
 using System.Linq;
 using SFB;
 using YqlossClientHarmony.Features.Replay;
+using YqlossClientHarmony.Utilities;
 using static YqlossClientHarmony.Gui.YCHLayout;
 using static YqlossClientHarmony.Gui.YCHLayoutPreset;
-using static YqlossClientHarmony.Gui.SettingUtil;
+using static YqlossClientHarmony.Utilities.SettingUtil;
 
 namespace YqlossClientHarmony.Gui.Pages;
 

@@ -19,6 +19,18 @@ Setting.PlaySoundOnGameEnd.OnDeath=Sound file to play on death
 
 Setting.ModifyLoadingLevel.Enabled=Enable Effect Remover
 
+Gui.EffectRemover.SelectProfile=Profiles
+Gui.EffectRemover.DuplicateProfile=Duplicate Selected Profile
+Gui.EffectRemover.DeleteProfile=Delete Selected Profile
+Gui.EffectRemover.ShowRename=Rename Selected Profile
+Gui.EffectRemover.HideRename=Cancel Renaming
+Gui.EffectRemover.RenameProfile=Rename
+
+Gui.EffectRemover.DefaultProfileName=Default Profile
+Gui.EffectRemover.Error.CannotDeleteDefaultProfile=You cannot delete the default profile!
+Gui.EffectRemover.Error.CannotRenameDefaultProfile=You cannot rename the default profile!
+Gui.EffectRemover.Error.CannotRenameAsExistingName=This name "{0}" already exists!
+
 Gui.EffectRemover.LevelSettingsValueWarning=On the level settings page, all text boxes for options that correspond to in-game dropdown menus can only be filled with their internal code names, which are the values found in the .adofai file. If you're not sure what to enter, you can create a level, set the desired value, save it, and then view the corresponding value in the .adofai file using a text editor.
 
 Gui.EffectRemover.LevelSettings=Level Settings
