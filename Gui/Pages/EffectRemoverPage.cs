@@ -50,6 +50,7 @@ public static class EffectRemoverPage
             Text(I18N.Translate("Page.EffectRemover.Name"), TextStyle.Title);
             Separator();
             SwitchOption(group, ref Main.Settings.EnableModifyLoadingLevel, "Setting.ModifyLoadingLevel.Enabled");
+            Separator();
             Text(I18N.Translate("Gui.EffectRemover.SelectProfile"), TextStyle.Subtitle);
 
             var groupProfileActions = group.Group;
@@ -109,7 +110,9 @@ public static class EffectRemoverPage
             }
             End();
 
+            Separator();
             IconText(group, IconStyle.Warning, "Gui.EffectRemover.LevelSettingsValueWarning");
+            Separator();
 
             var groupLevel = group.Group;
             if (Collapse(group, ref _expandLevel, "Gui.EffectRemover.LevelSettings", TextStyle.Subtitle))
