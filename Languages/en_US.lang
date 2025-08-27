@@ -198,6 +198,9 @@ Gui.Replay.ReplayInformation.AudioBufferSize.Unknown=Unknown
 Gui.Replay.ReplayInformation.ModList.Name=<b>Mod List:</b>
 Gui.Replay.ReplayInformation.ModList.Unknown=Unknown
 
+Gui.Replay.SelectKeys=Select Keys
+Gui.Replay.SelectKeys.KeyPressCount=Key Press Count: {0}
+
 Gui.Replay.Important=Important
 Gui.Replay.Important.RecordInAsync=Record replays in asynchronous input mode!
 Gui.Replay.Important.OnlySupportKeyboard=Only keyboard is supported!
@@ -215,8 +218,6 @@ Setting.Replay.OnlyStoreLastInMultiReleases.Description=This is useful when work
 Setting.Replay.TrailLength=Trailing length for keys held at the end of replaying (ms)
 Setting.Replay.TrailLength.Description=Set this to any positive number to extend key rains at the end of replaying. Otherwise the last key rain will end instantly and not be shown.
 Setting.Replay.DecoderSortKeyEvents=Sort keyboard events by time when loading a replay
-Setting.Replay.DecoderLimitKeyCount=Only handle the top N most pressed keys when playing replays
-Setting.Replay.DecoderLimitKeyCount.Description=Adjust this option when you play replays if YCH is incompatible with some key limiter mod causing de-sync.
 Setting.Replay.DisableKeyboardSimulation=Disable keyboard simulation
 Gui.Replay.Settings.OffsetZeroWarning=The offset settings below should always be set to 0. Don't modify them unless you know what you are doing!
 Setting.Replay.SyncRecordingOffset=Synchronous input recording offset (ms)

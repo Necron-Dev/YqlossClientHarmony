@@ -36,6 +36,8 @@ public static class ReplayPlayer
 
     private static double? TrailEndTime { get; set; }
 
+    public static HashSet<int> IgnoredKeys { get; } = [];
+
     private static double SongSeconds => Injections.DspToSong(Adofai.Conductor.dspTime, SettingsReplay.Instance.PlayingOffset / 1000.0);
 
     private static void SortKeyEvents(List<(Replay.KeyEventType, int)> keyEvents)
@@ -69,30 +71,9 @@ public static class ReplayPlayer
         keyEvents.AddRange(Enumerable.Reverse(filtered));
     }
 
-    private static void HandleLimitKeyCount(List<(Replay.KeyEventType, int)> keyEvents)
+    private static void HandleIgnoredKeys(List<(Replay.KeyEventType, int)> keyEvents)
     {
-        if (!SettingsReplay.Instance.EnableDecoderLimitKeyCount) return;
-
-        List<(Replay.KeyEventType, int)> filtered = [];
-        Dictionary<int, int> keyDownCount = [];
-
-        foreach (var (keyEvent, _) in keyEvents)
-            if (!keyEvent.IsKeyUp)
-                keyDownCount[keyEvent.KeyCode] = keyDownCount.GetValueOrDefault(keyEvent.KeyCode, 0) + 1;
-
-        var entries = keyDownCount.Select(pair => (pair.Key, pair.Value)).ToList();
-        entries.Sort((pair1, pair2) => pair2.Value.CompareTo(pair1.Value));
-        var limitedCount = SettingsReplay.Instance.DecoderLimitKeyCount;
-        if (entries.Count > limitedCount)
-            entries.RemoveRange(limitedCount, entries.Count - limitedCount);
-        var allowedKeys = entries.Select(pair => pair.Key).ToHashSet();
-
-        foreach (var (keyEvent, floorId) in keyEvents)
-            if (allowedKeys.Contains(keyEvent.KeyCode))
-                filtered.Add((keyEvent, floorId));
-
-        keyEvents.Clear();
-        keyEvents.AddRange(filtered);
+        keyEvents.RemoveAll(pair => IgnoredKeys.Contains(pair.Item1.KeyCode));
     }
 
     public static void StartPlaying(int floorId)
@@ -131,8 +112,8 @@ public static class ReplayPlayer
                 replayKeyEventsForReceivers.Add((keyEvent, accumulatedFloorId));
             }
 
-            HandleLimitKeyCount(replayKeyEvents);
-            HandleLimitKeyCount(replayKeyEventsForReceivers);
+            HandleIgnoredKeys(replayKeyEvents);
+            HandleIgnoredKeys(replayKeyEventsForReceivers);
             HandleMultiReleases(replayKeyEventsForReceivers);
             SortKeyEvents(replayKeyEvents);
             SortKeyEvents(replayKeyEventsForReceivers);
@@ -690,6 +671,7 @@ public static class ReplayPlayer
         ReplayRecorder.SaveAndResetReplay();
 
         Replay = replay;
+        IgnoredKeys.Clear();
 
         return true;
     }
@@ -697,6 +679,7 @@ public static class ReplayPlayer
     public static void UnloadReplay()
     {
         Replay = null;
+        IgnoredKeys.Clear();
         PlayingReplay = false;
     }
 }
