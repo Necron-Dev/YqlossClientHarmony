@@ -20,11 +20,11 @@ Setting.PlaySoundOnGameEnd.OnDeath=游戏失败时播放的声音文件
 Setting.ModifyLoadingLevel.Enabled=开启去特效功能
 
 Gui.EffectRemover.SelectProfile=配置文件
-Gui.EffectRemover.DuplicateProfile=复制当前配置文件
-Gui.EffectRemover.DeleteProfile=删除当前配置文件
-Gui.EffectRemover.ShowRename=重命名当前配置文件
-Gui.EffectRemover.HideRename=取消重命名
-Gui.EffectRemover.RenameProfile=重命名
+Gui.EffectRemover.SelectProfile.DuplicateProfile=复制当前配置文件
+Gui.EffectRemover.SelectProfile.DeleteProfile=删除当前配置文件
+Gui.EffectRemover.SelectProfile.ShowRename=重命名当前配置文件
+Gui.EffectRemover.SelectProfile.HideRename=取消重命名
+Gui.EffectRemover.SelectProfile.RenameProfile=重命名
 
 Gui.EffectRemover.DefaultProfileName=默认配置文件
 Gui.EffectRemover.Error.CannotDeleteDefaultProfile=禁止删除默认配置文件！

@@ -20,11 +20,11 @@ Setting.PlaySoundOnGameEnd.OnDeath=Sound file to play on death
 Setting.ModifyLoadingLevel.Enabled=Enable Effect Remover
 
 Gui.EffectRemover.SelectProfile=Profiles
-Gui.EffectRemover.DuplicateProfile=Duplicate Selected Profile
-Gui.EffectRemover.DeleteProfile=Delete Selected Profile
-Gui.EffectRemover.ShowRename=Rename Selected Profile
-Gui.EffectRemover.HideRename=Cancel Renaming
-Gui.EffectRemover.RenameProfile=Rename
+Gui.EffectRemover.SelectProfile.DuplicateProfile=Duplicate Selected Profile
+Gui.EffectRemover.SelectProfile.DeleteProfile=Delete Selected Profile
+Gui.EffectRemover.SelectProfile.ShowRename=Rename Selected Profile
+Gui.EffectRemover.SelectProfile.HideRename=Cancel Renaming
+Gui.EffectRemover.SelectProfile.RenameProfile=Rename
 
 Gui.EffectRemover.DefaultProfileName=Default Profile
 Gui.EffectRemover.Error.CannotDeleteDefaultProfile=You cannot delete the default profile!

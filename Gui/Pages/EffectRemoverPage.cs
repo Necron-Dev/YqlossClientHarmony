@@ -57,14 +57,14 @@ public static class EffectRemoverPage
             Begin(ContainerDirection.Horizontal, sizes: groupProfileActions, options: WidthMin);
             PushAlign(0.5);
             {
-                if (Button(I18N.Translate("Gui.EffectRemover.DuplicateProfile"), options: WidthMin))
+                if (Button(I18N.Translate("Gui.EffectRemover.SelectProfile.DuplicateProfile"), options: WidthMin))
                     LastError = SettingsModifyLoadingLevel.DuplicateCurrentProfile();
-                if (Button(I18N.Translate("Gui.EffectRemover.DeleteProfile"), options: WidthMin))
+                if (Button(I18N.Translate("Gui.EffectRemover.SelectProfile.DeleteProfile"), options: WidthMin))
                     LastError = SettingsModifyLoadingLevel.DeleteCurrentProfile();
 
                 if (
                     Main.Settings.SelectedModifyLoadingLevelProfile != "" &&
-                    Button(I18N.Translate(ShowRename ? "Gui.EffectRemover.HideRename" : "Gui.EffectRemover.ShowRename"), options: WidthMin)
+                    Button(I18N.Translate(ShowRename ? "Gui.EffectRemover.SelectProfile.HideRename" : "Gui.EffectRemover.SelectProfile.ShowRename"), options: WidthMin)
                 )
                 {
                     ShowRename = !ShowRename;
@@ -87,7 +87,7 @@ public static class EffectRemoverPage
                 PushAlign(0.5);
                 {
                     TextField(ref _newName, options: WidthMin);
-                    if (Button(I18N.Translate("Gui.EffectRemover.RenameProfile"), options: WidthMin))
+                    if (Button(I18N.Translate("Gui.EffectRemover.SelectProfile.RenameProfile"), options: WidthMin))
                         if ((LastError = SettingsModifyLoadingLevel.RenameCurrentProfile(_newName)) is null)
                             ShowRename = false;
                 }
