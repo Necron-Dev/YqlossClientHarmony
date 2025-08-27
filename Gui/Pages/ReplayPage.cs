@@ -115,9 +115,9 @@ public static class ReplayPage
         }
     }
 
-    private static string[] ReplayInformationKeys()
+    private static string[] ReplayInformationKeys(bool advanced)
     {
-        return
+        IEnumerable<string> keys =
         [
             I18N.Translate("Gui.Replay.ReplayInformation.ReplayFile.Name"),
             I18N.Translate("Gui.Replay.ReplayInformation.LevelPath.Name"),
@@ -128,20 +128,26 @@ public static class ReplayPage
             I18N.Translate("Gui.Replay.ReplayInformation.Progress.Name"),
             I18N.Translate("Gui.Replay.ReplayInformation.Judgements.Name"),
             I18N.Translate("Gui.Replay.ReplayInformation.Difficulty.Name"),
-            I18N.Translate("Gui.Replay.ReplayInformation.AsyncInput.Name"),
             I18N.Translate("Gui.Replay.ReplayInformation.NoFail.Name"),
             I18N.Translate("Gui.Replay.ReplayInformation.HoldTileBehavior.Name"),
             I18N.Translate("Gui.Replay.ReplayInformation.LimitJudgements.Name"),
-            I18N.Translate("Gui.Replay.ReplayInformation.KeyCount.Name"),
-            I18N.Translate("Gui.Replay.ReplayInformation.KeyPressCounts.Name"),
-            I18N.Translate("Gui.Replay.ReplayInformation.YchVersion.Name"),
-            I18N.Translate("Gui.Replay.ReplayInformation.StartTime.Name"),
-            I18N.Translate("Gui.Replay.ReplayInformation.EndTime.Name"),
-            I18N.Translate("Gui.Replay.ReplayInformation.RecordingOffset.Name"),
-            I18N.Translate("Gui.Replay.ReplayInformation.InputOffset.Name"),
-            I18N.Translate("Gui.Replay.ReplayInformation.AudioBufferSize.Name"),
-            I18N.Translate("Gui.Replay.ReplayInformation.ModList.Name")
+            I18N.Translate("Gui.Replay.ReplayInformation.KeyCount.Name")
         ];
+
+        if (advanced)
+            keys = keys.Concat([
+                I18N.Translate("Gui.Replay.ReplayInformation.AsyncInput.Name"),
+                I18N.Translate("Gui.Replay.ReplayInformation.KeyPressCounts.Name"),
+                I18N.Translate("Gui.Replay.ReplayInformation.YchVersion.Name"),
+                I18N.Translate("Gui.Replay.ReplayInformation.StartTime.Name"),
+                I18N.Translate("Gui.Replay.ReplayInformation.EndTime.Name"),
+                I18N.Translate("Gui.Replay.ReplayInformation.RecordingOffset.Name"),
+                I18N.Translate("Gui.Replay.ReplayInformation.InputOffset.Name"),
+                I18N.Translate("Gui.Replay.ReplayInformation.AudioBufferSize.Name"),
+                I18N.Translate("Gui.Replay.ReplayInformation.ModList.Name")
+            ]);
+
+        return keys.ToArray();
     }
 
     private static (int, List<int>) GetKeyCountInfo(Replay replay)
@@ -216,11 +222,11 @@ public static class ReplayPage
             I18N.Translate("Gui.Replay.ReplayInformation.Progress.Value", startProgress, startFloor, endProgress, endFloor, replay.Metadata.TotalFloorCount),
             I18N.Translate("Gui.Replay.ReplayInformation.Judgements.Value", overload, te, e, ep, pp, auto, lp, l, tl, miss),
             I18N.Translate($"Gui.Replay.ReplayInformation.Difficulty.{difficulty}"),
-            I18N.Translate($"Gui.Replay.ReplayInformation.AsyncInput.{asyncInput}"),
             I18N.Translate($"Gui.Replay.ReplayInformation.NoFail.{noFail}"),
             I18N.Translate($"Gui.Replay.ReplayInformation.HoldTileBehavior.{holdBehavior}"),
             I18N.Translate($"Gui.Replay.ReplayInformation.LimitJudgements.{hitMarginLimit}"),
             I18N.Translate("Gui.Replay.ReplayInformation.KeyCount.Value", uniqueKeys),
+            I18N.Translate($"Gui.Replay.ReplayInformation.AsyncInput.{asyncInput}"),
             I18N.Translate("Gui.Replay.ReplayInformation.KeyPressCounts.Value", string.Join(", ", keyCounts)),
             I18N.Translate($"Gui.Replay.ReplayInformation.YchVersion.{ychVersionKey}", replay.Metadata.YchVersion),
             I18N.Translate($"Gui.Replay.ReplayInformation.StartTime.{startTimeKey}", replay.Metadata.StartTime?.ToLocalTime()),
@@ -236,6 +242,7 @@ public static class ReplayPage
     {
         var settings = SettingsReplay.Instance;
         var group = Group.Begin();
+        var advanced = settings.ShowAdvancedOptions;
 
         Begin(ContainerDirection.Vertical);
         {
@@ -276,17 +283,19 @@ public static class ReplayPage
                 if (clearError) LastError = null;
             }
 
+            List<(int, int)>? keyPressCounts = null;
+
             var replay = ReplayPlayer.Replay;
-            var replayGroup = group.Group;
             if (replay is not null)
             {
                 Text(I18N.Translate("Gui.Replay.ReplayInformation"), TextStyle.Subtitle);
 
-                var keys = ReplayInformationKeys();
-                var (values, keyPressCounts) = CachedReplayInformation.Get(
+                var keys = ReplayInformationKeys(advanced);
+                var (values, keyPressCountsVar) = CachedReplayInformation.Get(
                     new ReplayInformationCacheKey(I18N.SelectedLanguage.Code, replay),
                     _ => (ReplayInformationValues(LoadedReplayFileName, replay), ReplayUtils.GetSortedKeyPressCounts(replay))
                 );
+                keyPressCounts = keyPressCountsVar;
 
                 Begin(ContainerDirection.Vertical, ContainerStyle.Background, options: WidthMax);
                 {
@@ -297,33 +306,6 @@ public static class ReplayPage
                             Text(I18N.Translate(keys[i]), options: Width(120));
                             Text(I18N.Translate(values[i]), options: WidthMax);
                         }
-                        End();
-                    }
-                }
-                End();
-
-                Text(I18N.Translate("Gui.Replay.SelectKeys"), TextStyle.Subtitle);
-
-                Begin(ContainerDirection.Vertical, ContainerStyle.Background, options: WidthMax);
-                {
-                    var first = true;
-
-                    foreach (var (keyCode, pressCount) in keyPressCounts)
-                    {
-                        if (!first) Separator();
-                        first = false;
-                        Begin(ContainerDirection.Horizontal, ContainerStyle.None, replayGroup, WidthMax);
-                        PushAlign(0.5);
-                        {
-                            var allowed = !ReplayPlayer.IgnoredKeys.Contains(keyCode);
-                            if (Checkbox(ref allowed) is not null)
-                                if (allowed) ReplayPlayer.IgnoredKeys.Remove(keyCode);
-                                else ReplayPlayer.IgnoredKeys.Add(keyCode);
-                            Text(I18N.Translate($"Key.{keyCode}.Name"), options: WidthMin);
-                            Fill();
-                            Text(I18N.Translate("Gui.Replay.SelectKeys.KeyPressCount", pressCount), options: WidthMin);
-                        }
-                        PopAlign();
                         End();
                     }
                 }
@@ -363,38 +345,79 @@ public static class ReplayPage
                 End();
 
                 Separator();
-                SwitchOption(settingsGroup, ref settings.StoreSyncKeyCode, "Setting.Replay.StoreSyncKeyCode");
-                Separator();
-                SwitchOption(settingsGroup, ref settings.OnlyStoreLastInMultiReleases, "Setting.Replay.OnlyStoreLastInMultiReleases", true);
-                Separator();
-                DoubleOption(settingsGroup, ref settings.TrailLength, "Setting.Replay.TrailLength", description: true);
-                Separator();
-                SwitchOption(settingsGroup, ref settings.DecoderSortKeyEvents, "Setting.Replay.DecoderSortKeyEvents");
-                Separator();
                 CheckboxIntOption(settingsGroup, ref settings.EnableDecoderLimitKeyCount, ref settings.DecoderLimitKeyCount, "Setting.Replay.DecoderLimitKeyCount", true);
-                Separator();
-                SwitchOption(settingsGroup, ref settings.DisableKeyboardSimulation, "Setting.Replay.DisableKeyboardSimulation");
-                Separator();
-                IconText(settingsGroup, IconStyle.Warning, "Gui.Replay.Settings.OffsetZeroWarning");
-                Separator();
-                DoubleOption(settingsGroup, ref settings.SyncRecordingOffset, "Setting.Replay.SyncRecordingOffset");
-                Separator();
-                DoubleOption(settingsGroup, ref settings.AsyncRecordingOffset, "Setting.Replay.AsyncRecordingOffset");
-                Separator();
-                DoubleOption(settingsGroup, ref settings.PlayingOffset, "Setting.Replay.PlayingOffset");
+
+                if (advanced)
+                {
+                    Separator();
+                    SwitchOption(settingsGroup, ref settings.StoreSyncKeyCode, "Setting.Replay.StoreSyncKeyCode");
+                    Separator();
+                    SwitchOption(settingsGroup, ref settings.OnlyStoreLastInMultiReleases, "Setting.Replay.OnlyStoreLastInMultiReleases", true);
+                    Separator();
+                    DoubleOption(settingsGroup, ref settings.TrailLength, "Setting.Replay.TrailLength", description: true);
+                    Separator();
+                    SwitchOption(settingsGroup, ref settings.DecoderSortKeyEvents, "Setting.Replay.DecoderSortKeyEvents");
+                    Separator();
+                    SwitchOption(settingsGroup, ref settings.DisableKeyboardSimulation, "Setting.Replay.DisableKeyboardSimulation");
+                    Separator();
+                    IconText(settingsGroup, IconStyle.Warning, "Gui.Replay.Settings.OffsetZeroWarning");
+                    Separator();
+                    DoubleOption(settingsGroup, ref settings.SyncRecordingOffset, "Setting.Replay.SyncRecordingOffset");
+                    Separator();
+                    DoubleOption(settingsGroup, ref settings.AsyncRecordingOffset, "Setting.Replay.AsyncRecordingOffset");
+                    Separator();
+                    DoubleOption(settingsGroup, ref settings.PlayingOffset, "Setting.Replay.PlayingOffset");
+                }
             }
             End();
 
-            Text(I18N.Translate("Gui.Replay.DebugOptions"), TextStyle.Subtitle);
+            var keySelectionGroup = group.Group;
+            if (keyPressCounts is not null)
+            {
+                Text(I18N.Translate("Gui.Replay.SelectKeys"), TextStyle.Subtitle);
+
+                Begin(ContainerDirection.Vertical, ContainerStyle.Background, options: WidthMax);
+                {
+                    var first = true;
+
+                    foreach (var (keyCode, pressCount) in keyPressCounts)
+                    {
+                        if (!first) Separator();
+                        first = false;
+                        Begin(ContainerDirection.Horizontal, ContainerStyle.None, keySelectionGroup, WidthMax);
+                        PushAlign(0.5);
+                        {
+                            var allowed = !ReplayPlayer.IgnoredKeys.Contains(keyCode);
+                            if (Checkbox(ref allowed) is not null)
+                                if (allowed) ReplayPlayer.IgnoredKeys.Remove(keyCode);
+                                else ReplayPlayer.IgnoredKeys.Add(keyCode);
+                            Text(I18N.Translate($"Key.{keyCode}.Name"), options: WidthMin);
+                            Fill();
+                            Text(I18N.Translate("Gui.Replay.SelectKeys.KeyPressCount", pressCount), options: WidthMin);
+                        }
+                        PopAlign();
+                        End();
+                    }
+                }
+                End();
+            }
 
             var debugGroup = group.Group;
-            Begin(ContainerDirection.Vertical, ContainerStyle.Background, options: WidthMax);
+            if (advanced)
             {
-                IconText(debugGroup, IconStyle.Warning, "Gui.Replay.DebugOptions.Warning");
-                Separator();
-                SwitchOption(debugGroup, ref settings.Verbose, "Setting.Replay.Verbose");
+                Text(I18N.Translate("Gui.Replay.DebugOptions"), TextStyle.Subtitle);
+
+                Begin(ContainerDirection.Vertical, ContainerStyle.Background, options: WidthMax);
+                {
+                    IconText(debugGroup, IconStyle.Warning, "Gui.Replay.DebugOptions.Warning");
+                    Separator();
+                    SwitchOption(debugGroup, ref settings.Verbose, "Setting.Replay.Verbose");
+                }
+                End();
             }
-            End();
+
+            Separator();
+            SwitchOption(group, ref settings.ShowAdvancedOptions, "Setting.Replay.ShowAdvancedOptions");
         }
         End();
     }

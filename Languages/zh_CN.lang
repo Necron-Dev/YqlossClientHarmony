@@ -207,7 +207,7 @@ Gui.Replay.Important.OnlySupportKeyboard=只支持键盘输入！
 Gui.Replay.Important.DLCCompatibility=兼容多行星。\n部分兼容自由移动。\n部分兼容长按。
 Gui.Replay.Important.KeyboardChatterBlockerCompatibility=兼容 KeyboardChatterBlocker v0.0.10，可能兼容其他版本。\n播放时请关闭 KeyboardChatterBlocker。
 Gui.Replay.Important.OverlayerCompatibility=可能不兼容 Overlayer 的某些功能。
-Gui.Replay.Important.KeyLimiterCompatibility=可能不兼容某些按键限制模组。\n请尽量使用 KeyboardChatterBlocker 的按键限制，或者暂时使用下方的“在播放时只处理按下次数最多的指定数量个按键”选项。
+Gui.Replay.Important.KeyLimiterCompatibility=可能不兼容某些按键限制模组。\n请尽量使用 KeyboardChatterBlocker 的按键限制，或者暂时使用下方的“在播放时只处理按下次数最多的指定数量个按键”或“选择按键”选项。
 
 Gui.Replay.Settings=设置
 Setting.Replay.ReplayStorageLocation=回放存储位置
@@ -228,6 +228,7 @@ Setting.Replay.PlayingOffset=播放偏移（毫秒）
 
 Gui.Replay.DebugOptions=调试选项
 Gui.Replay.DebugOptions.Warning=如果不清楚它们的作用，请不要修改！
+Setting.Replay.ShowAdvancedOptions=显示高级选项
 
 Dialog.Replay.SelectReplay.Title=选择回放文件
 Dialog.Replay.SelectReplay.FileTypeName=YCH 回放文件

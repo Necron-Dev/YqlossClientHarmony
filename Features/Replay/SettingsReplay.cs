@@ -38,4 +38,6 @@ public class SettingsReplay
     public bool DisableKeyboardSimulation = false;
 
     public bool Verbose = false;
+
+    public bool ShowAdvancedOptions = false;
 }
