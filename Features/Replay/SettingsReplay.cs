@@ -29,6 +29,12 @@ public class SettingsReplay
 
     public bool DecoderSortKeyEvents = false;
 
+    // this only affects the default options for ignored keys
+    // the name is preserved for backward compatibility
+    public bool EnableDecoderLimitKeyCount = false;
+
+    public int DecoderLimitKeyCount = 16;
+
     public bool DisableKeyboardSimulation = false;
 
     public bool Verbose = false;

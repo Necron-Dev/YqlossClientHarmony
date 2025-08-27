@@ -144,25 +144,9 @@ public static class ReplayPage
         ];
     }
 
-    private static Dictionary<int, int> CalculateKeyPressCounts(Replay replay)
-    {
-        Dictionary<int, int> keyCount = [];
-        foreach (var keyEvent in replay.KeyEvents.Where(keyEvent => !keyEvent.IsKeyUp))
-            keyCount[keyEvent.KeyCode] = keyCount.GetValueOrDefault(keyEvent.KeyCode, 0) + 1;
-        return keyCount;
-    }
-
-    private static List<(int, int)> GetSortedKeyPressCounts(Replay replay)
-    {
-        var keyCount = CalculateKeyPressCounts(replay);
-        var values = keyCount.ToList();
-        values.Sort((x, y) => y.Value.CompareTo(x.Value));
-        return values.Select(it => (it.Key, it.Value)).ToList();
-    }
-
     private static (int, List<int>) GetKeyCountInfo(Replay replay)
     {
-        var keyCount = CalculateKeyPressCounts(replay);
+        var keyCount = ReplayUtils.CalculateKeyPressCounts(replay);
         var values = keyCount.Values.ToList();
         values.Sort((x, y) => y.CompareTo(x));
         return (keyCount.Count, values);
@@ -301,7 +285,7 @@ public static class ReplayPage
                 var keys = ReplayInformationKeys();
                 var (values, keyPressCounts) = CachedReplayInformation.Get(
                     new ReplayInformationCacheKey(I18N.SelectedLanguage.Code, replay),
-                    _ => (ReplayInformationValues(LoadedReplayFileName, replay), GetSortedKeyPressCounts(replay))
+                    _ => (ReplayInformationValues(LoadedReplayFileName, replay), ReplayUtils.GetSortedKeyPressCounts(replay))
                 );
 
                 Begin(ContainerDirection.Vertical, ContainerStyle.Background, options: WidthMax);
@@ -386,6 +370,8 @@ public static class ReplayPage
                 DoubleOption(settingsGroup, ref settings.TrailLength, "Setting.Replay.TrailLength", description: true);
                 Separator();
                 SwitchOption(settingsGroup, ref settings.DecoderSortKeyEvents, "Setting.Replay.DecoderSortKeyEvents");
+                Separator();
+                CheckboxIntOption(settingsGroup, ref settings.EnableDecoderLimitKeyCount, ref settings.DecoderLimitKeyCount, "Setting.Replay.DecoderLimitKeyCount", true);
                 Separator();
                 SwitchOption(settingsGroup, ref settings.DisableKeyboardSimulation, "Setting.Replay.DisableKeyboardSimulation");
                 Separator();

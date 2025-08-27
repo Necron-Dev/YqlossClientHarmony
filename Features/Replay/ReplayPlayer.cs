@@ -673,6 +673,13 @@ public static class ReplayPlayer
         Replay = replay;
         IgnoredKeys.Clear();
 
+        if (!SettingsReplay.Instance.EnableDecoderLimitKeyCount) return true;
+
+        ReplayUtils.GetSortedKeyPressCounts(replay)
+            .Skip(SettingsReplay.Instance.DecoderLimitKeyCount)
+            .Select(it => it.Item1)
+            .ForEach(it => IgnoredKeys.Add(it));
+
         return true;
     }
 

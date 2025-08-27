@@ -81,4 +81,20 @@ public static class ReplayUtils
         // return Path.Combine(Settings.Instance.ReplayStorageLocation, folderName, fileName);
         return Path.Combine(SettingsReplay.Instance.ReplayStorageLocation, fileName);
     }
+
+    public static Dictionary<int, int> CalculateKeyPressCounts(Replay replay)
+    {
+        Dictionary<int, int> keyCount = [];
+        foreach (var keyEvent in replay.KeyEvents.Where(keyEvent => !keyEvent.IsKeyUp))
+            keyCount[keyEvent.KeyCode] = keyCount.GetValueOrDefault(keyEvent.KeyCode, 0) + 1;
+        return keyCount;
+    }
+
+    public static List<(int, int)> GetSortedKeyPressCounts(Replay replay)
+    {
+        var keyCount = CalculateKeyPressCounts(replay);
+        var values = keyCount.ToList();
+        values.Sort((x, y) => y.Value.CompareTo(x.Value));
+        return values.Select(it => (it.Key, it.Value)).ToList();
+    }
 }
