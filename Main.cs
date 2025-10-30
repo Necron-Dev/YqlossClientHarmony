@@ -68,6 +68,7 @@ public static class Main
         Mod = mod;
         Settings = UnityModManager.ModSettings.Load<Settings>(Mod);
         Enabled = mod.Enabled;
+        Settings.OnLoad(mod);
     }
 
     public static void Load(UnityModManager.ModEntry mod)
