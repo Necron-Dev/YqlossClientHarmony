@@ -100,7 +100,7 @@ public static class ReplayPlayer
             MyQueue<Replay.KeyEventType> keyEventsForReceivers = new();
             KeyEvents = keyEvents;
             KeyEventsForReceivers = keyEventsForReceivers;
-            var accumulatedFloorId = 0;
+            var accumulatedFloorId = replay.Metadata.StartingFloorId;
 
             List<(Replay.KeyEventType, int)> replayKeyEvents = [];
             List<(Replay.KeyEventType, int)> replayKeyEventsForReceivers = [];
