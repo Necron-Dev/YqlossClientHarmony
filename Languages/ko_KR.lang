@@ -1,0 +1,79 @@
+Name=한국어
+Parents=Common en_US
+
+Page.Language.Name=언어 Language
+Page.Replay.Name=리플레이
+Page.EffectRemover.Name=이펙트 제거
+Page.OtherFeatures.Name=기타 기능
+
+Setting.FixKillerDecorationsInNoFail.Enabled=노 페일 모드에서 킬러 장식으로 인한 사망 수정
+Setting.FixSetInputEventCrash.Enabled=입력 이벤트 설정 시 크래시 수정
+Setting.RevertCounterclockwiseUTurnPause.Enabled=2.9.4 버전의 역방향 U턴 일시정지 변경 사항 되돌리기
+Setting.FixSavedJsonFormat.Enabled=저장된 .adofai 파일의 잘못된 JSON 형식 수정
+Setting.BlockUnintentionalEscape.Enabled=의도치 않은 종료 방지
+Setting.BlockUnintentionalEscape.Options=[InSeconds]초 내에 Esc를 [EscapesRequired]번 눌러서 종료
+Setting.BlockUnintentionalEscape.OnlyInGame=게임 플레이 중에만 종료 방지
+Setting.PlaySoundOnGameEnd.Enabled=게임 종료 시 사운드 재생
+Setting.PlaySoundOnGameEnd.OnWin=클리어 시 재생할 사운드 파일
+Setting.PlaySoundOnGameEnd.OnDeath=실패 시 재생할 사운드 파일
+
+Setting.ModifyLoadingLevel.Enabled=이펙트 제거 기능 활성화
+
+Gui.EffectRemover.SelectProfile=프로필
+Gui.EffectRemover.SelectProfile.DuplicateProfile=현재 프로필 복제
+Gui.EffectRemover.SelectProfile.DeleteProfile=현재 프로필 삭제
+Gui.EffectRemover.SelectProfile.ShowRename=이름 변경
+Gui.EffectRemover.SelectProfile.HideRename=취소
+Gui.EffectRemover.SelectProfile.RenameProfile=이름 바꾸기
+
+Gui.EffectRemover.DefaultProfileName=기본 프로필
+Gui.EffectRemover.Error.CannotDeleteDefaultProfile=기본 프로필은 삭제할 수 없습니다!
+Gui.EffectRemover.Error.CannotRenameDefaultProfile=기본 프로필의 이름은 변경할 수 없습니다!
+Gui.EffectRemover.Error.CannotRenameAsExistingName=이름 "{0}"이(가) 이미 존재합니다!
+
+Gui.EffectRemover.LevelSettingsValueWarning=주의: 설정 창의 텍스트 상자에는 .adofai 파일 내부에서 사용하는 코드 이름만 입력해야 합니다.
+
+Gui.EffectRemover.LevelSettings=레벨 설정
+Gui.EffectRemover.LevelSettings.SongSettings=곡 설정
+Setting.ModifyLoadingLevel.Hitsound=타격음 덮어쓰기
+Setting.ModifyLoadingLevel.HitsoundVolume=타격음 볼륨 덮어쓰기
+
+Gui.EffectRemover.LevelSettings.TrackSettings=길 설정
+Setting.ModifyLoadingLevel.TrackTexture=길 텍스처 비활성화
+Setting.ModifyLoadingLevel.TrackColorType=길 색상 유형 덮어쓰기
+Setting.ModifyLoadingLevel.TrackStyle=길 스타일 덮어쓰기
+
+Gui.EffectRemover.LevelSettings.BackgroundSettings=배경 설정
+Setting.ModifyLoadingLevel.BgImage=배경 이미지 비활성화
+Setting.ModifyLoadingLevel.BackgroundColor=배경 색상 덮어쓰기
+
+Gui.EffectRemover.LevelSettings.CameraSettings=카메라 설정
+Setting.ModifyLoadingLevel.RelativeTo=기준 대상 덮어쓰기
+Setting.ModifyLoadingLevel.Position=위치 덮어쓰기
+Setting.ModifyLoadingLevel.Rotation=회전 덮어쓰기
+Setting.ModifyLoadingLevel.Zoom=확대/축소 덮어쓰기
+
+Gui.EffectRemover.Events=이벤트
+Gui.EffectRemover.AuditoryEvents=오디오 이벤트
+Setting.ModifyLoadingLevel.SetHitsound=타격음 설정 비활성화
+Setting.ModifyLoadingLevel.PlaySound=사운드 재생 비활성화
+
+Gui.EffectRemover.EffectEvents=시각 효과 이벤트
+Setting.ModifyLoadingLevel.Flash=플래시 비활성화
+Setting.ModifyLoadingLevel.ShakeScreen=화면 흔들림 비활성화
+Setting.ModifyLoadingLevel.Bloom=블룸 비활성화
+
+Setting.Replay.Enabled=리플레이 녹화 활성화
+Gui.Replay.LoadReplay=리플레이 불러오기
+Gui.Replay.UnloadReplay=리플레이 해제
+Gui.Replay.JumpToStartingFloor=시작 지점으로 이동
+
+Gui.Replay.ReplayInformation=리플레이 정보
+Gui.Replay.ReplayInformation.Artist.Name=<b>아티스트:</b>
+Gui.Replay.ReplayInformation.Song.Name=<b>곡명:</b>
+Gui.Replay.ReplayInformation.Author.Name=<b>제작자:</b>
+Gui.Replay.ReplayInformation.XAccuracy.Name=<b>X-정확도:</b>
+
+# ... (按键部分)
+Key.32.Name=[동기] 스페이스바
+Key.4109.Name=[비동기] 엔터
