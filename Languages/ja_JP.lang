@@ -1,0 +1,79 @@
+Name=日本語
+Parents=Common en_US
+
+Page.Language.Name=言語 Language
+Page.Replay.Name=リプレイ
+Page.EffectRemover.Name=エフェクト削除
+Page.OtherFeatures.Name=その他の機能
+
+Setting.FixKillerDecorationsInNoFail.Enabled=No Failモードでのキラー装飾による死亡を修正
+Setting.FixSetInputEventCrash.Enabled=入力イベント設定によるクラッシュを修正
+Setting.RevertCounterclockwiseUTurnPause.Enabled=2.9.4の反時計回りUターン一時停止の変更を元に戻す
+Setting.FixSavedJsonFormat.Enabled=保存された .adofai ファイルの不正なJSONフォーマットを修正
+Setting.BlockUnintentionalEscape.Enabled=不意の終了を防止
+Setting.BlockUnintentionalEscape.Options=[InSeconds] 秒以内に Esc を [EscapesRequired] 回押して終了
+Setting.BlockUnintentionalEscape.OnlyInGame=プレイ中のみ不意の終了を防止
+Setting.PlaySoundOnGameEnd.Enabled=ゲーム終了時にサウンドを再生
+Setting.PlaySoundOnGameEnd.OnWin=勝利時に再生するサウンドファイル
+Setting.PlaySoundOnGameEnd.OnDeath=失敗時に再生するサウンドファイル
+
+Setting.ModifyLoadingLevel.Enabled=エフェクト削除機能を有効にする
+
+Gui.EffectRemover.SelectProfile=プロファイル
+Gui.EffectRemover.SelectProfile.DuplicateProfile=現在のプロファイルを複製
+Gui.EffectRemover.SelectProfile.DeleteProfile=現在のプロファイルを削除
+Gui.EffectRemover.SelectProfile.ShowRename=名前を変更
+Gui.EffectRemover.SelectProfile.HideRename=キャンセル
+Gui.EffectRemover.SelectProfile.RenameProfile=保存
+
+Gui.EffectRemover.DefaultProfileName=デフォルト
+Gui.EffectRemover.Error.CannotDeleteDefaultProfile=デフォルトのプロファイルは削除できません！
+Gui.EffectRemover.Error.CannotRenameDefaultProfile=デフォルトのプロファイルの名前は変更できません！
+Gui.EffectRemover.Error.CannotRenameAsExistingName=名称「{0}」は既に存在します！
+
+Gui.EffectRemover.LevelSettingsValueWarning=注意：設定内のテキストボックスには、.adofaiファイル内の内部名称（コード名）を入力する必要があります。
+
+Gui.EffectRemover.LevelSettings=レベル設定
+Gui.EffectRemover.LevelSettings.SongSettings=曲の設定
+Setting.ModifyLoadingLevel.Hitsound=ヒット音を上書き
+Setting.ModifyLoadingLevel.HitsoundVolume=ヒット音の音量を上書き
+
+Gui.EffectRemover.LevelSettings.TrackSettings=タイル設定
+Setting.ModifyLoadingLevel.TrackTexture=タイルテクスチャを無効化
+Setting.ModifyLoadingLevel.TrackColorType=タイルの色タイプを上書き
+Setting.ModifyLoadingLevel.TrackStyle=タイルのスタイルを上書き
+
+Gui.EffectRemover.LevelSettings.BackgroundSettings=背景設定
+Setting.ModifyLoadingLevel.BgImage=背景画像を無効化
+Setting.ModifyLoadingLevel.BackgroundColor=背景色を上書き
+
+Gui.EffectRemover.LevelSettings.CameraSettings=カメラ設定
+Setting.ModifyLoadingLevel.RelativeTo=相対先を上書き
+Setting.ModifyLoadingLevel.Position=位置を上書き
+Setting.ModifyLoadingLevel.Rotation=角度を上書き
+Setting.ModifyLoadingLevel.Zoom=ズームを上書き
+
+Gui.EffectRemover.Events=イベント
+Gui.EffectRemover.AuditoryEvents=音響イベント
+Setting.ModifyLoadingLevel.SetHitsound=ヒット音設定を無効化
+Setting.ModifyLoadingLevel.PlaySound=サウンド再生を無効化
+
+Gui.EffectRemover.EffectEvents=ビジュアルエフェクトイベント
+Setting.ModifyLoadingLevel.Flash=フラッシュを無効化
+Setting.ModifyLoadingLevel.ShakeScreen=画面の揺れを無効化
+Setting.ModifyLoadingLevel.Bloom=ブルームを無効化
+
+Setting.Replay.Enabled=リプレイ録画を有効にする
+Gui.Replay.LoadReplay=リプレイを読み込む
+Gui.Replay.UnloadReplay=リプレイを解除
+Gui.Replay.JumpToStartingFloor=開始位置へジャンプ
+
+Gui.Replay.ReplayInformation=リプレイ情報
+Gui.Replay.ReplayInformation.Artist.Name=<b>アーティスト:</b>
+Gui.Replay.ReplayInformation.Song.Name=<b>曲名:</b>
+Gui.Replay.ReplayInformation.Author.Name=<b>作者:</b>
+Gui.Replay.ReplayInformation.XAccuracy.Name=<b>X-精度:</b>
+
+# ... (以此类推，按键部分建议保持 [同期] 或 [非同期] 标记)
+Key.32.Name=[同期] スペース
+Key.4109.Name=[非同期] Enter
