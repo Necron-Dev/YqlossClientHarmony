@@ -27,9 +27,9 @@ public static class Injections
             if (__instance.hitOnce) return;
 
             Interoperation.ReplayIgnoreJudgement = true;
-            Adofai.Controller.mistakesManager.AddHit(HitMargin.FailOverload);
-            Adofai.Controller.errorMeter.AddHit(float.NegativeInfinity);
-            Adofai.Controller.chosenPlanet.MarkFail()?.BlinkForSeconds(3);
+            planet?.player?.marginTracker?.AddHit(HitMargin.FailOverload);
+            Adofai.Controller.errorMeter.AddHit(float.NegativeInfinity, planet: planet);
+            planet?.MarkFail()?.BlinkForSeconds(3);
             Interoperation.ReplayIgnoreJudgement = false;
         }
 

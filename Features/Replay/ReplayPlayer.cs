@@ -223,7 +223,7 @@ public static class ReplayPlayer
             _ => hitMargin
         };
 
-        if (!Adofai.Controller.midspinInfiniteMargin)
+        if (!Adofai.Controller.playerOne.midspinInfiniteMargin)
         {
             result = hitMargin;
             return;
@@ -338,7 +338,7 @@ public static class ReplayPlayer
                 AllowGameToUpdateInput = true;
                 AllowAuto = true;
                 ReplayKeyboardInputType.Instance.MarkUpdate();
-                Adofai.Controller.Simulated_PlayerControl_Update();
+                Adofai.Controller.playerOne.Simulated_PlayerControl_Update();
                 AllowGameToUpdateInput = false;
                 if (Adofai.CurrentFloorId == floorId) break;
                 if (SettingsReplay.Instance.Verbose) Main.Mod.Logger.Log("auto floor");
@@ -361,7 +361,7 @@ public static class ReplayPlayer
                     AllowGameToUpdateInput = true;
                     AllowAuto = false;
                     ReplayKeyboardInputType.Instance.MarkUpdate();
-                    Adofai.Controller.Simulated_PlayerControl_Update();
+                    Adofai.Controller.playerOne.Simulated_PlayerControl_Update();
                     NextCheckFailMiss = false;
                     AllowGameToUpdateInput = false;
                 }
@@ -481,7 +481,7 @@ public static class ReplayPlayer
                 AllowGameToUpdateInput = true;
                 AllowAuto = true;
                 ReplayKeyboardInputType.Instance.MarkUpdate();
-                Adofai.Controller.Simulated_PlayerControl_Update();
+                Adofai.Controller.playerOne.Simulated_PlayerControl_Update();
                 AllowGameToUpdateInput = false;
                 return;
             }
@@ -542,7 +542,7 @@ public static class ReplayPlayer
                     AllowGameToUpdateInput = true;
                     ReplayKeyboardInputType.Instance.MarkUpdate();
 
-                    Adofai.Controller.Simulated_PlayerControl_Update();
+                    Adofai.Controller.playerOne.Simulated_PlayerControl_Update();
 
                     if (SettingsReplay.Instance.Verbose)
                         Main.Mod.Logger.Log("end simulation");

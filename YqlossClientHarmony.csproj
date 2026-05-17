@@ -41,6 +41,9 @@
         <Reference Include="Accessibility">
             <HintPath>ADOFAIGame\A Dance of Fire and Ice\A Dance of Fire and Ice_Data\Managed\Accessibility.dll</HintPath>
         </Reference>
+        <Reference Include="ADOFAI.Utility.LevelRecorder.Unsafe">
+          <HintPath>ADOFAIGame\A Dance of Fire and Ice\A Dance of Fire and Ice_Data\Managed\ADOFAI.Utility.LevelRecorder.Unsafe.dll</HintPath>
+        </Reference>
         <Reference Include="Assembly-CSharp">
             <HintPath>ADOFAIGame\A Dance of Fire and Ice\A Dance of Fire and Ice_Data\Managed\Assembly-CSharp.dll</HintPath>
         </Reference>
@@ -79,6 +82,12 @@
         </Reference>
         <Reference Include="I18N.West">
             <HintPath>ADOFAIGame\A Dance of Fire and Ice\A Dance of Fire and Ice_Data\Managed\I18N.West.dll</HintPath>
+        </Reference>
+        <Reference Include="Interop.SpeechLib">
+          <HintPath>ADOFAIGame\A Dance of Fire and Ice\A Dance of Fire and Ice_Data\Managed\Interop.SpeechLib.dll</HintPath>
+        </Reference>
+        <Reference Include="Microsoft.Bcl.AsyncInterfaces">
+          <HintPath>ADOFAIGame\A Dance of Fire and Ice\A Dance of Fire and Ice_Data\Managed\Microsoft.Bcl.AsyncInterfaces.dll</HintPath>
         </Reference>
         <Reference Include="Mono.Data.Sqlite">
             <HintPath>ADOFAIGame\A Dance of Fire and Ice\A Dance of Fire and Ice_Data\Managed\Mono.Data.Sqlite.dll</HintPath>
@@ -125,7 +134,13 @@
         <Reference Include="SkyHook.Unity">
             <HintPath>ADOFAIGame\A Dance of Fire and Ice\A Dance of Fire and Ice_Data\Managed\SkyHook.Unity.dll</HintPath>
         </Reference>
-        <Reference Include="System"/>
+        <Reference Include="System" />
+        <Reference Include="System.Buffers">
+          <HintPath>ADOFAIGame\A Dance of Fire and Ice\A Dance of Fire and Ice_Data\Managed\System.Buffers.dll</HintPath>
+        </Reference>
+        <Reference Include="System.Collections.Immutable">
+          <HintPath>ADOFAIGame\A Dance of Fire and Ice\A Dance of Fire and Ice_Data\Managed\System.Collections.Immutable.dll</HintPath>
+        </Reference>
         <Reference Include="System.ComponentModel.Composition">
             <HintPath>ADOFAIGame\A Dance of Fire and Ice\A Dance of Fire and Ice_Data\Managed\System.ComponentModel.Composition.dll</HintPath>
         </Reference>
@@ -135,8 +150,8 @@
         <Reference Include="System.Configuration">
             <HintPath>ADOFAIGame\A Dance of Fire and Ice\A Dance of Fire and Ice_Data\Managed\System.Configuration.dll</HintPath>
         </Reference>
-        <Reference Include="System.Core"/>
-        <Reference Include="System.Data"/>
+        <Reference Include="System.Core" />
+        <Reference Include="System.Data" />
         <Reference Include="System.Data.DataSetExtensions">
             <HintPath>ADOFAIGame\A Dance of Fire and Ice\A Dance of Fire and Ice_Data\Managed\System.Data.DataSetExtensions.dll</HintPath>
         </Reference>
@@ -161,11 +176,26 @@
         <Reference Include="System.IO.Compression.FileSystem">
             <HintPath>ADOFAIGame\A Dance of Fire and Ice\A Dance of Fire and Ice_Data\Managed\System.IO.Compression.FileSystem.dll</HintPath>
         </Reference>
+        <Reference Include="System.IO.Hashing">
+          <HintPath>ADOFAIGame\A Dance of Fire and Ice\A Dance of Fire and Ice_Data\Managed\System.IO.Hashing.dll</HintPath>
+        </Reference>
+        <Reference Include="System.Memory">
+          <HintPath>ADOFAIGame\A Dance of Fire and Ice\A Dance of Fire and Ice_Data\Managed\System.Memory.dll</HintPath>
+        </Reference>
         <Reference Include="System.Net.Http">
             <HintPath>ADOFAIGame\A Dance of Fire and Ice\A Dance of Fire and Ice_Data\Managed\System.Net.Http.dll</HintPath>
         </Reference>
         <Reference Include="System.Numerics">
             <HintPath>ADOFAIGame\A Dance of Fire and Ice\A Dance of Fire and Ice_Data\Managed\System.Numerics.dll</HintPath>
+        </Reference>
+        <Reference Include="System.Numerics.Vectors">
+          <HintPath>ADOFAIGame\A Dance of Fire and Ice\A Dance of Fire and Ice_Data\Managed\System.Numerics.Vectors.dll</HintPath>
+        </Reference>
+        <Reference Include="System.Runtime">
+          <HintPath>ADOFAIGame\A Dance of Fire and Ice\A Dance of Fire and Ice_Data\Managed\System.Runtime.dll</HintPath>
+        </Reference>
+        <Reference Include="System.Runtime.CompilerServices.Unsafe">
+          <HintPath>ADOFAIGame\A Dance of Fire and Ice\A Dance of Fire and Ice_Data\Managed\System.Runtime.CompilerServices.Unsafe.dll</HintPath>
         </Reference>
         <Reference Include="System.Runtime.Serialization">
             <HintPath>ADOFAIGame\A Dance of Fire and Ice\A Dance of Fire and Ice_Data\Managed\System.Runtime.Serialization.dll</HintPath>
@@ -179,8 +209,20 @@
         <Reference Include="System.ServiceModel.Internals">
             <HintPath>ADOFAIGame\A Dance of Fire and Ice\A Dance of Fire and Ice_Data\Managed\System.ServiceModel.Internals.dll</HintPath>
         </Reference>
+        <Reference Include="System.Text.Encodings.Web">
+          <HintPath>ADOFAIGame\A Dance of Fire and Ice\A Dance of Fire and Ice_Data\Managed\System.Text.Encodings.Web.dll</HintPath>
+        </Reference>
+        <Reference Include="System.Text.Json">
+          <HintPath>ADOFAIGame\A Dance of Fire and Ice\A Dance of Fire and Ice_Data\Managed\System.Text.Json.dll</HintPath>
+        </Reference>
+        <Reference Include="System.Threading.Tasks.Extensions">
+          <HintPath>ADOFAIGame\A Dance of Fire and Ice\A Dance of Fire and Ice_Data\Managed\System.Threading.Tasks.Extensions.dll</HintPath>
+        </Reference>
         <Reference Include="System.Transactions">
             <HintPath>ADOFAIGame\A Dance of Fire and Ice\A Dance of Fire and Ice_Data\Managed\System.Transactions.dll</HintPath>
+        </Reference>
+        <Reference Include="System.ValueTuple">
+          <HintPath>ADOFAIGame\A Dance of Fire and Ice\A Dance of Fire and Ice_Data\Managed\System.ValueTuple.dll</HintPath>
         </Reference>
         <Reference Include="System.Web">
             <HintPath>ADOFAIGame\A Dance of Fire and Ice\A Dance of Fire and Ice_Data\Managed\System.Web.dll</HintPath>
@@ -206,8 +248,53 @@
         <Reference Include="Unity.AI.Navigation">
             <HintPath>ADOFAIGame\A Dance of Fire and Ice\A Dance of Fire and Ice_Data\Managed\Unity.AI.Navigation.dll</HintPath>
         </Reference>
+        <Reference Include="Unity.Burst">
+          <HintPath>ADOFAIGame\A Dance of Fire and Ice\A Dance of Fire and Ice_Data\Managed\Unity.Burst.dll</HintPath>
+        </Reference>
+        <Reference Include="Unity.Burst.Unsafe">
+          <HintPath>ADOFAIGame\A Dance of Fire and Ice\A Dance of Fire and Ice_Data\Managed\Unity.Burst.Unsafe.dll</HintPath>
+        </Reference>
+        <Reference Include="Unity.Collections">
+          <HintPath>ADOFAIGame\A Dance of Fire and Ice\A Dance of Fire and Ice_Data\Managed\Unity.Collections.dll</HintPath>
+        </Reference>
+        <Reference Include="Unity.Collections.LowLevel.ILSupport">
+          <HintPath>ADOFAIGame\A Dance of Fire and Ice\A Dance of Fire and Ice_Data\Managed\Unity.Collections.LowLevel.ILSupport.dll</HintPath>
+        </Reference>
+        <Reference Include="Unity.InternalAPIEngineBridge.004">
+          <HintPath>ADOFAIGame\A Dance of Fire and Ice\A Dance of Fire and Ice_Data\Managed\Unity.InternalAPIEngineBridge.004.dll</HintPath>
+        </Reference>
+        <Reference Include="Unity.Mathematics">
+          <HintPath>ADOFAIGame\A Dance of Fire and Ice\A Dance of Fire and Ice_Data\Managed\Unity.Mathematics.dll</HintPath>
+        </Reference>
         <Reference Include="Unity.MemoryProfiler">
             <HintPath>ADOFAIGame\A Dance of Fire and Ice\A Dance of Fire and Ice_Data\Managed\Unity.MemoryProfiler.dll</HintPath>
+        </Reference>
+        <Reference Include="Unity.Profiling.Core">
+          <HintPath>ADOFAIGame\A Dance of Fire and Ice\A Dance of Fire and Ice_Data\Managed\Unity.Profiling.Core.dll</HintPath>
+        </Reference>
+        <Reference Include="Unity.Purchasing">
+          <HintPath>ADOFAIGame\A Dance of Fire and Ice\A Dance of Fire and Ice_Data\Managed\Unity.Purchasing.dll</HintPath>
+        </Reference>
+        <Reference Include="Unity.Purchasing.AppleMacosStub">
+          <HintPath>ADOFAIGame\A Dance of Fire and Ice\A Dance of Fire and Ice_Data\Managed\Unity.Purchasing.AppleMacosStub.dll</HintPath>
+        </Reference>
+        <Reference Include="Unity.Purchasing.AppleStub">
+          <HintPath>ADOFAIGame\A Dance of Fire and Ice\A Dance of Fire and Ice_Data\Managed\Unity.Purchasing.AppleStub.dll</HintPath>
+        </Reference>
+        <Reference Include="Unity.Purchasing.Codeless">
+          <HintPath>ADOFAIGame\A Dance of Fire and Ice\A Dance of Fire and Ice_Data\Managed\Unity.Purchasing.Codeless.dll</HintPath>
+        </Reference>
+        <Reference Include="Unity.Purchasing.SecurityCore">
+          <HintPath>ADOFAIGame\A Dance of Fire and Ice\A Dance of Fire and Ice_Data\Managed\Unity.Purchasing.SecurityCore.dll</HintPath>
+        </Reference>
+        <Reference Include="Unity.Purchasing.SecurityStub">
+          <HintPath>ADOFAIGame\A Dance of Fire and Ice\A Dance of Fire and Ice_Data\Managed\Unity.Purchasing.SecurityStub.dll</HintPath>
+        </Reference>
+        <Reference Include="Unity.Purchasing.Stores">
+          <HintPath>ADOFAIGame\A Dance of Fire and Ice\A Dance of Fire and Ice_Data\Managed\Unity.Purchasing.Stores.dll</HintPath>
+        </Reference>
+        <Reference Include="Unity.Purchasing.Utilities">
+          <HintPath>ADOFAIGame\A Dance of Fire and Ice\A Dance of Fire and Ice_Data\Managed\Unity.Purchasing.Utilities.dll</HintPath>
         </Reference>
         <Reference Include="Unity.ResourceManager">
             <HintPath>ADOFAIGame\A Dance of Fire and Ice\A Dance of Fire and Ice_Data\Managed\Unity.ResourceManager.dll</HintPath>
@@ -220,6 +307,9 @@
         </Reference>
         <Reference Include="Unity.Services.Core.Analytics">
             <HintPath>ADOFAIGame\A Dance of Fire and Ice\A Dance of Fire and Ice_Data\Managed\Unity.Services.Core.Analytics.dll</HintPath>
+        </Reference>
+        <Reference Include="Unity.Services.Core.Components">
+          <HintPath>ADOFAIGame\A Dance of Fire and Ice\A Dance of Fire and Ice_Data\Managed\Unity.Services.Core.Components.dll</HintPath>
         </Reference>
         <Reference Include="Unity.Services.Core.Configuration">
             <HintPath>ADOFAIGame\A Dance of Fire and Ice\A Dance of Fire and Ice_Data\Managed\Unity.Services.Core.Configuration.dll</HintPath>
@@ -263,8 +353,14 @@
         <Reference Include="UnityEngine.AccessibilityModule">
             <HintPath>ADOFAIGame\A Dance of Fire and Ice\A Dance of Fire and Ice_Data\Managed\UnityEngine.AccessibilityModule.dll</HintPath>
         </Reference>
+        <Reference Include="UnityEngine.AdaptivePerformanceModule">
+          <HintPath>ADOFAIGame\A Dance of Fire and Ice\A Dance of Fire and Ice_Data\Managed\UnityEngine.AdaptivePerformanceModule.dll</HintPath>
+        </Reference>
         <Reference Include="UnityEngine.AIModule">
             <HintPath>ADOFAIGame\A Dance of Fire and Ice\A Dance of Fire and Ice_Data\Managed\UnityEngine.AIModule.dll</HintPath>
+        </Reference>
+        <Reference Include="UnityEngine.AMDModule">
+          <HintPath>ADOFAIGame\A Dance of Fire and Ice\A Dance of Fire and Ice_Data\Managed\UnityEngine.AMDModule.dll</HintPath>
         </Reference>
         <Reference Include="UnityEngine.AndroidJNIModule">
             <HintPath>ADOFAIGame\A Dance of Fire and Ice\A Dance of Fire and Ice_Data\Managed\UnityEngine.AndroidJNIModule.dll</HintPath>
@@ -311,11 +407,23 @@
         <Reference Include="UnityEngine.GIModule">
             <HintPath>ADOFAIGame\A Dance of Fire and Ice\A Dance of Fire and Ice_Data\Managed\UnityEngine.GIModule.dll</HintPath>
         </Reference>
+        <Reference Include="UnityEngine.GraphicsStateCollectionSerializerModule">
+          <HintPath>ADOFAIGame\A Dance of Fire and Ice\A Dance of Fire and Ice_Data\Managed\UnityEngine.GraphicsStateCollectionSerializerModule.dll</HintPath>
+        </Reference>
         <Reference Include="UnityEngine.GridModule">
             <HintPath>ADOFAIGame\A Dance of Fire and Ice\A Dance of Fire and Ice_Data\Managed\UnityEngine.GridModule.dll</HintPath>
         </Reference>
+        <Reference Include="UnityEngine.HierarchyCoreModule">
+          <HintPath>ADOFAIGame\A Dance of Fire and Ice\A Dance of Fire and Ice_Data\Managed\UnityEngine.HierarchyCoreModule.dll</HintPath>
+        </Reference>
+        <Reference Include="UnityEngine.HierarchyModule">
+          <HintPath>ADOFAIGame\A Dance of Fire and Ice\A Dance of Fire and Ice_Data\Managed\UnityEngine.HierarchyModule.dll</HintPath>
+        </Reference>
         <Reference Include="UnityEngine.HotReloadModule">
             <HintPath>ADOFAIGame\A Dance of Fire and Ice\A Dance of Fire and Ice_Data\Managed\UnityEngine.HotReloadModule.dll</HintPath>
+        </Reference>
+        <Reference Include="UnityEngine.IdentifiersModule">
+          <HintPath>ADOFAIGame\A Dance of Fire and Ice\A Dance of Fire and Ice_Data\Managed\UnityEngine.IdentifiersModule.dll</HintPath>
         </Reference>
         <Reference Include="UnityEngine.ImageConversionModule">
             <HintPath>ADOFAIGame\A Dance of Fire and Ice\A Dance of Fire and Ice_Data\Managed\UnityEngine.ImageConversionModule.dll</HintPath>
@@ -323,17 +431,29 @@
         <Reference Include="UnityEngine.IMGUIModule">
             <HintPath>ADOFAIGame\A Dance of Fire and Ice\A Dance of Fire and Ice_Data\Managed\UnityEngine.IMGUIModule.dll</HintPath>
         </Reference>
+        <Reference Include="UnityEngine.InputForUIModule">
+          <HintPath>ADOFAIGame\A Dance of Fire and Ice\A Dance of Fire and Ice_Data\Managed\UnityEngine.InputForUIModule.dll</HintPath>
+        </Reference>
         <Reference Include="UnityEngine.InputLegacyModule">
             <HintPath>ADOFAIGame\A Dance of Fire and Ice\A Dance of Fire and Ice_Data\Managed\UnityEngine.InputLegacyModule.dll</HintPath>
         </Reference>
         <Reference Include="UnityEngine.InputModule">
             <HintPath>ADOFAIGame\A Dance of Fire and Ice\A Dance of Fire and Ice_Data\Managed\UnityEngine.InputModule.dll</HintPath>
         </Reference>
+        <Reference Include="UnityEngine.InsightsModule">
+          <HintPath>ADOFAIGame\A Dance of Fire and Ice\A Dance of Fire and Ice_Data\Managed\UnityEngine.InsightsModule.dll</HintPath>
+        </Reference>
         <Reference Include="UnityEngine.JSONSerializeModule">
             <HintPath>ADOFAIGame\A Dance of Fire and Ice\A Dance of Fire and Ice_Data\Managed\UnityEngine.JSONSerializeModule.dll</HintPath>
         </Reference>
         <Reference Include="UnityEngine.LocalizationModule">
             <HintPath>ADOFAIGame\A Dance of Fire and Ice\A Dance of Fire and Ice_Data\Managed\UnityEngine.LocalizationModule.dll</HintPath>
+        </Reference>
+        <Reference Include="UnityEngine.MarshallingModule">
+          <HintPath>ADOFAIGame\A Dance of Fire and Ice\A Dance of Fire and Ice_Data\Managed\UnityEngine.MarshallingModule.dll</HintPath>
+        </Reference>
+        <Reference Include="UnityEngine.MultiplayerModule">
+          <HintPath>ADOFAIGame\A Dance of Fire and Ice\A Dance of Fire and Ice_Data\Managed\UnityEngine.MultiplayerModule.dll</HintPath>
         </Reference>
         <Reference Include="UnityEngine.NVIDIAModule">
             <HintPath>ADOFAIGame\A Dance of Fire and Ice\A Dance of Fire and Ice_Data\Managed\UnityEngine.NVIDIAModule.dll</HintPath>
@@ -346,6 +466,9 @@
         </Reference>
         <Reference Include="UnityEngine.Physics2DModule">
             <HintPath>ADOFAIGame\A Dance of Fire and Ice\A Dance of Fire and Ice_Data\Managed\UnityEngine.Physics2DModule.dll</HintPath>
+        </Reference>
+        <Reference Include="UnityEngine.PhysicsBackendPhysXModule">
+          <HintPath>ADOFAIGame\A Dance of Fire and Ice\A Dance of Fire and Ice_Data\Managed\UnityEngine.PhysicsBackendPhysXModule.dll</HintPath>
         </Reference>
         <Reference Include="UnityEngine.PhysicsModule">
             <HintPath>ADOFAIGame\A Dance of Fire and Ice\A Dance of Fire and Ice_Data\Managed\UnityEngine.PhysicsModule.dll</HintPath>
@@ -386,11 +509,20 @@
         <Reference Include="UnityEngine.Purchasing.WinRTStub">
             <HintPath>ADOFAIGame\A Dance of Fire and Ice\A Dance of Fire and Ice_Data\Managed\UnityEngine.Purchasing.WinRTStub.dll</HintPath>
         </Reference>
+        <Reference Include="UnityEngine.RenderAs2DModule">
+          <HintPath>ADOFAIGame\A Dance of Fire and Ice\A Dance of Fire and Ice_Data\Managed\UnityEngine.RenderAs2DModule.dll</HintPath>
+        </Reference>
         <Reference Include="UnityEngine.RuntimeInitializeOnLoadManagerInitializerModule">
             <HintPath>ADOFAIGame\A Dance of Fire and Ice\A Dance of Fire and Ice_Data\Managed\UnityEngine.RuntimeInitializeOnLoadManagerInitializerModule.dll</HintPath>
         </Reference>
         <Reference Include="UnityEngine.ScreenCaptureModule">
             <HintPath>ADOFAIGame\A Dance of Fire and Ice\A Dance of Fire and Ice_Data\Managed\UnityEngine.ScreenCaptureModule.dll</HintPath>
+        </Reference>
+        <Reference Include="UnityEngine.ShaderRuntimeModule">
+          <HintPath>ADOFAIGame\A Dance of Fire and Ice\A Dance of Fire and Ice_Data\Managed\UnityEngine.ShaderRuntimeModule.dll</HintPath>
+        </Reference>
+        <Reference Include="UnityEngine.ShaderVariantAnalyticsModule">
+          <HintPath>ADOFAIGame\A Dance of Fire and Ice\A Dance of Fire and Ice_Data\Managed\UnityEngine.ShaderVariantAnalyticsModule.dll</HintPath>
         </Reference>
         <Reference Include="UnityEngine.SharedInternalsModule">
             <HintPath>ADOFAIGame\A Dance of Fire and Ice\A Dance of Fire and Ice_Data\Managed\UnityEngine.SharedInternalsModule.dll</HintPath>
@@ -452,6 +584,9 @@
         <Reference Include="UnityEngine.UnityConnectModule">
             <HintPath>ADOFAIGame\A Dance of Fire and Ice\A Dance of Fire and Ice_Data\Managed\UnityEngine.UnityConnectModule.dll</HintPath>
         </Reference>
+        <Reference Include="UnityEngine.UnityConsentModule">
+          <HintPath>ADOFAIGame\A Dance of Fire and Ice\A Dance of Fire and Ice_Data\Managed\UnityEngine.UnityConsentModule.dll</HintPath>
+        </Reference>
         <Reference Include="UnityEngine.UnityCurlModule">
             <HintPath>ADOFAIGame\A Dance of Fire and Ice\A Dance of Fire and Ice_Data\Managed\UnityEngine.UnityCurlModule.dll</HintPath>
         </Reference>
@@ -473,6 +608,9 @@
         <Reference Include="UnityEngine.UnityWebRequestWWWModule">
             <HintPath>ADOFAIGame\A Dance of Fire and Ice\A Dance of Fire and Ice_Data\Managed\UnityEngine.UnityWebRequestWWWModule.dll</HintPath>
         </Reference>
+        <Reference Include="UnityEngine.VectorGraphicsModule">
+          <HintPath>ADOFAIGame\A Dance of Fire and Ice\A Dance of Fire and Ice_Data\Managed\UnityEngine.VectorGraphicsModule.dll</HintPath>
+        </Reference>
         <Reference Include="UnityEngine.VehiclesModule">
             <HintPath>ADOFAIGame\A Dance of Fire and Ice\A Dance of Fire and Ice_Data\Managed\UnityEngine.VehiclesModule.dll</HintPath>
         </Reference>
@@ -493,6 +631,9 @@
         </Reference>
         <Reference Include="UnityEngine.XRModule">
             <HintPath>ADOFAIGame\A Dance of Fire and Ice\A Dance of Fire and Ice_Data\Managed\UnityEngine.XRModule.dll</HintPath>
+        </Reference>
+        <Reference Include="UnityFileDialog">
+          <HintPath>ADOFAIGame\A Dance of Fire and Ice\A Dance of Fire and Ice_Data\Managed\UnityFileDialog.dll</HintPath>
         </Reference>
         <Reference Include="UnityModManager">
             <HintPath>ADOFAIGame\A Dance of Fire and Ice\A Dance of Fire and Ice_Data\Managed\UnityModManager\UnityModManager.dll</HintPath>
@@ -536,8 +677,6 @@
         <Compile Include="Features\Replay\ReplayUtils.cs"/>
         <Compile Include="Features\Replay\SettingsReplay.cs"/>
         <Compile Include="Features\Replay\ReplayInputKeyEventReceiver.cs"/>
-        <Compile Include="Features\RevertCounterclockwiseUTurnPause\Injections.cs"/>
-        <Compile Include="Features\RevertCounterclockwiseUTurnPause\SettingsRevertCounterclockwiseUTurnPause.cs"/>
         <Compile Include="Gui\GuiManager.cs"/>
         <Compile Include="Gui\Pages\EffectRemoverPage.cs"/>
         <Compile Include="Gui\Pages\LanguagePage.cs"/>

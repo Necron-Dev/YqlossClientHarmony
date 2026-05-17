@@ -128,8 +128,8 @@ public static class Injections
         }
     }
 
-    [HarmonyPatch(typeof(scrMistakesManager), nameof(scrMistakesManager.AddHit))]
-    public static class Inject_scrMistakesManager_AddHit
+    [HarmonyPatch(typeof(scrMarginTracker), nameof(scrMarginTracker.AddHit))]
+    public static class Inject_scrMarginTracker_AddHit
     {
         public static void Prefix(
             ref HitMargin hit
@@ -153,13 +153,13 @@ public static class Injections
         {
             IsInSwitchChosen = true;
             if (!Adofai.Controller.gameworld) return;
-            if (ReplayRecorder.Replay is null || Adofai.Controller.midspinInfiniteMargin) return;
+            if (ReplayRecorder.Replay is null || Adofai.Controller.playerOne.midspinInfiniteMargin) return;
 
             var nextFloorAuto = __instance.currfloor.nextfloor != null && __instance.currfloor.nextfloor.auto;
 
             var angleDiff = __instance.cachedAngle - __instance.targetExitAngle;
             
-            if (!Adofai.Controller.isCW) angleDiff *= -1f;
+            if (!Adofai.Controller.playerOne.planetarySystem.isCW) angleDiff *= -1f;
             if (RDC.auto || nextFloorAuto && !RDC.useOldAuto) angleDiff = 0;
 
             ReplayRecorder.OnErrorMeter(angleDiff);
@@ -196,7 +196,7 @@ public static class Injections
         }
     }
 
-    [HarmonyPatch(typeof(scrController), "UpdateInput")]
+    [HarmonyPatch(typeof(scrController), nameof(scrController.UpdateInput))]
     public static class Inject_scrController_UpdateInput
     {
         private static AccessTools.FieldRef<StateEngine, StateMapping> DestinationStateField { get; } =
@@ -223,7 +223,7 @@ public static class Injections
                 return;
             }
 
-            ReplayRecorder.OnIterationStart(Adofai.Controller.keyTimes.Count);
+            ReplayRecorder.OnIterationStart(Adofai.Controller.playerOne.keyTimes.Count);
 
             var sortedKeyQueue = new PriorityQueue<SkyHookEvent, long>();
 
@@ -245,8 +245,8 @@ public static class Injections
         private static AccessTools.FieldRef<StateEngine, StateMapping> DestinationStateField { get; } =
             AccessTools.FieldRefAccess<StateEngine, StateMapping>("destinationState");
 
-        private static AccessTools.FieldRef<KeyCode[]> MainKeysField { get; } =
-            AccessTools.StaticFieldRefAccess<KeyCode[]>(AccessTools.DeclaredField(typeof(RDInputType_Keyboard), "mainKeys"));
+        private static AccessTools.FieldRef<RDInputType_Keyboard, KeyCode[]> MainKeysField { get; } =
+            AccessTools.FieldRefAccess<RDInputType_Keyboard, KeyCode[]>("mainKeys");
 
         public static void Prefix()
         {
@@ -277,9 +277,9 @@ public static class Injections
                 return;
             }
 
-            ReplayRecorder.OnIterationStart(Adofai.Controller.keyTimes.Count);
+            ReplayRecorder.OnIterationStart(Adofai.Controller.playerOne.keyTimes.Count);
 
-            var mainKeys = MainKeysField()!;
+            var mainKeys = MainKeysField(RDInput.keyboardInput)!;
 
             foreach (var mainKey in mainKeys)
             {
@@ -341,34 +341,17 @@ public static class Injections
         }
     }
 
-    [HarmonyPatch(typeof(scrCalibrationPlanet), "GetInputTypeForDown")]
-    public static class Inject_scrCalibrationPlanet_GetInputTypeForDown
+    [HarmonyPatch(typeof(scrPlayer), nameof(scrPlayer.ValidInputWasTriggered))]
+    public static class Inject_scrPlayer_ValidInputWasTriggered
     {
-        public static bool Prefix(
-            ref object __result
-        )
+        public static bool Prefix( ref bool __result )
         {
             if (!ReplayPlayer.PlayingReplay) return true;
 
-            __result = 1; // InputType.Keyboard
-            return false;
-        }
-    }
-
-    [HarmonyPatch(typeof(scrController), nameof(scrController.ValidInputWasTriggered))]
-    public static class Inject_scrController_ValidInputWasTriggered
-    {
-        public static bool Prefix(
-            ref bool __result,
-            bool ___exitingToMainMenu
-        )
-        {
-            if (!ReplayPlayer.PlayingReplay) return true;
-
-            __result = !___exitingToMainMenu &&
+            __result = !Adofai.Controller.exitingToMainMenu &&
                        (ReplayPlayer.OnGetAnyKeyDown() ||
                         RDInput.GetMain(ButtonState.IsDown) > 0) &&
-                       Adofai.Controller.CountValidKeysPressed() > 0;
+                       Adofai.Controller.playerOne.CountValidKeysPressed() > 0;
 
             return false;
         }
@@ -383,8 +366,8 @@ public static class Injections
         }
     }
 
-    [HarmonyPatch(typeof(scrController), nameof(scrController.Simulated_PlayerControl_Update))]
-    public static class Inject_scrController_Simulated_PlayerControl_Update
+    [HarmonyPatch(typeof(scrPlayer), nameof(scrPlayer.Simulated_PlayerControl_Update))]
+    public static class Inject_scrPlayer_Simulated_PlayerControl_Update
     {
         public static bool Prefix()
         {
@@ -395,16 +378,14 @@ public static class Injections
         public static void Postfix()
         {
             if (!ReplayPlayer.PlayingReplay) return;
-            scrController.shouldReplaceCamyToPos = false;
+            scrPlayer.shouldReplaceCamyToPos = false;
         }
     }
 
-    [HarmonyPatch(typeof(scrController), "CheckPostHoldFail")]
-    public static class Inject_scrController_CheckPostHoldFail
+    [HarmonyPatch(typeof(scrPlayer), "CheckPostHoldFail")]
+    public static class Inject_scrPlayer_CheckPostHoldFail
     {
-        public static bool Prefix(
-            scrController __instance
-        )
+        public static bool Prefix( )
         {
             if (!ReplayPlayer.PlayingReplay) return true;
             var continueExecution = ReplayPlayer.NextCheckFailMiss;
@@ -413,15 +394,13 @@ public static class Injections
         }
     }
 
-    [HarmonyPatch(typeof(scrController), nameof(scrController.Hit))]
-    public static class Inject_scrController_Hit
+    [HarmonyPatch(typeof(scrPlayer), nameof(scrPlayer.Hit))]
+    public static class Inject_scrPlayer_Hit
     {
-        public static void Prefix(
-            scrController __instance
-        )
+        public static void Prefix( )
         {
             if (!ReplayPlayer.PlayingReplay) return;
-            if (!__instance.noFailInfiniteMargin) return;
+            if (!Adofai.Controller.noFailInfiniteMargin) return;
             ReplayPlayer.NextCheckFailMiss = false;
         }
 
@@ -469,37 +448,36 @@ public static class Injections
         }
     }
 
-    [HarmonyPatch(typeof(scrController), "UpdateHoldKeys")]
-    public static class Inject_scrController_UpdateHoldKeys
+    [HarmonyPatch(typeof(scrPlayer), "UpdateHoldKeys")]
+    public static class Inject_scrPlayer_UpdateHoldKeys
     {
-        private static readonly Func<scrController, bool> NextTileIsHoldGetter =
-            AccessTools.MethodDelegate<Func<scrController, bool>>(AccessTools.DeclaredPropertyGetter(typeof(scrController), "_nextTileIsHold"));
+        private static readonly Func<scrPlayer, bool> NextTileIsHoldGetter =
+            AccessTools.MethodDelegate<Func<scrPlayer, bool>>(AccessTools.DeclaredPropertyGetter(typeof(scrPlayer), "_nextTileIsHold"));
 
-        private static readonly Func<scrController, double> HoldMarginGetter =
-            AccessTools.MethodDelegate<Func<scrController, double>>(AccessTools.DeclaredPropertyGetter(typeof(scrController), "_holdMargin"));
+        private static readonly Func<scrPlayer, double> HoldMarginGetter =
+            AccessTools.MethodDelegate<Func<scrPlayer, double>>(AccessTools.DeclaredPropertyGetter(typeof(scrPlayer), "_holdMargin"));
 
-        public static void Prefix(
-            scrController __instance
-        )
+        public static void Prefix()
         {
+            var controller = Adofai.Controller;
+            
             if (ReplayRecorder.Replay is null) return;
 
             if (
-                __instance.keyTimes.Count <= 0 ||
+                controller.playerOne.keyTimes.Count <= 0 ||
                 GCS.d_stationary ||
-                GCS.d_freeroam ||
-                (!((__instance.currFloor.holdLength > -1 && !__instance.strictHolds) ||
-                   NextTileIsHoldGetter(__instance)) &&
-                 __instance.currFloor.holdLength != -1 &&
-                 __instance.currFloor.holdCompletion >= HoldMarginGetter(__instance)) ||
-                (__instance.gameworld &&
-                 __instance.currFloor.seqID >= ADOBase.lm.listFloors.Count - 1)
+                (!((controller.currFloor.holdLength > -1 && !controller.strictHolds) ||
+                   NextTileIsHoldGetter(controller.playerOne)) &&
+                 controller.currFloor.holdLength != -1 &&
+                 controller.currFloor.holdCompletion >= HoldMarginGetter(controller.playerOne)) ||
+                (controller.gameworld &&
+                 controller.currFloor.seqID >= ADOBase.lm.listFloors.Count - 1)
             ) return;
 
             var nextFloor = Adofai.Controller.currFloor.nextfloor;
             var autoFloor = nextFloor != null && nextFloor.auto;
 
-            ReplayRecorder.OnMarkKeyEvent(autoFloor, __instance.responsive);
+            ReplayRecorder.OnMarkKeyEvent(autoFloor, controller.responsive);
         }
     }
 
@@ -589,8 +567,8 @@ public static class Injections
         }
     }
 
-    [HarmonyPatch(typeof(scrController), "UpdateHoldBehavior")]
-    public static class Inject_scrController_UpdateHoldBehavior
+    [HarmonyPatch(typeof(scrPlayer), "UpdateHoldBehavior")]
+    public static class Inject_scrPlayer_UpdateHoldBehavior
     {
         public static void Prefix()
         {

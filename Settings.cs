@@ -18,8 +18,6 @@ public class Settings : UnityModManager.ModSettings
 
     public bool EnableFixSetInputEventCrash = false;
 
-    public bool EnableRevertCounterclockwiseUTurnPause = false;
-
     public bool EnableModifyLoadingLevel = false;
 
     public string SelectedModifyLoadingLevelProfile = "";

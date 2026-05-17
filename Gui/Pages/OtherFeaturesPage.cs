@@ -23,8 +23,6 @@ public static class OtherFeaturesPage
             Separator();
             SwitchOption(group, ref Main.Settings.EnableFixSetInputEventCrash, "Setting.FixSetInputEventCrash.Enabled");
             Separator();
-            SwitchOption(group, ref Main.Settings.EnableRevertCounterclockwiseUTurnPause, "Setting.RevertCounterclockwiseUTurnPause.Enabled");
-            Separator();
             SwitchOption(group, ref Main.Settings.EnableFixSavedJsonFormat, "Setting.FixSavedJsonFormat.Enabled");
             Separator();
 

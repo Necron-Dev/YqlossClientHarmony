@@ -1,12 +1,13 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using SFB;
 using YqlossClientHarmony.Features.Replay;
 using YqlossClientHarmony.Utilities;
 using static YqlossClientHarmony.Gui.YCHLayout;
 using static YqlossClientHarmony.Gui.YCHLayoutPreset;
 using static YqlossClientHarmony.Utilities.SettingUtil;
+
+using UnityFileDialog;
 
 namespace YqlossClientHarmony.Gui.Pages;
 
@@ -60,16 +61,15 @@ public static class ReplayPage
             return;
         }
 
-        string[] levelPaths = StandaloneFileBrowser.OpenFilePanel(
-            I18N.Translate("Dialog.Replay.SelectReplay.Title"),
+        var replayFileName = FileBrowser.PickFile(
             SettingsReplay.Instance.ReplayStorageLocation,
-            [new ExtensionFilter(I18N.Translate("Dialog.Replay.SelectReplay.FileTypeName"), "ychreplaygz", "ychreplay.gz")],
-            false
+            null,
+            ["ychreplaygz", "ychreplay.gz"],
+            I18N.Translate("Dialog.Replay.SelectReplay.Title")
         );
 
-        if (levelPaths.Length == 0) return;
+        if (replayFileName is null) return;
 
-        var replayFileName = levelPaths[0];
         LoadedReplayFileName = replayFileName;
 
         LastError = ReplayPlayer.LoadReplay(replayFileName) ? null : ErrorLoadReplay;
@@ -77,15 +77,16 @@ public static class ReplayPage
 
     private static void SelectReplayStorageLocation()
     {
-        string[] levelPaths = StandaloneFileBrowser.OpenFolderPanel(
-            I18N.Translate("Dialog.Replay.SelectReplayStorageLocation.Title"),
+        var storageLocation = FileBrowser.PickFolder(
             SettingsReplay.Instance.ReplayStorageLocation,
-            false
+            null,
+            null,
+            I18N.Translate("Dialog.Replay.SelectReplayStorageLocation.Title")
         );
 
-        if (levelPaths.Length == 0) return;
+        if (storageLocation is null) return;
 
-        SettingsReplay.Instance.ReplayStorageLocation = levelPaths[0];
+        SettingsReplay.Instance.ReplayStorageLocation = storageLocation;
         Save |= true;
     }
 

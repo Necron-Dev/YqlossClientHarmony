@@ -117,7 +117,7 @@ public static class ReplayRecorder
 
         var floorId = Adofai.CurrentFloorId;
 
-        if (Adofai.Controller.midspinInfiniteMargin)
+        if (Adofai.Controller.playerOne.midspinInfiniteMargin)
         {
             if (ErrorMeterValue is not null)
                 Main.Mod.Logger.Warning($"[Floor {floorId}] error meter already has a value on a midspin, overwriting to NaN");

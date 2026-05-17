@@ -139,19 +139,24 @@ public class ReplayKeyboardInputType : RDInputType
         return stateCount.keys.Count;
     }
 
-    public override bool Restart()
+    public override bool Restart(ButtonState state)
     {
-        return Input.GetKeyDown(KeyCode.R);
+        return CheckKeyState(KeyCode.R, state);
     }
 
-    public override bool Cancel()
+    public override bool Cancel(ButtonState state)
     {
-        return Input.GetKeyDown(KeyCode.Escape);
+        return CheckKeyState(KeyCode.Escape, state);
     }
 
-    public override bool Quit()
+    public override bool Back(ButtonState state)
     {
-        return Input.GetKeyDown(KeyCode.Q);
+        return CheckKeyState(KeyCode.Escape, state) || Application.isEditor && CheckKeyState(KeyCode.Z, state);
+    }
+
+    public override bool Quit(ButtonState state)
+    {
+        return CheckKeyState(KeyCode.Q, state);
     }
 
     public override bool Left(ButtonState state)
@@ -207,5 +212,15 @@ public class ReplayKeyboardInputType : RDInputType
     public override bool Confirm(ButtonState state)
     {
         return CheckAnyKeyState(ConfirmKeys, state);
+    }
+
+    public override bool FaceUp(ButtonState state)
+    {
+        return CheckKeyState(KeyCode.S, state);
+    }
+
+    public override bool FaceLeft(ButtonState state)
+    {
+        return CheckKeyState(KeyCode.A, state);
     }
 }
