@@ -12,8 +12,6 @@
 
 * Fix Set Input Event making levels unplayable
 
-* Revert changes to Pause on counterclockwise U-Turns in 2.9.4
-
 * Fix malformed JSON format in saved .adofai files
 
 * Prevent unintentionally exiting playing
@@ -65,16 +63,10 @@
 
   DLC is not well-supported currently. Feel free to report issues related to DLC!
 
-  "Normal" behavior Hold Tiles are supported if they are completed without a miss.
-
-  Three Planets is supported.
-
-  Free Roam is not supported.
-
 * **How do I play a replay?**
 
   Enable YCH and enable Replay in YCH settings. Open the level in level editor, click the "Load Replay"
-  button and select the replay file (.ychreplay.gz). Then adjust your game settings to match the
+  button and select the replay file (.ychreplay.gz or .ychreplaygz). Then adjust your game settings to match the
   recorder's game settings (except Async Input). Click "Jump to Start" and start playing the level.
 
   Disable KeyboardChatterBlocker while playing replays.
