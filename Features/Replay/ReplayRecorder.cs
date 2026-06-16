@@ -207,7 +207,7 @@ public static class ReplayRecorder
 
         var nextFloor = Adofai.Controller.currFloor.nextfloor;
         var autoFloor = nextFloor != null && nextFloor.auto;
-        var inputLocked = !Adofai.Controller.responsive;
+        var inputLocked = !Adofai.Controller.playerOne.responsive;
 
         replay.KeyEvents.Add(new Replay.KeyEventType(
             songSeconds,

@@ -499,7 +499,7 @@ public static class ReplayPlayer
                 if (!key.Version1)
                 {
                     if (!key.IsAutoFloor && autoFloor) break;
-                    if (!key.IsInputLocked && !Adofai.Controller.responsive) break;
+                    if (!key.IsInputLocked && !Adofai.Controller.playerOne.responsive) break;
                 }
 
                 if (key.SongSeconds > songSeconds) break;

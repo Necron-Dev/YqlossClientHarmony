@@ -215,7 +215,7 @@ public static class Injections
                 (Adofai.CurrentFloorId <= replayToRecord.Metadata.StartingFloorId && (
                     Adofai.Controller.state != States.PlayerControl ||
                     (States)DestinationStateField(Adofai.Controller.stateMachine).state != States.PlayerControl ||
-                    !Adofai.Controller.responsive
+                    !Adofai.Controller.playerOne.responsive
                 ))
             )
             {
@@ -269,7 +269,7 @@ public static class Injections
                 (Adofai.CurrentFloorId <= replayToRecord.Metadata.StartingFloorId && (
                     Adofai.Controller.state != States.PlayerControl ||
                     (States)DestinationStateField(Adofai.Controller.stateMachine).state != States.PlayerControl ||
-                    !Adofai.Controller.responsive
+                    !Adofai.Controller.playerOne.responsive
                 ))
             )
             {
@@ -477,7 +477,7 @@ public static class Injections
             var nextFloor = Adofai.Controller.currFloor.nextfloor;
             var autoFloor = nextFloor != null && nextFloor.auto;
 
-            ReplayRecorder.OnMarkKeyEvent(autoFloor, controller.responsive);
+            ReplayRecorder.OnMarkKeyEvent(autoFloor, controller.playerOne.responsive);
         }
     }
 
