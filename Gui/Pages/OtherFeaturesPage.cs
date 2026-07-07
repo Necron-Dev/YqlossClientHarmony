@@ -19,11 +19,14 @@ public static class OtherFeaturesPage
         {
             Text(I18N.Translate("Page.OtherFeatures.Name"), TextStyle.Title);
             Separator();
-            SwitchOption(group, ref Main.Settings.EnableFixKillerDecorationsInNoFail, "Setting.FixKillerDecorationsInNoFail.Enabled");
+            SwitchOption(group, ref Main.Settings.EnableFixKillerDecorationsInNoFail,
+                "Setting.FixKillerDecorationsInNoFail.Enabled");
             Separator();
             SwitchOption(group, ref Main.Settings.EnableFixSetInputEventCrash, "Setting.FixSetInputEventCrash.Enabled");
             Separator();
             SwitchOption(group, ref Main.Settings.EnableFixSavedJsonFormat, "Setting.FixSavedJsonFormat.Enabled");
+            Separator();
+            SwitchOption(group, ref Main.Settings.EnableDisablePauseInAuto, "Setting.DisablePauseInAuto.Enabled");
             Separator();
 
             var groupBlock = group.Group;
@@ -60,7 +63,8 @@ public static class OtherFeaturesPage
             End();
 
             Separator();
-            SwitchOption(group, ref SettingsBlockUnintentionalEscape.Instance.OnlyInGame, "Setting.BlockUnintentionalEscape.OnlyInGame");
+            SwitchOption(group, ref SettingsBlockUnintentionalEscape.Instance.OnlyInGame,
+                "Setting.BlockUnintentionalEscape.OnlyInGame");
             Separator();
             SwitchOption(group, ref Main.Settings.EnablePlaySoundOnGameEnd, "Setting.PlaySoundOnGameEnd.Enabled");
             Separator();

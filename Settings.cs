@@ -20,6 +20,8 @@ public class Settings : UnityModManager.ModSettings
 
     public bool EnableModifyLoadingLevel = false;
 
+    public bool EnableDisablePauseInAuto = false;
+
     public string SelectedModifyLoadingLevelProfile = "";
 
     // the default profile stored apart from other profiles
