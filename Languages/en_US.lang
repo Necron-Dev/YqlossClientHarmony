@@ -17,6 +17,8 @@ Setting.BlockUnintentionalEscape.OnlyInGame=Only prevent unintentionally exiting
 Setting.PlaySoundOnGameEnd.Enabled=Play sound on game end
 Setting.PlaySoundOnGameEnd.OnWin=Sound file to play on win
 Setting.PlaySoundOnGameEnd.OnDeath=Sound file to play on death
+Setting.LimitRecolorTrack.Enabled=Limit the tile count of Recolor Track events
+Setting.LimitRecolorTrack.Options=Allow up to[Before]tiles before and[After]tiles after the event
 
 Setting.ModifyLoadingLevel.Enabled=Enable Effect Remover
 
@@ -138,7 +140,7 @@ Setting.ModifyLoadingLevel.EditorComment=Disable Editor Comment
 Setting.ModifyLoadingLevel.Bookmark=Disable Bookmark
 
 Dialog.ModifyLoadingLevel.SaveModifiedLevel.Title=Modified Level Saving Confirmation
-Dialog.ModifyLoadingLevel.SaveModifiedLevel.Text=Are you sure you want to save this modified level?\nSaving this level can cause all changes YCH has made to be saved in the .adofai file!\nThis is irreversible!!!\nYou can disable Effect Remover in YCH settings if you are editing levels.
+Dialog.ModifyLoadingLevel.SaveModifiedLevel.Text=Are you sure you want to save this modified level?\nSaving this level can cause all changes YCH has made to be saved in the .adofai file!\nThis is irreversible!!!\n(You can disable Effect Remover in YCH settings if you are editing levels)
 
 Setting.Replay.Enabled=Enable Replay Recording
 Setting.Replay.Enabled.Description=Start recording on starting or respawning from a checkpoint. Stop recording on death or reaching the last floor.

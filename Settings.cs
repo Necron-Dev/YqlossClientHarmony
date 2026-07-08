@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using JetBrains.Annotations;
 using UnityModManagerNet;
 using YqlossClientHarmony.Features.BlockUnintentionalEscape;
+using YqlossClientHarmony.Features.LimitRecolorTrack;
 using YqlossClientHarmony.Features.ModifyLoadingLevel;
 using YqlossClientHarmony.Features.PlaySoundOnGameEnd;
 using YqlossClientHarmony.Features.Replay;
@@ -46,6 +47,10 @@ public class Settings : UnityModManager.ModSettings
     public bool EnablePlaySoundOnGameEnd = false;
 
     public SettingsPlaySoundOnGameEnd PlaySoundOnGameEndSettings = new();
+
+    public bool EnableLimitRecolorTrack = false;
+
+    public SettingsLimitRecolorTrack LimitRecolorTrackSettings = new();
 
     public void OnLoad(UnityModManager.ModEntry modEntry)
     {

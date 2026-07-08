@@ -1,5 +1,6 @@
 using System;
 using YqlossClientHarmony.Features.BlockUnintentionalEscape;
+using YqlossClientHarmony.Features.LimitRecolorTrack;
 using YqlossClientHarmony.Features.PlaySoundOnGameEnd;
 using static YqlossClientHarmony.Gui.YCHLayout;
 using static YqlossClientHarmony.Gui.YCHLayoutPreset;
@@ -71,6 +72,29 @@ public static class OtherFeaturesPage
             TextOption(group, ref SettingsPlaySoundOnGameEnd.Instance.OnWin, "Setting.PlaySoundOnGameEnd.OnWin");
             Separator();
             TextOption(group, ref SettingsPlaySoundOnGameEnd.Instance.OnDeath, "Setting.PlaySoundOnGameEnd.OnDeath");
+            Separator();
+
+            var groupLimit = group.Group;
+            Begin(ContainerDirection.Horizontal, sizes: groupLimit);
+            PushAlign(0.5);
+            {
+                Save |= Checkbox(ref Main.Settings.EnableLimitRecolorTrack);
+                Text(I18N.Translate("Setting.LimitRecolorTrack.Enabled"));
+                Fill();
+                var optionsString = I18N.Translate("Setting.LimitRecolorTrack.Options");
+                var indexOfBefore = optionsString.IndexOf("[Before]", StringComparison.Ordinal);
+                var indexOfAfter = optionsString.IndexOf("[After]", StringComparison.Ordinal);
+                if (indexOfBefore != -1 && indexOfAfter != -1 && indexOfBefore < indexOfAfter)
+                {
+                    Text(optionsString[..indexOfBefore]);
+                    Save |= StructField(ref SettingsLimitRecolorTrack.Instance.AllowedBefore, IntFormat());
+                    Text(optionsString[(indexOfBefore + 8)..indexOfAfter]);
+                    Save |= StructField(ref SettingsLimitRecolorTrack.Instance.AllowedAfter, IntFormat());
+                    Text(optionsString[(indexOfAfter + 7)..]);
+                }
+            }
+            PopAlign();
+            End();
         }
         End();
     }

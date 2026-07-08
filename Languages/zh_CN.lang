@@ -17,6 +17,8 @@ Setting.BlockUnintentionalEscape.OnlyInGame=只在游戏中途阻止意外退出
 Setting.PlaySoundOnGameEnd.Enabled=在游戏结束时播放声音
 Setting.PlaySoundOnGameEnd.OnWin=游戏胜利时播放的声音文件
 Setting.PlaySoundOnGameEnd.OnDeath=游戏失败时播放的声音文件
+Setting.LimitRecolorTrack.Enabled=限制重新设置轨道颜色作用范围
+Setting.LimitRecolorTrack.Options=允许事件前方最多[Before]格与后方最多[After]格
 
 Setting.ModifyLoadingLevel.Enabled=开启去特效功能
 
@@ -137,8 +139,8 @@ Gui.EffectRemover.MiscEvents=其他事件
 Setting.ModifyLoadingLevel.EditorComment=禁用 编辑器附注
 Setting.ModifyLoadingLevel.Bookmark=禁用 书签
 
-Dialog.ModifyLoadingLevel.SaveModifiedLevel.Title=保存已被 YCH 修改的关卡
-Dialog.ModifyLoadingLevel.SaveModifiedLevel.Text=确定要保存已被 YCH 修改的关卡吗？\n保存此关卡会导致 YCH 所做的所有修改被保存到 .adofai 文件中。\n此操作不可逆！！！\n编辑关卡时可以在 YCH 设置中关闭”去特效“功能。
+Dialog.ModifyLoadingLevel.SaveModifiedLevel.Title=保存被 YCH 修改过的关卡
+Dialog.ModifyLoadingLevel.SaveModifiedLevel.Text=确定要保存被 YCH 修改过的关卡吗？\n保存此关卡会导致 YCH 所做的所有修改被保存到 .adofai 文件中。\n此操作不可逆！！！\n（如果想编辑关卡，可以在 YCH 设置中关闭“去特效”功能）
 
 Setting.Replay.Enabled=开启回放录制
 Setting.Replay.Enabled.Description=在开始或从检查点复活时开始录制，在死亡或到达终点时结束录制。
